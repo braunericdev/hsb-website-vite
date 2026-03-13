@@ -1,0 +1,190 @@
+<header class="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+            
+            <a href="../" class="flex items-center space-x-3 group">
+                <div class="w-1.5 h-10 bg-[#8B4513] rounded-sm group-hover:bg-opacity-90 transition"></div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-bold uppercase tracking-tight text-[#8B4513] leading-none">Braun</span>
+                    <span class="text-xs text-gray-500 font-medium tracking-wide">Hausmeisterservice</span>
+                </div>
+            </a>
+            
+            <nav class="hidden lg:flex items-center space-x-1 h-full">
+                
+                <a href="../" class="px-4 py-2 font-semibold  text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">Startseite</a>
+                <a href="../hausmeisterservice/" class="px-4 py-2 font-semibold text-gray-600 hover:text-[#8B4513] transition-colors">Hausmeisterservice</a>
+                
+                <!-- Dropdown: Außenberei -->
+                <div class="relative group h-full flex items-center">
+                    <button class="flex items-center px-4 py-2 font-semibold text-gray-600 group-hover:text-[#8B4513] transition-colors">
+                        Außenbereich <i class="fas fa-chevron-down ml-2 text-[10px] transition-transform group-hover:rotate-180"></i>
+                    </button>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-55 bg-white shadow-xl rounded-xl p-2 border border-gray-100 
+                                opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 
+                                transition-all duration-200 z-50">
+                        <a href="../gartengrundstueckspflege/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-leaf w-6 text-[#8B4513]"></i> Gartenpflege
+                        </a>
+                        <a href="../heckenschnitt/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-cut w-6 text-[#8B4513]"></i> Heckenschnitt
+                        </a>
+                        <a href="../rasenmaehen/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-seedling w-6 text-[#8B4513]"></i> Rasenmähen
+                        </a>
+                        <a href="../reinigung/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-broom w-6 text-[#8B4513]"></i> Reinigung
+                        </a>
+                        <a href="../gestaltung/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-mountain w-6 text-[#8B4513]"></i> Gestaltung
+                        </a>
+                        <a href="../winterdienst/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-snowflake w-6 text-[#8B4513]"></i> Winterdienst
+                        </a>
+                        </div>
+                </div>
+
+                <!-- Dropdown: Innenbereich -->
+                <div class="relative group h-full flex items-center">
+                    <button class="flex items-center px-4 py-2 font-semibold text-gray-600 group-hover:text-[#8B4513] transition-colors">
+                        Innenbereich <i class="fas fa-chevron-down ml-2 text-[10px] transition-transform group-hover:rotate-180"></i>
+                    </button>     
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 w-55 bg-white shadow-xl rounded-xl p-2 border border-gray-100 
+                                opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 
+                                transition-all duration-200 z-50">
+                        <a href="../gebaeudereinigung/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-leaf w-6 text-[#8B4513]"></i> Gebäudereinigung
+                        </a>
+                        <a href="../bodenverlegen/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-cut w-6 text-[#8B4513]"></i> Bodenverlegen
+                        </a>
+                        <a href="../montageservice/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-tools w-6 text-[#8B4513]"></i> Montageservice
+                        </a>
+                        <a href="../entruempelung/" class="flex items-center p-3 gap-1 text-gray-600 hover:bg-amber-50/50 hover:text-[#8B4513] rounded-lg transition">
+                            <i class="fas fa-broom w-6 text-[#8B4513]"></i> Entrümpelung
+                        </a>
+                </div>
+            </nav>
+
+            <div class="hidden lg:block">
+                <a href="../kontakt/" class="bg-[#8B4513] text-white px-6 py-2.5 rounded-lg font-bold text-sm hover:brightness-110 transition shadow-sm block">
+                    Anfrage stellen
+                </a>
+            </div>
+
+            <button id="menu-open-btn" class="lg:hidden text-[#8B4513] p-2">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div id="mobile-overlay" 
+    class="fixed inset-0 bg-black/50 z-[60] hidden opacity-0 transition-opacity duration-300 pointer-events-none">
+</div>
+
+<div id="mobile-menu" 
+    class="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white z-[70] translate-x-full shadow-2xl flex flex-col hidden transition-transform duration-300 ease-in-out overflow-y-auto">
+
+    <div class="pl-3 pt-1 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <span class="font-bold text-[#8B4513] uppercase tracking-widest text-sm">Navigation</span>
+        <button id="menu-close-btn" 
+                class="text-4xl text-gray-400 hover:text-[#8B4513] leading-none transition-colors p-2" 
+                aria-label="Menü schließen">
+            &times;
+        </button>
+    </div>
+
+    <nav class="p-6 flex flex-col space-y-8">
+        <div class="flex flex-col space-y-4">
+            <a href="../" class="text-xl font-bold text-[#8B4513] border-l-4 border-[#8B4513] pl-4 py-1">
+                Startseite
+            </a>
+            <a href="../hausmeisterservice/" class="text-xl font-bold text-gray-800 border-l-4 border-transparent pl-4 py-1 hover:border-[#8B4513]/30 transition-all">
+                Hausmeisterservice
+            </a>
+        </div>
+
+        <div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mb-5 border-b border-gray-50 pb-2">
+                Außenbereich
+            </p>
+            <div class="grid grid-cols-1 gap-4">
+                <a href="../gartengrundstueckspflege/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-leaf text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Gartenpflege
+                </a>
+                <a href="../heckenschnitt/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-cut text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Heckenschnitt
+                </a>
+                <a href="../rasenmaehen/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-seedling text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Rasenmähen
+                </a>
+                <a href="../reinigung/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-broom text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Reinigung
+                </a>
+                <a href="../gestaltung/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-mountain text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Gestaltung
+                </a>
+                <a href="../winterdienst/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-snowflake text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Winterdienst
+                </a>
+            </div>
+        </div>
+
+        <div>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mb-5 border-b border-gray-50 pb-2">
+                Innenbereich
+            </p>
+            <div class="grid grid-cols-1 gap-4">
+                <a href="../gebaeudereinigung/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-soap text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Gebäudereinigung
+                </a>
+                <a href="../bodenverlegen/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-layer-group text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Bodenverlegen
+                </a>
+                <a href="../montage/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-tools text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Montageservice
+                </a>
+                <a href="../entruempelung/" class="group flex items-center text-gray-600 font-medium py-1 hover:text-[#8B4513] transition-colors">
+                    <span class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-amber-50 transition-colors">
+                        <i class="fa-solid fa-truck-loading text-[#8B4513] text-sm"></i>
+                    </span> 
+                    Entrümpelung
+                </a>
+            </div>
+        </div>
+
+        <a href="../kontakt/?dienstleistung=Allgemein" 
+            class="bg-[#8B4513] text-white text-center py-5 rounded-2xl font-bold shadow-lg shadow-[#8B4513]/20 uppercase tracking-widest text-sm mt-4 active:scale-95 transition-all">
+            Anfrage stellen
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  /* Hier kannst du deine Markenfarben definieren */
+  --color-brand-bg: #f1efec;
+}
+
+/* Basis-Anpassungen für das Dokument */
+@layer base {
+  body {
+    @apply bg-white text-gray-900 antialiased;
+    font-family: system-ui, sans-serif;
+  }
+}
+
+/* Navigation Active Styling */
+@layer components {
+  /* Desktop Navigation - Aktiver Link */
+  .nav-active-desktop {
+    @apply !text-[#8B4513] !font-bold;
+  }
+
+  .nav-active-desktop:hover {
+    @apply !text-[#8B4513] !font-bold;
+  }
+
+  /* Mobile Navigation - Aktiver Link */
+  .nav-active-mobile {
+    @apply !border-[#8B4513] !text-[#8B4513] !font-bold;
+  }
+
+  /* Navigation Parent Button - Aktiv (für Dropdowns) */
+  .nav-parent-active {
+    @apply !text-[#8B4513] !font-bold;
+  }
+}

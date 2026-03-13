@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Verhindert, dass die Danke-Seite in der Google-Suche erscheint.
+# WICHTIG: Das Tracking für Google Ads funktioniert trotzdem weiter!
+Disallow: /danke/
+
+# Zeigt Google den Weg zu deiner neuen Struktur
+Sitemap: https://www.hausmeisterservice-braun.de/sitemap.xml

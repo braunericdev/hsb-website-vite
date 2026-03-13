@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heckenschnitt & Rückschnitt - Braun Hausmeisterservice</title>
+    <meta name="description" content="Professioneller Hausmeisterservice für Haus & Garten. Wir kümmern uns um Gartenpflege, Reinigung und Instandhaltung. Zuverlässig & kompetent!">
+
+    <link rel="icon" href="/icon.png" type="image/png"> 
+    <link rel="apple-touch-icon" href="/icon.png">
+    
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="7dbf87a7-6616-415a-b6e6-615be56dfe12" data-blockingmode="auto" type="text/javascript"></script>
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17931737581"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17931737581');
+    </script>
+</head>
+
+<body>
+    <load src="src/components/navbar.html" />
+    
+    <main>
+    <section class="py-12 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
+                    Jetzt handeln oder warten bis Herbst <br class="hidden md:block">
+                    <span class="text-[#8B4513]">Schonzeit ab 01. März!</span>
+                </h1>
+                <h2 class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-medium">
+                    Jetzt einen kostenlosen Vor-Ort-Termin sichern und kurzfristig den Rückschnitt erledigen lassen.
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+                
+                <div class="space-y-8 lg:col-span-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
+                            <i class="fas fa-clock mr-3 text-[#8B4513] text-xl"></i>
+                            <div class="font-bold text-[#8B4513] leading-tight text-sm">
+                                Maximale Zeitersparnis 
+                                <span class="block text-xs font-normal text-gray-500 uppercase tracking-widest mt-0.5">Wir übernehmen die Arbeit</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
+                            <i class="fas fa-truck mr-3 text-[#8B4513] text-xl"></i>
+                            <div class="font-bold text-[#8B4513] leading-tight text-sm">
+                                Inkl. Abtransport 
+                                <span class="block text-xs font-normal text-gray-500 uppercase tracking-widest mt-0.5">Wir entsorgen den Grünschnitt</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
+                            <i class="fas fa-shield-alt mr-3 text-[#8B4513] text-xl"></i>
+                            <div class="font-bold text-[#8B4513] leading-tight text-sm">
+                                Top-Equipment 
+                                <span class="block text-xs font-normal text-gray-500 uppercase tracking-widest mt-0.5">Sauberer & präziser Schnitt</span>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
+                            <i class="fas fa-star mr-3 text-yellow-500 text-xl"></i>
+                            <div class="font-bold text-[#8B4513] leading-tight text-sm">
+                                5 Sterne Service 
+                                <span class="block text-xs font-normal text-gray-500 uppercase tracking-widest mt-0.5">Zufriedene Kunden</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="hero-slider" class="relative aspect-video rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-200 group">
+                        <button id="slider-prev" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/80 transition text-gray-800">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="slider-next" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/80 transition text-gray-800">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        
+                        <div class="slider-track relative w-full h-full">
+                            <div class="slide absolute inset-0 transition-opacity duration-500 opacity-100 z-10">
+                                <img src="/Vorher_Nacher_Stromberg.png" alt="Vorher-Nachher Referenz 1" class="w-full h-full object-cover">
+                            </div>
+                            <div class="slide absolute inset-0 transition-opacity duration-500 opacity-0 z-0">
+                                <img src="/Vorher_NAcher_Thuja.png" alt="Vorher-Nachher Referenz Stromberg" class="w-full h-full object-cover">
+                            </div>
+                            <div class="slide absolute inset-0 transition-opacity duration-500 opacity-0 z-0">
+                                <img src="/Vorher_nachher_Lohrbeer.png" alt="Vorher-Nachher Referenz Thuja" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2" id="slider-dots">
+                            <button class="w-2.5 h-2.5 rounded-full bg-white shadow-sm" data-index="0"></button>
+                            <button class="w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white transition" data-index="1"></button>
+                            <button class="w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white transition" data-index="2"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 text-[#8B4513] flex items-center uppercase tracking-tight">
+                        <i class="fas fa-cut mr-2 text-xl"></i> Heckenschnitt sichern!
+                    </h3>
+                    <p class="text-gray-600 mb-6 font-medium text-sm">Deine Vorteile im Überblick:</p>
+                    
+                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Fachgerechter Heckenschnitt</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Entsorgung inklusive</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Individuelle Abstimmung</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Gesetzliche Schonzeiten berücksichtigt</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Geeignet für Privat und Gewerbe</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
+                            <span class="font-bold text-gray-700">Kurzfristige Termine</span>
+                        </li>
+                    </ul>
+
+                    <a href="/kontakt/?dienstleistung=Heckenschnitt" class="block w-full bg-[#8B4513] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-opacity-90 transition shadow-lg uppercase tracking-wide active:scale-95">
+                        Kostenlos anfragen
+                    </a>
+                    <p class="text-center text-xs text-gray-400 mt-3 uppercase tracking-widest font-bold">Heckenschnitt-Termin vor dem 01.03. sichern</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="space-y-6 text-base text-gray-600 leading-relaxed font-medium">
+                <p>
+                    Aufgrund von gesetzlichen Schonzeiten, kann ein radikaler Rückschnitt nach dem 28. Februar häufig Probleme mit sich bringen. Wer diese Frist verpasst, muss deshalb oft bis zum nächsten Herbst warten.
+                </p>
+                <p>
+                    Doch nicht jeder hat das Werkzeug, das Know-how oder die Zeit.
+                </p>
+                <div class="p-6 bg-[#8B4513]/5 border-l-4 border-[#8B4513] rounded-r-lg">
+                    <p class="font-bold text-[#8B4513] mb-2">
+                        Wir helfen genau hier:
+                    </p>
+                    <p class="text-gray-800">
+                        Unser kostenloser Vor-Ort-Termin ermöglicht es, ein maßgeschneidertes Angebot zu erstellen – fair, transparent und ganz ohne Verpflichtung.
+                    </p>
+                </div>
+                <p>
+                    Wir schneiden Deine Hecke qualitativ hochwertig, zuverlässig und günstig – für ein gepflegtes Erscheinungsbild Deines Gartens.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tighter text-gray-900">In 5 Schritten zur perfekten Hecke</h3>
+            </div>
+
+            <div class="relative">
+                <div class="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gray-200 md:-translate-x-1/2"></div>
+                
+                <div class="space-y-12">
+                    
+                    <div class="relative flex items-center justify-start md:justify-center group">
+                        <div class="hidden md:block w-5/12 text-right pr-12">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Kontakt aufnehmen</h4>
+                            <p class="text-gray-600 text-sm">Kurze Anfrage senden – Zeitfenster vor dem 01.03. sichern.</p>
+                        </div>
+                        <div class="z-10 w-16 h-16 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl shrink-0 border-4 border-white transition-transform group-hover:scale-110">1</div>
+                        <div class="w-full md:w-5/12 pl-8 md:pl-12 text-left md:hidden">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Kontakt aufnehmen</h4>
+                            <p class="text-gray-600 text-sm">Kurze Anfrage senden – Zeitfenster vor dem 01.03. sichern.</p>
+                        </div>
+                        <div class="hidden md:block w-5/12"></div>
+                    </div>
+
+                    <div class="relative flex items-center justify-start md:justify-center group">
+                        <div class="hidden md:block w-5/12"></div>
+                        <div class="z-10 w-16 h-16 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl shrink-0 border-4 border-white transition-transform group-hover:scale-110">2</div>
+                        <div class="w-full md:w-5/12 pl-8 md:pl-12 text-left">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Schnell-Check</h4>
+                            <p class="text-gray-600 text-sm">Wir melden uns innerhalb 24h für die Details.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center justify-start md:justify-center group">
+                        <div class="hidden md:block w-5/12 text-right pr-12">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Vor-Ort-Termin</h4>
+                            <p class="text-gray-600 text-sm">Wir schauen uns die Hecke an und kalkulieren den Aufwand.</p>
+                        </div>
+                        <div class="z-10 w-16 h-16 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl shrink-0 border-4 border-white transition-transform group-hover:scale-110">3</div>
+                        <div class="w-full md:w-5/12 pl-8 md:pl-12 text-left md:hidden">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Vor-Ort-Termin</h4>
+                            <p class="text-gray-600 text-sm">Wir schauen uns die Hecke an und kalkulieren den Aufwand.</p>
+                        </div>
+                        <div class="hidden md:block w-5/12"></div>
+                    </div>
+
+                    <div class="relative flex items-center justify-start md:justify-center group">
+                        <div class="hidden md:block w-5/12"></div>
+                        <div class="z-10 w-16 h-16 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl shrink-0 border-4 border-white transition-transform group-hover:scale-110">4</div>
+                        <div class="w-full md:w-5/12 pl-8 md:pl-12 text-left">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Fixer Termin</h4>
+                            <p class="text-gray-600 text-sm">Wir vereinbaren einen kurzfristigen Ausführungstermin.</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex items-center justify-start md:justify-center group">
+                        <div class="hidden md:block w-5/12 text-right pr-12">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Durchführung</h4>
+                            <p class="text-gray-600 text-sm">Schnitt und Abtransport – Dein Garten ist wieder bereit.</p>
+                        </div>
+                        <div class="z-10 w-16 h-16 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold text-2xl shadow-xl shrink-0 border-4 border-white transition-transform group-hover:scale-110">5</div>
+                        <div class="w-full md:w-5/12 pl-8 md:pl-12 text-left md:hidden">
+                            <h4 class="text-xl font-bold text-gray-900 mb-1">Durchführung</h4>
+                            <p class="text-gray-600 text-sm">Schnitt und Abtransport – Dein Garten ist wieder bereit.</p>
+                        </div>
+                        <div class="hidden md:block w-5/12"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="container mx-auto md:px-4">
+            <h3 class="text-3xl md:text-4xl font-bold text-center mb-12 uppercase tracking-tighter text-gray-900">Deine Vorteile mit uns</h3>
+            <div class="md:max-w-4xl mx-auto overflow-hidden md:rounded-2xl shadow-lg border border-gray-200">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="p-4 md:p-6 font-bold uppercase text-sm tracking-wider text-gray-500 w-1/2 text-center bg-gray-50">Selbst gemacht</th>
+                            <th class="p-4 md:p-6 font-bold uppercase text-sm tracking-wider text-[#8B4513] bg-[#8B4513]/5 w-1/2 text-center">Mit Braun Hausmeisterservice</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-gray-100 bg-white">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Mühsame Arbeit mit Hobby-Geräten</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Leistungsstarkes Profi-Equipment</span></li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 bg-gray-50">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Berge von Grünschnitt im Garten liegen lassen</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Inklusive Abtransport</span> und Entsorgung</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 bg-white">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Ungleichmäßiger Schnitt durch fehlende Erfahrung</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Präzises Ergebnis</span> für gesundes Wachstum</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 bg-gray-50">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Stundenlange Arbeit am Wochenende</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Maximale Zeitersparnis</span> durch effiziente Erledigung</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Einheitlicher Schnitt ohne Rücksicht auf die Pflanzenart</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Rückschnitt abgestimmt</span> auf Pflanzentypen</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-4xl text-center">
+            <h3 class="text-2xl font-bold mb-4 text-[#8B4513] uppercase tracking-tight">! WICHTIG ZU WISSEN !</h3>
+            <div class="space-y-4 text-base text-gray-600 leading-relaxed">
+                <p class="font-bold text-gray-800">Formschnitte sind immer möglich.</p>
+                <p>
+                    Auch wenn es nur um einen Formschnitt geht, ist es sinnvoll schon jetzt einen Termin auszumachen. So können wir besser planen und Du kannst Dir einen Rabatt sichern!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h3 class="text-3xl md:text-4xl font-bold mb-8 text-[#8B4513] uppercase tracking-tighter">Über uns</h3>
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                <div class="shrink-0">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg overflow-hidden ring-1 ring-gray-100">
+                        <img src="/ueber_uns.JPG" alt="Portrait Braun Hausmeisterservice" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <div class="space-y-6 text-base text-gray-600 leading-relaxed font-medium">
+                    <p>
+                        Wir sind ein junges Unternehmen aus Bendorf mit dem Ziel, Kunden bei der Gartenpflege zu unterstützen. Unsere Arbeit ist darauf ausgerichtet, praktische Entlastung zu schaffen.
+                    </p>
+                    <p>
+                        Wir führen alle Leistungen mit Sorgfalt und passenden Geräten aus. Dabei legen wir Wert auf Transparenz, Pünktlichkeit und kundenorientiertes Arbeiten.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-gray-50 border-t border-gray-100">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h3 class="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 uppercase tracking-tighter">Fragen zum Heckenschnitt</h3>
+            <div class="space-y-4">
+                
+                <details class="group border border-gray-200 rounded-xl overflow-hidden bg-white transition-all duration-300">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-gray-800 uppercase text-sm select-none list-none">
+                        Warum muss der Rückschnitt bis zum 1. März erfolgen?
+                        <i class="fas fa-chevron-down text-[#8B4513] transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-5 bg-gray-50/50 border-t border-gray-200 text-gray-600 leading-relaxed text-sm">
+                        Dies dient dem Vogelschutz. Ab dem 1. März beginnt die gesetzlich geschützte Brutzeit, in der radikale Rückschnitte zu unterlassen sind.
+                    </div>
+                </details>
+
+                <details class="group border border-gray-200 rounded-xl overflow-hidden bg-white transition-all duration-300">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-gray-800 uppercase text-sm select-none list-none">
+                        Entsorgst Du auch den Abfall?
+                        <i class="fas fa-chevron-down text-[#8B4513] transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-5 bg-gray-50/50 border-t border-gray-200 text-gray-600 leading-relaxed text-sm">
+                        Ja, auf Wunsch übernehmen wir den kompletten Abtransport und die fachgerechte Entsorgung Deines Grünschnitts.
+                    </div>
+                </details>
+
+                <details class="group border border-gray-200 rounded-xl overflow-hidden bg-white transition-all duration-300">
+                    <summary class="flex justify-between items-center p-5 cursor-pointer font-bold text-gray-800 uppercase text-sm select-none list-none">
+                        Was kostet ein Heckenschnitt?
+                        <i class="fas fa-chevron-down text-[#8B4513] transition-transform duration-300 group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-5 bg-gray-50/50 border-t border-gray-200 text-gray-600 leading-relaxed text-sm">
+                        Die Kosten hängen von der Länge und Höhe der Hecke sowie dem gewünschten Umfang (Formschnitt vs. Rückschnitt) ab. Wir erstellen Dir gerne ein individuelles Angebot nach einer Besichtigung.
+                    </div>
+                </details>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 uppercase tracking-tighter drop-shadow-sm">Was unsere Kunden sagen</h3>
+                <div class="w-24 h-1 bg-[#8B4513] mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                <div class="flex flex-col gap-6">
+                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
+                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
+                        <div class="flex text-yellow-500 mb-6 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
+                                Wir sind äußerst zufrieden mit der sehr professionellen und vielseitigen Arbeitsleistung der Firma Braun. Die Arbeiten wurden zuverlässig und mit großer Sorgfalt bis ins kleinste Detail ausgeführt. Die Kommunikation war durchweg angenehm, die Termine wurden eingehalten und die Baustelle stets sauber hinterlassen. Vielen Dank für den ausgezeichneten Service – uneingeschränkt weiterzuempfehlen!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
+                                <i class="fas fa-user text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
+                        </div>
+                    </div>
+
+                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
+                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
+                        <div class="flex text-yellow-500 mb-6 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
+                                Gute Leistung. Vielen Dank.
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
+                                <i class="fas fa-user text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow h-full">
+                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
+                        <div class="flex text-yellow-500 mb-6 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
+                                Der Hausmeisterservice ist super zuverlässig und bei Fragen immer sofort erreichbar. Besonders toll finde ich die Flexibilität. Wenn mal kurzfristig was ansteht, wird sofort eine Lösung gefunden. Kann ich nur wärmstens weiterempfehlen!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
+                                <i class="fas fa-user text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
+                        </div>
+                    </div>
+
+                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
+                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
+                        <div class="flex text-yellow-500 mb-6 text-sm">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
+                                Freundliche Beratung und super Arbeit. Besonders die kurzfristige Verfügbarkeit kann man hervorheben. Gerne wieder!
+                            </p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
+                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
+                                <i class="fas fa-user text-sm"></i>
+                            </div>
+                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontakt" class="py-20 bg-[#8B4513] text-white">
+        <div class="container mx-auto px-4 text-center max-w-4xl">
+            <h3 class="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-tighter text-white">Letzte Chance für den Rückschnitt vor dem Frühling!</h3>
+            <div class="mb-10 space-y-4">
+                <p class="text-lg md:text-xl opacity-90 leading-relaxed font-medium">
+                    Die gesetzliche Schonzeit startet bald – sichere Dir JETZT Deinen Termin und profitiere vom kostenlosen Anfahrts‑ und Entsorgungsservice.
+                </p>
+            </div>
+            <a href="/kontakt/?dienstleistung=Heckenschnitt" class="inline-block bg-white text-[#8B4513] px-12 py-5 rounded-xl font-extrabold text-xl hover:bg-gray-100 transition shadow-2xl uppercase tracking-widest hover:scale-105 active:scale-95 duration-200">
+                JETZT TERMIN SICHERN
+            </a>
+        </div>
+    </section>
+    </main>
+
+    <load src="src/components/footer.html" />
+
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
