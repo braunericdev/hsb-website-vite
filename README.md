@@ -1,27 +1,26 @@
-# Hausmeisterservice Braun – High-Performance Website (Vite Version)
+# Hausmeisterservice Braun – Ultra-Performance Website (Vanilla JS Version)
 
-Dies ist die aktuelle, technologisch optimierte Version der Web-Präsenz für den Hausmeisterservice Braun. Das Projekt wurde als vollständiger Rewrite der ursprünglichen Next.js-Anwendung konzipiert, um maximale Performance und minimale Ladezeiten zu erreichen.
+Dies ist die technologisch am stärksten optimierte Version der Web-Präsenz für den Hausmeisterservice Braun. Die Anwendung wurde bewusst ohne Frameworks (No-Framework / Vanilla JS) entwickelt, um die absolut minimale Bundle-Größe und maximale Ladegeschwindigkeit zu erreichen.
 
 ## Projekt-Kontext und Motivation
 
-Nach der erfolgreichen Etablierung des Betriebs mit einer Next.js-basierten Seite wurde diese Neuentwicklung angestoßen, um die architektonische Effizienz zu steigern. Durch den Wechsel auf Vite wurde der Framework-Overhead signifikant reduziert. Dies resultiert in einer verbesserten Time-to-Interactive, was insbesondere für die Performance von Google-Ads-Kampagnen und die Conversion-Rate mobiler Nutzer entscheidend ist.
+Nachdem die erste Version auf Basis von Next.js erfolgreich den Betrieb etablierte, wurde diese Neuentwicklung als "Pure-Web"-Ansatz konzipiert. Durch den Verzicht auf React und Next.js wurde jeglicher Framework-Overhead eliminiert. Das Ergebnis ist eine Seite, die nahezu ohne Verzögerung lädt (Time-to-Interactive), was die Conversion-Rate von Google-Ads-Kampagnen auf mobilen Endgeräten optimiert.
 
 ## Technischer Stack
 
-* **Build-Tool:** Vite (für rasant schnelle Entwicklungszyklen und optimierte Bundles)
-* **Frontend-Library:** React
-* **Backend-Integration:** Node.js
-* **Styling:** Tailwind CSS (Utility-First-Ansatz für minimales CSS-Gewicht)
-* **Sprache:** JavaScript / Node.js
+* **Build-Tool:** Vite (High-Speed Build & Dev-Server)
+* **Frontend:** Vanilla JavaScript (ES6+ Module)
+* **Templating:** vite-plugin-html-inject (für modulare, wiederverwendbare HTML-Komponenten ohne Library-Overhead)
+* **Styling:** Tailwind CSS v4 (Modernstes Utility-First CSS)
+* **Icons:** FontAwesome 7 (via @fortawesome/fontawesome-free)
 
-## Funktionsumfang & Optimierungen
+## Besondere Merkmale
 
-* **Performance-Fokus:** Minimale Bundle-Größen durch Verzicht auf schwere Framework-Abstraktionen.
-* **Marketing-Optimierung:** Speziell auf Landingpage-Performance für Suchmaschinenanzeigen (Google Ads) ausgelegt.
-* **Kundenakquise-System:** Effizientes Kontaktformular und strukturierte Leistungsübersicht.
-* **Responsive Design:** Mobile-First-Architektur für eine optimale Darstellung auf Smartphones im Außendienst-Kontext.
-* **Wartbarkeit:** "Trockene" (DRY) Code-Struktur durch modulare Komponenten-Architektur.
+* **Zero Framework Overhead:** Keine Client-seitigen Libraries wie React oder Vue notwendig.
+* **Modularer Aufbau:** Trotz Verzicht auf Frameworks wurde eine wartbare Struktur durch HTML-Injection realisiert.
+* **Maximale Performance:** Extrem kleine Assets führen zu Bestwerten bei den Google Core Web Vitals.
+* **Marketing-Fokus:** Speziell für die Anforderungen von Landingpages im Bereich Performance-Marketing entwickelt.
 
 ## Vergleich zur Vorgängerversion
 
-Im Gegensatz zur ursprünglichen Next.js-Version liegt der Fokus hier auf einer schlanken Client-Side-Architektur. Während die Next.js-Version als breites Lernprojekt für Server-Side-Konzepte diente, stellt dieses Repository die produktive, auf Geschwindigkeit getrimmte Endlösung dar.
+Dieses Repository ist die technologische Antwort auf die ursprüngliche Next.js-Version. Während dort der Fokus auf Framework-Features lag, wurde hier ein radikaler "Performance-First"-Ansatz gewählt. Dies beweist die Fähigkeit, für unterschiedliche Business-Anforderungen (SEO vs. Speed/Conversion) die jeweils passende Architektur zu wählen.
