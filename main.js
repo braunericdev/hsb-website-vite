@@ -106,21 +106,17 @@ const setupNavigationIntelligence = () => {
     // Kontakt-Buttons umschreiben
     const contactBtns = document.querySelectorAll('a[href*="/kontakt"]');
     const mapping = {
-        'heckenschnitt': 'Heckenschnitt',
-        'rasenmahen': 'Rasenmähen',
-        'rasenmaehen': 'Rasenmähen',
-        'gebaeudereinigung': 'Gebäudereinigung',
-        'gebäudereinigung': 'Gebäudereinigung',
-        'bodenverlegen': 'Bodenverlegen',
-        'entruempelung': 'Entrümpelung',
-        'entrümpelung': 'Entrümpelung',
-        'winterdienst': 'Winterdienst',
-        'gartengrundstueckspflege': 'Gartenpflege',
-        'gartengrundstückspflege': 'Gartenpflege',
-        'gestaltung': 'Gestaltung',
-        'montageservice': 'Montageservice',
-        'montage': 'Montageservice',
-        'hausmeisterservice': 'Hausmeisterservice'
+        'heckenschnitt': 'heckenschnitt',
+        'rasenmaehen': 'rasenmaehen',
+        'gebaeudereinigung': 'gebaeudereinigung',
+        'bodenverlegen': 'bodenverlegen',
+        'entruempelung': 'entruempelung',
+        'winterdienst': 'winterdienst',
+        'reinigung': 'reinigung',
+        'gartengrundstueckspflege': 'gartengrundstueckspflege',
+        'gestaltung': 'gestaltung',
+        'montageservice': 'montageservice',
+        'hausmeisterservice': 'hausmeisterservice'
     };
 
     contactBtns.forEach(btn => {
