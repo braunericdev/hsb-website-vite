@@ -34,8 +34,15 @@ erkannt, keine weitere Einstellung nötig.
 
 - Node hinzufügen: **Send Email**, direkt hinter dem Code-Node
 - **Credential**: neues SMTP-Credential anlegen
-  - Host: `smtp.ionos.de`, Port: `587`, SSL/TLS: STARTTLS (Standard bei IONOS)
+  - Host: `smtp.ionos.de`, Port: `465`, SSL/TLS (Secure): **aktiviert**
   - User/Passwort: euer Postfach `kontakt@hausmeisterservice-braun.de`
+  - Client Hostname: leer lassen (optional, nicht relevant)
+  - Port 465 mit aktiviertem SSL/TLS ist die eindeutige Kombination (direkt
+    verschlüsselt von Anfang an). Port 587 + STARTTLS funktioniert bei IONOS
+    zwar grundsätzlich auch, führt aber je nach n8n-Version zu
+    `wrong version number`-Fehlern, wenn das SSL/TLS-Häkchen dabei
+    fälschlich aktiviert wird (dann spricht n8n sofort TLS auf einem Port,
+    der erst unverschlüsselt startet) - Port 465 vermeidet diese Verwechslung.
 - **From Email**: `kontakt@hausmeisterservice-braun.de`
 - **To Email**: `kontakt@hausmeisterservice-braun.de`
 - **Subject**: Expression (auf das "fx"-Symbol neben dem Feld klicken) → `{{ $json.emailSubject }}`
