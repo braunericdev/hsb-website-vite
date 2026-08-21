@@ -83,9 +83,16 @@ const emailText = [
     isSpamSuspect ? `HINWEIS: Honeypot-Feld war befüllt, vermutlich Bot-Spam.` : '',
 ].filter(Boolean).join('\n');
 
+// Fertig serialisiert statt als Objekt zurückgeben: der Respond-to-Webhook-Node
+// wandelt ein per {{ }}-Ausdruck eingesetztes JS-Objekt nur per String(...) um
+// ("[object Object]"), nicht per JSON.stringify - das führt sonst zu
+// "Invalid JSON in 'Response Body' field". Hier wird der fertige, garantiert
+// gültige JSON-String gebaut, der Respond-Node muss ihn nur noch einsetzen.
+const responseBodyJson = JSON.stringify({ ok, errors });
+
 return [
     {
-        json: { ok, errors, emailSubject, emailText, type: 'bewerbung' },
+        json: { ok, errors, emailSubject, emailText, responseBodyJson, type: 'bewerbung' },
         binary: item.binary,
     },
 ];
