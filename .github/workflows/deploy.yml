@@ -1,0 +1,82 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  DEPLOY_HOST: access1012298970.webspace-data.io
+  DEPLOY_PORT: 22
+  DEPLOY_USER: u117009947
+  DEPLOY_TARGET: /out
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: npm test
+
+      - name: Playwright-Browser installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke-Tests
+        run: npm run test:e2e
+
+      - name: Playwright-Report bei Fehlschlag hochladen
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Known Host pinnen
+        run: |
+          mkdir -p ~/.ssh
+          echo "${DEPLOY_HOST} ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINbBMvvDjN4IP04VAZlDH42A+HL25ifeIK9CorAvaMA/" >> ~/.ssh/known_hosts
+
+      - name: lftp installieren
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      # IONOS-Webhosting bietet nur SFTP/SCP, kein rsync-Binary auf der Gegenseite.
+      # lftp mirror --reverse --delete bildet dieselbe Sync-Semantik (inkl. Löschen
+      # entfernter Dateien) rein über SFTP nach; die Authentifizierung läuft über
+      # den bereits geladenen ssh-agent + den oben gepinnten Known Host.
+      - name: Deploy via SFTP
+        run: |
+          lftp -c "
+            set sftp:connect-program 'ssh -a -x -p ${DEPLOY_PORT}';
+            set sftp:auto-confirm yes;
+            open -u ${DEPLOY_USER}, sftp://${DEPLOY_HOST};
+            mirror --reverse --delete --verbose dist/ ${DEPLOY_TARGET};
+            bye
+          "
