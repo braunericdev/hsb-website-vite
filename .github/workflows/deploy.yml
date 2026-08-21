@@ -55,26 +55,27 @@ jobs:
 
       - run: npm run build
 
-      - uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
-
       - name: Known Host pinnen
         run: |
           mkdir -p ~/.ssh
           echo "${DEPLOY_HOST} ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINbBMvvDjN4IP04VAZlDH42A+HL25ifeIK9CorAvaMA/" >> ~/.ssh/known_hosts
 
-      - name: lftp installieren
-        run: sudo apt-get update && sudo apt-get install -y lftp
+      - name: lftp + sshpass installieren
+        run: sudo apt-get update && sudo apt-get install -y lftp sshpass
 
-      # IONOS-Webhosting bietet nur SFTP/SCP, kein rsync-Binary auf der Gegenseite.
+      # IONOS-Webhosting bietet nur SFTP/SCP (kein rsync-Binary serverseitig) und bei
+      # diesem Paket nur Passwort-Auth für SSH/SFTP (kein Public-Key-Upload möglich).
       # lftp mirror --reverse --delete bildet dieselbe Sync-Semantik (inkl. Löschen
-      # entfernter Dateien) rein über SFTP nach; die Authentifizierung läuft über
-      # den bereits geladenen ssh-agent + den oben gepinnten Known Host.
+      # entfernter Dateien) über SFTP nach; als Transport dient der echte ssh-Client
+      # (über sshpass mit dem Passwort aus SSHPASS-Env versorgt, nie als Argument
+      # sichtbar), damit der oben gepinnte Known Host weiterhin geprüft wird statt
+      # StrictHostKeyChecking abzuschalten.
       - name: Deploy via SFTP
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_SFTP_PASSWORD }}
         run: |
           lftp -c "
-            set sftp:connect-program 'ssh -a -x -p ${DEPLOY_PORT}';
+            set sftp:connect-program 'sshpass -e ssh -a -x -o StrictHostKeyChecking=yes -p ${DEPLOY_PORT}';
             set sftp:auto-confirm yes;
             open -u ${DEPLOY_USER}, sftp://${DEPLOY_HOST};
             mirror --reverse --delete --verbose dist/ ${DEPLOY_TARGET};
