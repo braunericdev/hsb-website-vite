@@ -17,6 +17,7 @@ export default defineConfig({
         // Hauptkategorien
         hausmeisterservice: resolve(__dirname, 'hausmeisterservice/index.html'),
         kontakt: resolve(__dirname, 'kontakt/index.html'),
+        karriere: resolve(__dirname, 'karriere/index.html'),
 
         // Außenbereich
         gartengrundstueckspflege: resolve(__dirname, 'gartengrundstueckspflege/index.html'),

@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // Deckt genau den Fall ab, den ein grüner Build allein nicht garantiert:
 // Seite lädt, zeigt Inhalt (kein Whitescreen) und wirft dabei keine eigenen JS-Fehler.
-const PAGES = ['/', '/kontakt/', '/hausmeisterservice/'];
+const PAGES = ['/', '/kontakt/', '/karriere/', '/hausmeisterservice/'];
 
 // Drittanbieter (Cookiebot-Consent, Google Ads/Analytics) laden extern und können
 // abhängig von Domain-Freigaben/Netzwerk fehlschlagen, ohne dass unsere Seite kaputt ist.
@@ -49,4 +49,31 @@ test('mobiles Menü öffnet sich auf der Startseite', async ({ page }) => {
 
     await expect(page.locator('#mobile-menu')).toBeVisible();
     await expect(page.locator('#mobile-menu')).not.toHaveClass(/translate-x-full/);
+});
+
+test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ page }) => {
+    // Der echte n8n-Webhook wird bewusst nicht angesprochen (externe Abhängigkeit,
+    // aktuell zudem durch ein abgelaufenes TLS-Zertifikat blockiert) - stattdessen
+    // wird geprüft, dass main.js die richtigen Formulardaten an die richtige URL
+    // schickt und auf die simulierte Antwort korrekt reagiert.
+    let requestBody = null;
+    await page.route('https://niewiedertelefonieren.de/webhook/bewerbung', async (route) => {
+        requestBody = route.request().postData();
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, errors: [] }) });
+    });
+
+    await page.goto('/karriere/');
+    await page.locator('#bewerber-name').fill('Max Mustermann');
+    await page.locator('#bewerber-telefon').fill('01512345678');
+    await page.locator('#position').selectOption('Hausmeister-Allrounder (w/m/d)');
+    // Radio ist per Tailwind sr-only versteckt (gestyltes Label übernimmt die Optik),
+    // daher force nötig - die normale Sichtbarkeitsprüfung würde sonst dauerhaft scheitern.
+    await page.locator('input[name="anstellungsart"][value="Teilzeit"]').check({ force: true });
+    await page.locator('#privacy-karriere').check();
+
+    await page.locator('#submit-btn').click();
+
+    await page.waitForURL('**/danke/**');
+    expect(new URL(page.url()).searchParams.get('type')).toBe('bewerbung');
+    expect(requestBody).toContain('Max Mustermann');
 });

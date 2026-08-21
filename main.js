@@ -198,6 +198,50 @@ const setupKontaktForm = () => {
     });
 };
 
+// 5. Bewerbungsformular Setup
+const setupBewerbungForm = () => {
+    const form = document.getElementById("bewerbungForm");
+    if (!form) return; // Nur auf Karriereseite ausführen
+
+    const basisUrl = "/danke/";
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const statusBtn = document.getElementById("submit-btn");
+        const btnText = document.getElementById("btn-text");
+        const originalText = btnText.innerHTML;
+
+        btnText.innerHTML = "Wird gesendet...";
+        statusBtn.disabled = true;
+
+        const positionFeld = document.getElementById('position');
+        const data = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        }).then(response => response.json()).then(result => {
+            if (result.ok) {
+                let zielUrl = basisUrl + "?type=bewerbung";
+                if (positionFeld.value) {
+                    zielUrl += "&position=" + encodeURIComponent(positionFeld.value);
+                }
+                window.location.href = zielUrl;
+            } else {
+                alert((result.errors || []).join(", ") || "Hoppla! Es gab ein Problem beim Absenden.");
+                btnText.innerHTML = originalText;
+                statusBtn.disabled = false;
+            }
+        }).catch(error => {
+            alert("Fehler beim Senden: " + error);
+            btnText.innerHTML = originalText;
+            statusBtn.disabled = false;
+        });
+    });
+};
+
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach
 // vollständigem DOM-Parsing – ein Warten auf "load" (alle Bilder etc.) ist
 // für diese Interaktionen nicht nötig und verzögert sie unnötig.
@@ -205,3 +249,4 @@ setupMobileMenu();
 setupHeroSlider();
 setupNavigationIntelligence();
 setupKontaktForm();
+setupBewerbungForm();
