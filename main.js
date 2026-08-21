@@ -1,5 +1,6 @@
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './src/style.css';
+import { normalizePath, normalizeHref, getDienstleistungFromPath } from './src/lib/nav.js';
 
 // 1. Mobile Menü (Vollständig)
 const setupMobileMenu = () => {
@@ -66,21 +67,16 @@ const setupHeroSlider = () => {
 // 3. Navigation Intelligenz (Die Lösung für das Styling & Parameter)
 const setupNavigationIntelligence = () => {
     const path = window.location.pathname;
-    // Normalisiere Pfad: Entferne Slash am Ende und index.html
     const cleanPath = path.replace(/\/$/, "").replace("/index.html", "") || "/";
-    // Entferne auch Umlaute für sicheren Vergleich
-    const normalizedPath = cleanPath.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue');
-    
+    const normalizedPath = normalizePath(path);
+
     const navLinks = document.querySelectorAll('header nav a, #mobile-menu nav a');
 
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
         if (!href) return;
 
-        // Normalisiere Link-Ziel für den Vergleich
-        let cleanHref = href.replace(/\.\.\//g, "/").replace(/\/$/, "").replace("/index.html", "") || "/";
-        // Auch Umlaute normalisieren
-        cleanHref = cleanHref.replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue');
+        const cleanHref = normalizeHref(href);
 
         // Prüfen auf Übereinstimmung
         if (normalizedPath === cleanHref) {
@@ -105,37 +101,13 @@ const setupNavigationIntelligence = () => {
 
     // Kontakt-Buttons umschreiben
     const contactBtns = document.querySelectorAll('a[href*="/kontakt"]');
-    const mapping = {
-        'heckenschnitt': 'heckenschnitt',
-        'rasenmaehen': 'rasenmaehen',
-        'gebaeudereinigung': 'gebaeudereinigung',
-        'bodenverlegen': 'bodenverlegen',
-        'entruempelung': 'entruempelung',
-        'winterdienst': 'winterdienst',
-        'reinigung': 'reinigung',
-        'gartengrundstueckspflege': 'gartengrundstueckspflege',
-        'gestaltung': 'gestaltung',
-        'montageservice': 'montageservice',
-        'hausmeisterservice': 'hausmeisterservice'
-    };
-
-    contactBtns.forEach(btn => {
-        for (const [key, value] of Object.entries(mapping)) {
-            if (cleanPath.includes(key)) {
-                // Wir setzen den Link im HTML einfach neu
-                btn.href = "/kontakt/?dienstleistung=" + value;
-                break;
-            }
-        }
-    });
+    const dienstleistung = getDienstleistungFromPath(cleanPath);
+    if (dienstleistung) {
+        contactBtns.forEach(btn => {
+            btn.href = "/kontakt/?dienstleistung=" + dienstleistung;
+        });
+    }
 };
-
-window.addEventListener('load', () => {
-    setupMobileMenu();
-    setupHeroSlider();
-    setupNavigationIntelligence();
-    setupKontaktForm();
-});
 
 // 4. Kontaktformular Setup
 const setupKontaktForm = () => {
@@ -225,3 +197,11 @@ const setupKontaktForm = () => {
         });
     });
 };
+
+// Skript ist ein deferred Modul (type="module") und läuft daher erst nach
+// vollständigem DOM-Parsing – ein Warten auf "load" (alle Bilder etc.) ist
+// für diese Interaktionen nicht nötig und verzögert sie unnötig.
+setupMobileMenu();
+setupHeroSlider();
+setupNavigationIntelligence();
+setupKontaktForm();

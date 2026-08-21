@@ -1,0 +1,83 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+env:
+  DEPLOY_HOST: access1012298970.webspace-data.io
+  DEPLOY_PORT: 22
+  DEPLOY_USER: u117009947
+  DEPLOY_TARGET: /out
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: npm test
+
+      - name: Playwright-Browser installieren
+        run: npx playwright install --with-deps chromium
+
+      - name: Smoke-Tests
+        run: npm run test:e2e
+
+      - name: Playwright-Report bei Fehlschlag hochladen
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Known Host pinnen
+        run: |
+          mkdir -p ~/.ssh
+          echo "${DEPLOY_HOST} ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINbBMvvDjN4IP04VAZlDH42A+HL25ifeIK9CorAvaMA/" >> ~/.ssh/known_hosts
+
+      - name: lftp + sshpass installieren
+        run: sudo apt-get update && sudo apt-get install -y lftp sshpass
+
+      # IONOS-Webhosting bietet nur SFTP/SCP (kein rsync-Binary serverseitig) und bei
+      # diesem Paket nur Passwort-Auth für SSH/SFTP (kein Public-Key-Upload möglich).
+      # lftp mirror --reverse --delete bildet dieselbe Sync-Semantik (inkl. Löschen
+      # entfernter Dateien) über SFTP nach; als Transport dient der echte ssh-Client
+      # (über sshpass mit dem Passwort aus SSHPASS-Env versorgt, nie als Argument
+      # sichtbar), damit der oben gepinnte Known Host weiterhin geprüft wird statt
+      # StrictHostKeyChecking abzuschalten.
+      - name: Deploy via SFTP
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_SFTP_PASSWORD }}
+        run: |
+          lftp -c "
+            set sftp:connect-program 'sshpass -e ssh -a -x -o StrictHostKeyChecking=yes -p ${DEPLOY_PORT}';
+            set sftp:auto-confirm yes;
+            open -u ${DEPLOY_USER}, sftp://${DEPLOY_HOST};
+            mirror --reverse --delete --verbose dist/ ${DEPLOY_TARGET};
+            bye
+          "
