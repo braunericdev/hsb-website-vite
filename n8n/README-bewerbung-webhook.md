@@ -55,7 +55,11 @@ erkannt, keine weitere Einstellung nötig.
 - Node hinzufügen: **Respond to Webhook**, direkt hinter Send Email
 - **Response Code**: `200` (bewusst immer 200 - der Erfolg/Fehler-Status steckt im JSON-Body,
   das hält die Frontend-Logik einfacher als unterschiedliche HTTP-Codes zu verzweigen)
-- **Response Body**: Expression → `{{ { ok: $json.ok, errors: $json.errors } }}`
+- **Response Body**: Expression → `={{ $json.responseBodyJson }}`
+  (**nicht** `{{ { ok: $json.ok, errors: $json.errors } }}` eintragen - n8n wandelt ein dort
+  eingesetztes JS-Objekt nur per `String(...)` um, das ergibt `[object Object]` statt echtem
+  JSON und führt zu `Invalid JSON in 'Response Body' field`. Der Code-Node baut den fertigen,
+  garantiert gültigen JSON-String bereits selbst unter `responseBodyJson`.)
 - Unter **Options** → **Response Headers** hinzufügen:
   - `Access-Control-Allow-Origin`: `https://www.hausmeisterservice-braun.de` (oder `*`, siehe oben)
 
