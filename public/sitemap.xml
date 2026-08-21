@@ -58,6 +58,10 @@
     <priority>0.60</priority>
   </url>
   <url>
+    <loc>https://www.hausmeisterservice-braun.de/karriere/</loc>
+    <priority>0.70</priority>
+  </url>
+  <url>
     <loc>https://www.hausmeisterservice-braun.de/impressum/</loc>
     <priority>0.10</priority>
   </url>
