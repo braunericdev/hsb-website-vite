@@ -55,11 +55,24 @@ erkannt, keine weitere Einstellung nötig.
 - Node hinzufügen: **Respond to Webhook**, direkt hinter Send Email
 - **Response Code**: `200` (bewusst immer 200 - der Erfolg/Fehler-Status steckt im JSON-Body,
   das hält die Frontend-Logik einfacher als unterschiedliche HTTP-Codes zu verzweigen)
-- **Response Body**: Expression → `={{ $json.responseBodyJson }}`
-  (**nicht** `{{ { ok: $json.ok, errors: $json.errors } }}` eintragen - n8n wandelt ein dort
-  eingesetztes JS-Objekt nur per `String(...)` um, das ergibt `[object Object]` statt echtem
-  JSON und führt zu `Invalid JSON in 'Response Body' field`. Der Code-Node baut den fertigen,
-  garantiert gültigen JSON-String bereits selbst unter `responseBodyJson`.)
+- **Response Body**: Expression →
+  ```
+  ={{ $('Validieren & E-Mail vorbereiten').item.json.responseBodyJson }}
+  ```
+  **Wichtig, zwei Stolperfallen hier:**
+  1. **Nicht** `{{ { ok: $json.ok, errors: $json.errors } }}` eintragen - n8n wandelt ein dort
+     eingesetztes JS-Objekt nur per `String(...)` um, das ergibt `[object Object]` statt
+     echtem JSON und führt zu `Invalid JSON in 'Response Body' field`. Der Code-Node baut den
+     fertigen, garantiert gültigen JSON-String bereits selbst unter `responseBodyJson`.
+  2. **Nicht** `$json.responseBodyJson` (ohne Node-Referenz) verwenden - `$json` bezieht sich
+     immer auf den direkten Vorgänger-Node, also hier auf **Send Email**. Der Send-Email-Node
+     ersetzt die Daten aber durch sein eigenes Versand-Ergebnis (`accepted`, `rejected`,
+     `messageId`, ...) statt die Felder des Code-Nodes durchzureichen - `$json.responseBodyJson`
+     zeigt dadurch ins Leere. Stattdessen den Code-Node explizit beim Namen referenzieren, wie
+     oben. Tippt man `$(` im Ausdrucksfeld, schlägt n8n automatisch die vorhandenen Node-Namen
+     zur Auswahl vor - falls der Code-Node bei euch anders heißt als
+     "Validieren & E-Mail vorbereiten" (z.B. noch der Standardname "Code in JavaScript"),
+     den tatsächlichen Namen aus dieser Liste nehmen.
 - Unter **Options** → **Response Headers** hinzufügen:
   - `Access-Control-Allow-Origin`: `https://www.hausmeisterservice-braun.de` (oder `*`, siehe oben)
 
