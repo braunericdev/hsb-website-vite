@@ -391,8 +391,10 @@
                         </div>
                     </div>
                     <div class="space-y-1">
-                        <label for="lebenslauf" class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Lebenslauf und weiteres (Optional)</label>
-                        <input type="file" id="lebenslauf" name="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" class="w-full p-3 border border-gray-200 rounded-xl bg-white text-sm text-gray-500 font-medium cursor-pointer transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#8B4513]/10 file:text-[#8B4513] hover:file:bg-[#8B4513]/20">
+                        <label for="lebenslauf" class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Lebenslauf und weiteres (Optional, max. 5 Dateien, je 8MB, insgesamt 20MB)</label>
+                        <input type="file" id="lebenslauf" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple class="w-full p-3 border border-gray-200 rounded-xl bg-white text-sm text-gray-500 font-medium cursor-pointer transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-[#8B4513]/10 file:text-[#8B4513] hover:file:bg-[#8B4513]/20">
+                        <ul id="lebenslauf-liste" class="space-y-1.5 empty:hidden"></ul>
+                        <p id="lebenslauf-fehler" class="text-xs font-bold text-red-600 hidden"></p>
                     </div>
                     <div class="flex items-start py-2">
                         <div class="flex items-center h-5">
