@@ -109,13 +109,47 @@ const setupNavigationIntelligence = () => {
     }
 };
 
-// 4. Kontaktformular Setup
+// 4. Gemeinsame AJAX-Submit-Logik für Formulare gegen die n8n-Webhooks
+// (einheitliches Antwortformat {ok, errors}, siehe n8n/README-bewerbung-webhook.md)
+const submitFormAjax = (form, buildRedirectUrl) => {
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const statusBtn = document.getElementById("submit-btn");
+        const btnText = document.getElementById("btn-text");
+        const originalText = btnText.innerHTML;
+
+        btnText.innerHTML = "Wird gesendet...";
+        statusBtn.disabled = true;
+
+        const data = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        }).then(response => response.json()).then(result => {
+            if (result.ok) {
+                window.location.href = buildRedirectUrl();
+            } else {
+                alert((result.errors || []).join(", ") || "Hoppla! Es gab ein Problem beim Absenden.");
+                btnText.innerHTML = originalText;
+                statusBtn.disabled = false;
+            }
+        }).catch(error => {
+            alert("Fehler beim Senden: " + error);
+            btnText.innerHTML = originalText;
+            statusBtn.disabled = false;
+        });
+    });
+};
+
+// 5. Kontaktformular Setup
 const setupKontaktForm = () => {
     const form = document.getElementById("kontaktForm");
     if (!form) return; // Nur auf Kontaktseite ausführen
 
     const selectFeld = document.getElementById('dienstleistung');
-    const basisUrl = "/danke/"; // Absolute URL zum Danke-Verzeichnis
 
     // 1. URL Parameter auslesen (Auto-Fill Dienstleistung)
     const params = new URLSearchParams(window.location.search);
@@ -142,103 +176,40 @@ const setupKontaktForm = () => {
                 spinner.classList.remove('hidden');
                 fetch(`https://api.zippopotam.us/de/${plz}`)
                     .then(r => r.ok ? r.json() : null)
-                    .then(d => { 
-                        if(d) ortInput.value = d.places[0]['place name']; 
+                    .then(d => {
+                        if(d) ortInput.value = d.places[0]['place name'];
                     })
                     .catch(e => console.error("PLZ-Fehler:", e))
-                    .finally(() => { 
-                        spinner.classList.add('hidden'); 
+                    .finally(() => {
+                        spinner.classList.add('hidden');
                     });
             }
         });
     }
 
-    // 3. AJAX Submit Logic
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const statusBtn = document.getElementById("submit-btn");
-        const btnText = document.getElementById("btn-text");
-        const originalText = btnText.innerHTML;
-        
-        btnText.innerHTML = "Wird gesendet...";
-        statusBtn.disabled = true;
-
-        const data = new FormData(form);
-
-        fetch(form.action, {
-            method: form.method,
-            body: data,
-            headers: { 'Accept': 'application/json' }
-        }).then(response => {
-            if (response.ok) {
-                // Erfolgreich: Weiterleitung mit Parameter
-                let zielUrl = basisUrl;
-                const auswahl = selectFeld.value;
-                if (auswahl) {
-                    zielUrl += "?dienstleistung=" + encodeURIComponent(auswahl);
-                }
-                window.location.href = zielUrl;
-            } else {
-                response.json().then(data => {
-                    if (Object.hasOwn(data, 'errors')) {
-                        alert(data["errors"].map(error => error["message"]).join(", "));
-                    } else {
-                        alert("Hoppla! Es gab ein Problem beim Absenden.");
-                    }
-                });
-                btnText.innerHTML = originalText;
-                statusBtn.disabled = false;
-            }
-        }).catch(error => {
-            alert("Fehler beim Senden: " + error);
-            btnText.innerHTML = originalText;
-            statusBtn.disabled = false;
-        });
+    // 3. AJAX Submit
+    submitFormAjax(form, () => {
+        let zielUrl = "/danke/?type=kontakt";
+        if (selectFeld.value) {
+            zielUrl += "&dienstleistung=" + encodeURIComponent(selectFeld.value);
+        }
+        return zielUrl;
     });
 };
 
-// 5. Bewerbungsformular Setup
+// 6. Bewerbungsformular Setup
 const setupBewerbungForm = () => {
     const form = document.getElementById("bewerbungForm");
     if (!form) return; // Nur auf Karriereseite ausführen
 
-    const basisUrl = "/danke/";
+    const positionFeld = document.getElementById('position');
 
-    form.addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        const statusBtn = document.getElementById("submit-btn");
-        const btnText = document.getElementById("btn-text");
-        const originalText = btnText.innerHTML;
-
-        btnText.innerHTML = "Wird gesendet...";
-        statusBtn.disabled = true;
-
-        const positionFeld = document.getElementById('position');
-        const data = new FormData(form);
-
-        fetch(form.action, {
-            method: form.method,
-            body: data,
-            headers: { 'Accept': 'application/json' }
-        }).then(response => response.json()).then(result => {
-            if (result.ok) {
-                let zielUrl = basisUrl + "?type=bewerbung";
-                if (positionFeld.value) {
-                    zielUrl += "&position=" + encodeURIComponent(positionFeld.value);
-                }
-                window.location.href = zielUrl;
-            } else {
-                alert((result.errors || []).join(", ") || "Hoppla! Es gab ein Problem beim Absenden.");
-                btnText.innerHTML = originalText;
-                statusBtn.disabled = false;
-            }
-        }).catch(error => {
-            alert("Fehler beim Senden: " + error);
-            btnText.innerHTML = originalText;
-            statusBtn.disabled = false;
-        });
+    submitFormAjax(form, () => {
+        let zielUrl = "/danke/?type=bewerbung";
+        if (positionFeld.value) {
+            zielUrl += "&position=" + encodeURIComponent(positionFeld.value);
+        }
+        return zielUrl;
     });
 };
 
