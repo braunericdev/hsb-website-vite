@@ -189,14 +189,12 @@ const setupKontaktForm = () => {
 
     // 3. AJAX Submit
     submitFormAjax(form, () => {
-        // Reihenfolge bewusst so: bestehende Google-Ads-Conversion-Aktionen prüfen die
-        // Danke-URL auf "enthält .../danke/?dienstleistung=<wert>" als Teilstring - das
-        // muss direkt nach "danke/?" stehen bleiben, "type" kommt deshalb erst danach.
+        // Bestehende Google-Ads-Conversion-Aktionen prüfen die Danke-URL auf
+        // "enthält .../danke/?dienstleistung=<wert>" als Teilstring - Format bewusst
+        // unverändert zur bisherigen URL lassen, kein zusätzlicher Parameter.
         let zielUrl = "/danke/";
         if (selectFeld.value) {
-            zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value) + "&type=kontakt";
-        } else {
-            zielUrl += "?type=kontakt";
+            zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value);
         }
         return zielUrl;
     });
@@ -207,15 +205,7 @@ const setupBewerbungForm = () => {
     const form = document.getElementById("bewerbungForm");
     if (!form) return; // Nur auf Karriereseite ausführen
 
-    const positionFeld = document.getElementById('position');
-
-    submitFormAjax(form, () => {
-        let zielUrl = "/danke/?type=bewerbung";
-        if (positionFeld.value) {
-            zielUrl += "&position=" + encodeURIComponent(positionFeld.value);
-        }
-        return zielUrl;
-    });
+    submitFormAjax(form, () => "/danke/?bewerbung");
 };
 
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach
