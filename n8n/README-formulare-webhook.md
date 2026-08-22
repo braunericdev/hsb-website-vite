@@ -1,27 +1,24 @@
 # n8n-Workflow: Formular-Webhooks (Formspree-Ersatz)
 
-Ein n8n-Workflow mit zwei unabhängigen Eingängen (je ein eigener Webhook-Node, eigener Pfad,
-eigener Validierungs-Code), die sich beide dieselben zwei Ausgangs-Nodes teilen:
+Ein n8n-Workflow mit zwei komplett getrennten Ketten (kein Node wird zwischen den Zweigen
+geteilt):
 
 ```
-Webhook (bewerbung) → Code (Bewerbung) ─┬→ Send Email (gemeinsam)
-                                          └→ Respond to Webhook (gemeinsam)
-
-Webhook (kontakt)    → Code (Kontakt)   ─┘  (dieselben zwei Nodes, kein zweites Paar)
+Webhook (bewerbung) → Code (Bewerbung) → Send Email (Bewerbung) → Respond to Webhook (Bewerbung)
+Webhook (kontakt)    → Code (Kontakt)   → Send Email (Kontakt)   → Respond to Webhook (Kontakt)
 ```
 
-- **Bewerbung** (`/webhook/bewerbung`) - Karriereseite, mit Datei-Upload.
-- **Kontakt** (`/webhook/kontakt`) - Kontaktformular, ohne Datei-Upload.
+- **Bewerbung** (`/webhook/bewerbung`) - Karriereseite, mit Datei-Upload. **Steht bereits, live
+  getestet.**
+- **Kontakt** (`/webhook/kontakt`) - Kontaktformular, ohne Datei-Upload. Neu hinzuzufügen.
 
-Send Email und Respond to Webhook werden bewusst geteilt (ein Node kann mehrere eingehende
-Verbindungen haben) - beide Code-Nodes liefern dieselben Feldnamen (`emailSubject`, `emailText`,
-`responseBodyJson`), sodass die gemeinsamen Nodes einfach `$json` verwenden können, ohne zu
-wissen, welcher der beiden Zweige gerade gefeuert hat. **Wichtig für die Verdrahtung:** Respond to
-Webhook hängt direkt an den Code-Nodes (parallel zu Send Email), nicht seriell hinter Send Email -
-sonst würde Send Email die Felder durch sein eigenes Versand-Ergebnis ersetzen und Respond liefe
-wieder ins Leere (das war der Bug, den wir beim ersten Aufbau hatten). Als netter Nebeneffekt
-hängt die Antwort an den Browser dadurch auch nicht mehr davon ab, dass der Mailversand zuerst
-durchläuft.
+**Wichtig, bewusste Entscheidung gegen geteilte Nodes:** Die Antwort an den Browser soll erst
+"Erfolg" melden, wenn die E-Mail tatsächlich verschickt wurde (nicht schon nach der Validierung) -
+Respond to Webhook muss also seriell HINTER Send Email hängen, nicht parallel dazu. Ein
+Send-Email- oder Respond-Node, der zwischen beiden Zweigen geteilt würde, könnte in einem
+gegebenen Lauf nicht sicher unterscheiden, welcher der beiden Code-Nodes gerade tatsächlich
+gelaufen ist (das war der Bug, den wir am Bewerbungs-Zweig hatten). Volle Trennung ist hier die
+robustere, leicht nachvollziehbare Lösung - kostet nur zwei zusätzliche Nodes.
 
 Beide Zweige senden an dasselbe Postfach `kontakt@hausmeisterservice-braun.de` (Absender =
 Empfänger), unterschieden per Betreff-Präfix (`[BEWERBUNG]` / `[KONTAKT]`), da das IONOS-Paket
@@ -31,68 +28,75 @@ Manuelle Anleitung statt fertiger Import-JSON: kein Zugriff auf eure n8n-Instanz
 gegen eure tatsächliche Version testbar. Ein manueller Aufbau über die Oberfläche ist garantiert
 kompatibel.
 
-## 1. Node: Webhook (Bewerbung) - bereits vorhanden
+## Zweig A: Bewerbung (bereits eingerichtet, live verifiziert)
 
-- **HTTP Method**: `POST`, **Path**: `bewerbung`, **Respond**: `Using 'Respond to Webhook' Node`
-- **Options** → **Allowed Origins (CORS)**: `https://www.hausmeisterservice-braun.de`
+Webhook (Path `bewerbung`) → Code (`bewerbung-validate.js`) → Send Email → Respond to Webhook,
+alle vier Nodes nur für diesen Zweig. Funktionierende Respond-to-Webhook-Konfiguration (siehe
+Zweig B unten für die identische Vorgehensweise) - falls hier noch Reste vom
+Node-Teilungs-Versuch existieren (z.B. eine Verbindung von diesem Send-Email-Node zum
+Kontakt-Zweig), diese Verbindung entfernen, sodass der Zweig wieder komplett eigenständig ist.
 
-## 2. Node: Code "Validieren & E-Mail vorbereiten" (Bewerbung) - bereits vorhanden
+## Zweig B: Kontakt (neu einrichten)
 
-Inhalt von [`bewerbung-validate.js`](./bewerbung-validate.js), unverändert.
-
-## 3. Node: Webhook (Kontakt) - neu
+### 1. Node: Webhook
 
 - **HTTP Method**: `POST`, **Path**: `kontakt`, **Respond**: `Using 'Respond to Webhook' Node`
 - **Options** → **Allowed Origins (CORS)**: `https://www.hausmeisterservice-braun.de`
 
-## 4. Node: Code "Validieren & E-Mail vorbereiten (Kontakt)" - neu
+### 2. Node: Code ("Kontakt validieren und Email vorbereiten")
 
-- Node hinzufügen: **Code** (JavaScript), direkt hinter dem Kontakt-Webhook
+- Node hinzufügen: **Code** (JavaScript), direkt hinter diesem Webhook
 - Inhalt von [`kontakt-validate.js`](./kontakt-validate.js), unverändert
 
-## 5. Node: Send Email - gemeinsam für beide Zweige
+### 3. Node: Send Email (eigener Node, nicht geteilt)
 
-Falls beim ersten Aufbau bereits ein separater Send-Email-Node existiert: diesen einen Node
-behalten, den zweiten (falls vorhanden) löschen und stattdessen den Kontakt-Code-Node zusätzlich
-mit demselben Node verbinden (zweite eingehende Verbindung).
-
-- **Credential**: SMTP, Host `smtp.ionos.de`, Port `465`, SSL/TLS aktiviert, Postfach
-  `kontakt@hausmeisterservice-braun.de` (Port 587 + STARTTLS vermeiden, führt zu
-  `wrong version number`-Fehlern)
+- Neuen **Send Email**-Node hinzufügen, direkt hinter dem Kontakt-Code-Node
+- **Credential**: dieselbe SMTP-Credential wie beim Bewerbungs-Zweig wiederverwenden (Host
+  `smtp.ionos.de`, Port `465`, SSL/TLS aktiviert, Postfach `kontakt@hausmeisterservice-braun.de`)
 - **From Email**: `kontakt@hausmeisterservice-braun.de`
 - **To Email**: `kontakt@hausmeisterservice-braun.de`
 - **Subject**: Expression → `{{ $json.emailSubject }}`
 - **Text**: Expression → `{{ $json.emailText }}`
-- **Attachments** → **Binary Property**: `lebenslauf` (bleibt leer/wird übersprungen bei
-  Kontakt-Anfragen, die haben kein Binary)
-- Eingehende Verbindungen: **von beiden** Code-Nodes (Bewerbung und Kontakt)
+- Kein Attachment-Feld nötig (dieses Formular hat keinen Datei-Upload)
 
-## 6. Node: Respond to Webhook - gemeinsam für beide Zweige
+### 4. Node: Respond to Webhook (eigener Node, nicht geteilt)
 
-**Eingehende Verbindung: direkt von beiden Code-Nodes**, NICHT von Send Email aus verbinden.
+- Neuen **Respond to Webhook**-Node hinzufügen, direkt hinter diesem Send-Email-Node
+- **Respond With**: `All Incoming Items` (gibt das komplette JSON des direkten Vorgängers zurück -
+  das ist hier Send Email, dessen Versand-Ergebnis zwar auch `ok`/`errors` nicht enthält, siehe
+  Hinweis unten)
+- **Response Code**: `200`
+- Unter **Options** → **Response Headers**: `Access-Control-Allow-Origin` →
+  `https://www.hausmeisterservice-braun.de`
 
-- **Respond With**: `All Incoming Items` - gibt einfach das komplette JSON des jeweiligen
-  Code-Node-Outputs zurück (inkl. `ok`, `errors` und ein paar zusätzlichen, für den Browser
-  irrelevanten Feldern wie `emailText`). Kein Response-Body-Feld nötig, kein Ausdruck zum
-  Vertippen - vermeidet die ganze Stolperfalle von vorhin (führendes `=`, JSON-Validierung)
-  komplett, weil der Node gar nicht mehr selbst etwas zusammenbaut.
-- **Response Code**: `200` (immer, unabhängig von ok/errors - der Status steckt im JSON-Body,
-  das hält die Frontend-Logik einfacher)
-- Unter **Options** → **Response Headers** (falls in diesem Modus noch vorhanden - kurz prüfen):
-  - `Access-Control-Allow-Origin`: `https://www.hausmeisterservice-braun.de`
-- Eingehende Verbindungen: **von beiden** Code-Nodes (Bewerbung und Kontakt), NICHT von Send Email
+**Achtung, wichtiger Unterschied zu vorher:** Da Respond jetzt hinter Send Email hängt (nicht
+mehr direkt hinter Code), enthalten die "All Incoming Items" nur noch Send Emails eigenes
+Versand-Ergebnis (`accepted`, `messageId`, ...), nicht mehr `ok`/`errors` aus dem Code-Node. Damit
+das Frontend trotzdem weiß, ob die serverseitige Validierung ok war, **Response Body stattdessen
+explizit setzen** statt "All Incoming Items":
+- **Respond With**: `Text`
+- **Response Body**: Expression →
+  ```
+  {{ $('Kontakt validieren und Email vorbereiten').item.json.responseBodyJson }}
+  ```
+  (exakten Node-Namen des Code-Nodes verwenden, per `$(` im Feld tippen zeigt die Auswahl - kein
+  führendes `=` davor, siehe Stolperfalle unten)
 
-## 7. Verbinden & aktivieren
+**Drei Stolperfallen, alle bereits beim Bewerbungs-Zweig live bestätigt:**
+1. Kein rohes JS-Objekt (`{{ { ok: ..., errors: ... } }}`) eintragen - wird nur per `String(...)`
+   umgewandelt (`[object Object]`), nicht per JSON.stringify. Der Code-Node liefert den fertigen
+   String bereits unter `responseBodyJson`.
+2. **Node-Referenz zwingend**, nicht bloßes `$json` - `$json` bezieht sich auf den direkten
+   Vorgänger **Send Email**, der die Felder durch sein eigenes Versand-Ergebnis ersetzt.
+3. **Kein führendes `=`** vor `{{ ... }}` - landet bei diesem Feld/dieser n8n-Version (2.35.7)
+   wortwörtlich als erstes Zeichen der Antwort, macht sie zu ungültigem JSON.
 
-Beide Code-Nodes jeweils mit **beiden** gemeinsamen Nodes (Send Email und Respond to Webhook)
-verbinden - macht insgesamt vier ausgehende Verbindungen von den beiden Code-Nodes (je zwei pro
-Code-Node), keine Verbindung von Send Email zu Respond to Webhook. Workflow **Active** stellen.
+### 5. Verbinden & aktivieren
 
-Production-URLs:
-- `https://niewiedertelefonieren.de/webhook/bewerbung` (in `karriere/index.html` eingetragen)
-- `https://niewiedertelefonieren.de/webhook/kontakt` (in `kontakt/index.html` eingetragen)
+Webhook (kontakt) → Code → Send Email → Respond to Webhook verbinden, workflow-weit **Active**
+bleibt bestehen. Production-URL: `https://niewiedertelefonieren.de/webhook/kontakt`.
 
-## 8. Testen
+## Testen
 
 ```
 curl -X POST https://niewiedertelefonieren.de/webhook/bewerbung \
@@ -105,10 +109,8 @@ curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
   -F "dienstleistung=allgemein" -F "plz=56170" -F "ort=Bendorf" \
   -F "nachricht=Testnachricht" -F "privacy=on" -F "firma_website="
 ```
-Erwartete Antwort jeweils: JSON mit `"ok":true,"errors":[]` (plus ein paar weiteren Feldern wie
-`emailSubject`/`emailText` - "All Incoming Items" gibt den ganzen Code-Node-Output zurück, das
-Frontend liest nur `ok`/`errors` daraus und ignoriert den Rest). Test-Mail mit passendem
-Betreff-Präfix (`[BEWERBUNG]` / `[KONTAKT]`) bei `kontakt@hausmeisterservice-braun.de`.
+Erwartete Antwort jeweils: `{"ok":true,"errors":[]}`, Test-Mail mit passendem Betreff-Präfix
+(`[BEWERBUNG]` / `[KONTAKT]`) bei `kontakt@hausmeisterservice-braun.de`.
 
 ## Execution-Log-Aufbewahrung (wichtig für Datenschutz, Bewerbungs-Anhänge)
 
