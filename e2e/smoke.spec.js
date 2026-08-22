@@ -52,10 +52,11 @@ test('mobiles Menü öffnet sich auf der Startseite', async ({ page }) => {
 });
 
 test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ page }) => {
-    // Der echte n8n-Webhook wird bewusst nicht angesprochen (externe Abhängigkeit,
-    // aktuell zudem durch ein abgelaufenes TLS-Zertifikat blockiert) - stattdessen
-    // wird geprüft, dass main.js die richtigen Formulardaten an die richtige URL
-    // schickt und auf die simulierte Antwort korrekt reagiert.
+    // Der echte n8n-Webhook wird hier bewusst gestubbt statt wirklich angesprochen (externe
+    // Abhängigkeit, würde bei jedem CI-Lauf eine echte Mail verschicken) - stattdessen wird
+    // geprüft, dass main.js die richtigen Formulardaten an die richtige URL schickt und auf
+    // die simulierte Antwort korrekt reagiert. Der echte Webhook ist live verifiziert (siehe
+    // n8n/README-formulare-webhook.md).
     let requestBody = null;
     await page.route('https://niewiedertelefonieren.de/webhook/bewerbung', async (route) => {
         requestBody = route.request().postData();
@@ -76,4 +77,30 @@ test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ 
     await page.waitForURL('**/danke/**');
     expect(new URL(page.url()).searchParams.get('type')).toBe('bewerbung');
     expect(requestBody).toContain('Max Mustermann');
+});
+
+test('Kontaktformular sendet an den n8n-Webhook und leitet weiter', async ({ page }) => {
+    // Gleiches Prinzip wie beim Bewerbungsformular-Test oben: Webhook gestubbt, um im CI-Lauf
+    // keine echte Mail zu verschicken.
+    let requestBody = null;
+    await page.route('https://niewiedertelefonieren.de/webhook/kontakt', async (route) => {
+        requestBody = route.request().postData();
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, errors: [] }) });
+    });
+
+    await page.goto('/kontakt/');
+    await page.locator('input[name="name"]').fill('Erika Musterfrau');
+    await page.locator('input[name="email"]').fill('erika@example.com');
+    await page.locator('input[name="telefon"]').fill('01512345678');
+    await page.locator('#dienstleistung').selectOption('allgemein');
+    await page.locator('#plz-input').fill('56170');
+    await page.locator('#ort-input').fill('Bendorf');
+    await page.locator('textarea[name="nachricht"]').fill('Testnachricht aus dem Smoke-Test.');
+    await page.locator('#privacy').check();
+
+    await page.locator('#submit-btn').click();
+
+    await page.waitForURL('**/danke/**');
+    expect(new URL(page.url()).searchParams.get('type')).toBe('kontakt');
+    expect(requestBody).toContain('Erika Musterfrau');
 });
