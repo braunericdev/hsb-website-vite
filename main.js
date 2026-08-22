@@ -189,9 +189,14 @@ const setupKontaktForm = () => {
 
     // 3. AJAX Submit
     submitFormAjax(form, () => {
-        let zielUrl = "/danke/?type=kontakt";
+        // Reihenfolge bewusst so: bestehende Google-Ads-Conversion-Aktionen prüfen die
+        // Danke-URL auf "enthält .../danke/?dienstleistung=<wert>" als Teilstring - das
+        // muss direkt nach "danke/?" stehen bleiben, "type" kommt deshalb erst danach.
+        let zielUrl = "/danke/";
         if (selectFeld.value) {
-            zielUrl += "&dienstleistung=" + encodeURIComponent(selectFeld.value);
+            zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value) + "&type=kontakt";
+        } else {
+            zielUrl += "?type=kontakt";
         }
         return zielUrl;
     });
