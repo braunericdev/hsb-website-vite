@@ -71,17 +71,16 @@ mit demselben Node verbinden (zweite eingehende Verbindung).
 
 **Eingehende Verbindung: direkt von beiden Code-Nodes**, NICHT von Send Email aus verbinden.
 
-- **Respond With**: `Text` (nicht `JSON` - macht sonst Probleme mit der eigenständigen
-  JSON-Validierung des Nodes)
+- **Respond With**: `All Incoming Items` - gibt einfach das komplette JSON des jeweiligen
+  Code-Node-Outputs zurück (inkl. `ok`, `errors` und ein paar zusätzlichen, für den Browser
+  irrelevanten Feldern wie `emailText`). Kein Response-Body-Feld nötig, kein Ausdruck zum
+  Vertippen - vermeidet die ganze Stolperfalle von vorhin (führendes `=`, JSON-Validierung)
+  komplett, weil der Node gar nicht mehr selbst etwas zusammenbaut.
 - **Response Code**: `200` (immer, unabhängig von ok/errors - der Status steckt im JSON-Body,
   das hält die Frontend-Logik einfacher)
-- **Response Body**: Expression → `{{ $json.responseBodyJson }}`
-  (kein führendes `=` vor `{{ ... }}` - landet sonst wortwörtlich als erstes Zeichen der Antwort
-  und macht sie zu ungültigem JSON. Keine Node-Referenz nötig, da Respond hier direkt hinter dem
-  jeweiligen Code-Node hängt statt hinter Send Email.)
-- Unter **Options** → **Response Headers**:
+- Unter **Options** → **Response Headers** (falls in diesem Modus noch vorhanden - kurz prüfen):
   - `Access-Control-Allow-Origin`: `https://www.hausmeisterservice-braun.de`
-- Eingehende Verbindungen: **von beiden** Code-Nodes (Bewerbung und Kontakt)
+- Eingehende Verbindungen: **von beiden** Code-Nodes (Bewerbung und Kontakt), NICHT von Send Email
 
 ## 7. Verbinden & aktivieren
 
@@ -106,8 +105,10 @@ curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
   -F "dienstleistung=allgemein" -F "plz=56170" -F "ort=Bendorf" \
   -F "nachricht=Testnachricht" -F "privacy=on" -F "firma_website="
 ```
-Erwartete Antwort jeweils: `{"ok":true,"errors":[]}`, Test-Mail mit passendem Betreff-Präfix
-(`[BEWERBUNG]` / `[KONTAKT]`) bei `kontakt@hausmeisterservice-braun.de`.
+Erwartete Antwort jeweils: JSON mit `"ok":true,"errors":[]` (plus ein paar weiteren Feldern wie
+`emailSubject`/`emailText` - "All Incoming Items" gibt den ganzen Code-Node-Output zurück, das
+Frontend liest nur `ok`/`errors` daraus und ignoriert den Rest). Test-Mail mit passendem
+Betreff-Präfix (`[BEWERBUNG]` / `[KONTAKT]`) bei `kontakt@hausmeisterservice-braun.de`.
 
 ## Execution-Log-Aufbewahrung (wichtig für Datenschutz, Bewerbungs-Anhänge)
 
