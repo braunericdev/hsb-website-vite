@@ -53,13 +53,14 @@ erkannt, keine weitere Einstellung nötig.
 ## 5. Node 4: Respond to Webhook
 
 - Node hinzufügen: **Respond to Webhook**, direkt hinter Send Email
+- **Respond With**: `Text` (**nicht** `JSON` - siehe Stolperfalle 3 unten)
 - **Response Code**: `200` (bewusst immer 200 - der Erfolg/Fehler-Status steckt im JSON-Body,
   das hält die Frontend-Logik einfacher als unterschiedliche HTTP-Codes zu verzweigen)
 - **Response Body**: Expression →
   ```
-  ={{ $('Validieren & E-Mail vorbereiten').item.json.responseBodyJson }}
+  {{ $('Validieren & E-Mail vorbereiten').item.json.responseBodyJson }}
   ```
-  **Wichtig, zwei Stolperfallen hier:**
+  **Wichtig, drei Stolperfallen hier (alle live gegen n8n 2.35.7 getestet und bestätigt):**
   1. **Nicht** `{{ { ok: $json.ok, errors: $json.errors } }}` eintragen - n8n wandelt ein dort
      eingesetztes JS-Objekt nur per `String(...)` um, das ergibt `[object Object]` statt
      echtem JSON und führt zu `Invalid JSON in 'Response Body' field`. Der Code-Node baut den
@@ -73,6 +74,13 @@ erkannt, keine weitere Einstellung nötig.
      zur Auswahl vor - falls der Code-Node bei euch anders heißt als
      "Validieren & E-Mail vorbereiten" (z.B. noch der Standardname "Code in JavaScript"),
      den tatsächlichen Namen aus dieser Liste nehmen.
+  3. **Kein führendes `=` vor `{{ ... }}` eintippen.** Bei den meisten n8n-Expression-Feldern ist
+     ein führendes `=` die Markierung "dieses Feld ist ein Ausdruck" und wird beim Auswerten
+     entfernt - bei diesem Feld (Respond-to-Webhook, "Respond With: Text", n8n 2.35.7) landet das
+     `=` aber wortwörtlich als erstes Zeichen in der tatsächlichen Antwort (`={"ok":true,...}`
+     statt `{"ok":true,...}`), was kein gültiges JSON mehr ist und im Browser beim `response.json()`
+     scheitert. Field-Wert ist also exakt `{{ $('Validieren & E-Mail vorbereiten').item.json.responseBodyJson }}`,
+     ganz ohne führendes Zeichen davor.
 - Unter **Options** → **Response Headers** hinzufügen:
   - `Access-Control-Allow-Origin`: `https://www.hausmeisterservice-braun.de` (oder `*`, siehe oben)
 
