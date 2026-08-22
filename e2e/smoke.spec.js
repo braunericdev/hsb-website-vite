@@ -75,7 +75,7 @@ test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ 
     await page.locator('#submit-btn').click();
 
     await page.waitForURL('**/danke/**');
-    expect(new URL(page.url()).searchParams.get('type')).toBe('bewerbung');
+    expect(new URL(page.url()).searchParams.has('bewerbung')).toBe(true);
     expect(requestBody).toContain('Max Mustermann');
 });
 
@@ -101,6 +101,6 @@ test('Kontaktformular sendet an den n8n-Webhook und leitet weiter', async ({ pag
     await page.locator('#submit-btn').click();
 
     await page.waitForURL('**/danke/**');
-    expect(new URL(page.url()).searchParams.get('type')).toBe('kontakt');
+    expect(new URL(page.url()).searchParams.get('dienstleistung')).toBe('allgemein');
     expect(requestBody).toContain('Erika Musterfrau');
 });
