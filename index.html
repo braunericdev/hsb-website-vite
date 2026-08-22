@@ -26,22 +26,30 @@
     <load src="src/components/navbar.html" />
 
     <main>
-    <section id="start" class="relative min-h-screen flex items-end pb-16 px-4 overflow-hidden bg-gray-200">
-        <div class="absolute inset-0 z-0">
-            <img src="/hero.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[80%_20%]" />
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-50% to-white to-[70%]"></div>
+    <section id="start" class="relative overflow-hidden bg-white md:bg-gray-200 md:min-h-screen md:flex md:items-end md:pb-16 md:px-4">
+        <div class="relative h-96 sm:h-[28rem] md:absolute md:inset-0 md:h-full overflow-hidden">
+            <picture>
+                <source media="(min-width: 768px)" srcset="/hero.JPG">
+                <img src="/ueber_uns.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[center_20%] md:object-[80%_20%] scale-125 md:scale-100" />
+            </picture>
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-75% to-white md:from-50% md:to-white md:to-[70%]"></div>
         </div>
 
-        <div class="container mx-auto relative z-10 text-center max-w-4xl mt-[40vh]">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-gray-900 uppercase tracking-tighter drop-shadow-sm">
-                Zuverlässigkeit in <span class="text-[#8B4513]">Braun</span>. <br> 
+        <a href="/karriere/" class="absolute top-8 left-2 md:top-28 md:left-60 z-20 inline-flex items-center gap-2 sm:gap-3 bg-white border-4 border-[#8B4513] text-[#8B4513] shadow-xl rounded-full px-6 py-3 sm:px-8 sm:py-4 -rotate-6 hover:rotate-0 transition-transform duration-300">
+            <i class="fas fa-briefcase text-lg sm:text-xl"></i>
+            <span class="font-bold uppercase tracking-widest text-lg sm:text-xl">Wir stellen ein</span>
+        </a>
+
+        <div class="container mx-auto relative z-10 -mt-20 px-4 pt-6 pb-10 md:py-0 md:mt-[40vh] text-center max-w-4xl">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-gray-900 uppercase tracking-tighter md:drop-shadow-sm">
+                Zuverlässigkeit in <span class="text-[#8B4513]">Braun</span>. <br>
                 Dein Haus in besten Händen.
             </h1>
             <p class="text-lg md:text-xl text-gray-700 mb-10 font-medium max-w-2xl mx-auto">
                 Ob Garten- & Grundstückspflege, Winterdienst oder Gebäudereinigung – wir kümmern uns um Deine Immobilie mit Leidenschaft und Präzision.
             </p>
             <div class="flex justify-center">
-                <a href="/kontakt/?dienstleistung=allgemein" 
+                <a href="/kontakt/?dienstleistung=allgemein"
                     class="bg-[#8B4513] text-white px-10 py-5 rounded-lg font-bold hover:brightness-110 transition-all shadow-xl text-lg md:text-xl uppercase tracking-wide active:scale-95">
                     Jetzt kostenloses Angebot anfordern!
                 </a>
