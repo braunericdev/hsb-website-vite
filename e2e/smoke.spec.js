@@ -79,6 +79,57 @@ test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ 
     expect(requestBody).toContain('Max Mustermann');
 });
 
+test('Bewerbungsformular: mehrere Dateien hinzufügen und wieder entfernen', async ({ page }) => {
+    const { writeFileSync, mkdtempSync } = await import('fs');
+    const { tmpdir } = await import('os');
+    const { join } = await import('path');
+    const dir = mkdtempSync(join(tmpdir(), 'lebenslauf-'));
+    const dateiA = join(dir, 'a.pdf');
+    const dateiB = join(dir, 'b.pdf');
+    const dateiC = join(dir, 'c.pdf');
+    for (const pfad of [dateiA, dateiB, dateiC]) writeFileSync(pfad, '%PDF-1.4 Test');
+
+    let requestBody = null;
+    await page.route('https://niewiedertelefonieren.de/webhook/bewerbung', async (route) => {
+        requestBody = route.request().postData();
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, errors: [] }) });
+    });
+
+    await page.goto('/karriere/');
+    // Kurzer Puffer: setInputFiles direkt nach goto() kann knapp vor der Listener-
+    // Registrierung des (deferred) Modul-Skripts landen, obwohl goto() bereits auf
+    // "load" gewartet hat - reproduzierbar beobachtet, ohne Puffer flackert dieser Test.
+    await page.waitForTimeout(500);
+
+    // Zwei Dateien auf einmal auswählen
+    await page.locator('#lebenslauf').setInputFiles([dateiA, dateiB]);
+    await expect(page.locator('#lebenslauf-liste li')).toHaveCount(2);
+
+    // Eine weitere Datei nachträglich hinzufügen - soll dazukommen, nicht ersetzen
+    await page.locator('#lebenslauf').setInputFiles([dateiC]);
+    await expect(page.locator('#lebenslauf-liste li')).toHaveCount(3);
+
+    // Die mittlere (b.pdf) wieder entfernen
+    await page.locator('#lebenslauf-liste li', { hasText: 'b.pdf' }).locator('button').click();
+    await expect(page.locator('#lebenslauf-liste li')).toHaveCount(2);
+    await expect(page.locator('#lebenslauf-liste')).not.toContainText('b.pdf');
+    await expect(page.locator('#lebenslauf-liste')).toContainText('a.pdf');
+    await expect(page.locator('#lebenslauf-liste')).toContainText('c.pdf');
+
+    await page.locator('#bewerber-name').fill('Datei Test');
+    await page.locator('#bewerber-telefon').fill('01512345678');
+    await page.locator('#position').selectOption('Mitarbeiter in der Gartenpflege (w/m/d)');
+    await page.locator('input[name="anstellungsart"][value="Minijob (Aushilfe)"]').check({ force: true });
+    await page.locator('#privacy-karriere').check();
+    await page.locator('#submit-btn').click();
+
+    await page.waitForURL('**/danke/**');
+    // Nur die zwei verbliebenen Dateien wurden verschickt, unter fortlaufenden Feldnamen
+    expect(requestBody).toContain('name="lebenslauf_1"');
+    expect(requestBody).toContain('name="lebenslauf_2"');
+    expect(requestBody).not.toContain('name="lebenslauf_3"');
+});
+
 test('Kontaktformular sendet an den n8n-Webhook und leitet weiter', async ({ page }) => {
     // Gleiches Prinzip wie beim Bewerbungsformular-Test oben: Webhook gestubbt, um im CI-Lauf
     // keine echte Mail zu verschicken.

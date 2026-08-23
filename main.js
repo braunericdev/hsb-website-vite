@@ -110,8 +110,8 @@ const setupNavigationIntelligence = () => {
 };
 
 // 4. Gemeinsame AJAX-Submit-Logik für Formulare gegen die n8n-Webhooks
-// (einheitliches Antwortformat {ok, errors}, siehe n8n/README-bewerbung-webhook.md)
-const submitFormAjax = (form, buildRedirectUrl) => {
+// (einheitliches Antwortformat {ok, errors}, siehe n8n/README-formulare-webhook.md)
+const submitFormAjax = (form, buildRedirectUrl, beforeSend) => {
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
@@ -123,6 +123,7 @@ const submitFormAjax = (form, buildRedirectUrl) => {
         statusBtn.disabled = true;
 
         const data = new FormData(form);
+        if (beforeSend) beforeSend(data);
 
         fetch(form.action, {
             method: form.method,
@@ -205,7 +206,87 @@ const setupBewerbungForm = () => {
     const form = document.getElementById("bewerbungForm");
     if (!form) return; // Nur auf Karriereseite ausführen
 
-    submitFormAjax(form, () => "/danke/?bewerbung");
+    // Datei-Upload: native Inputs erlauben kein nachträgliches Entfernen einzelner
+    // Dateien, daher eigene Verwaltung als Array + Neuaufbau der Auswahl im Input
+    // bei jeder Änderung, statt die Browser-Auswahl direkt zu verwenden.
+    const MAX_DATEIEN = 5;
+    const MAX_DATEIGROESSE = 8 * 1024 * 1024;
+    const MAX_GESAMTGROESSE = 20 * 1024 * 1024;
+
+    const dateiInput = document.getElementById('lebenslauf');
+    const dateiListe = document.getElementById('lebenslauf-liste');
+    const dateiFehler = document.getElementById('lebenslauf-fehler');
+    let ausgewaehlteDateien = [];
+
+    const formatiereGroesse = (bytes) => (bytes / 1024 / 1024).toFixed(1) + ' MB';
+
+    const zeigeFehler = (text) => {
+        dateiFehler.textContent = text;
+        dateiFehler.classList.remove('hidden');
+    };
+    const verbergeFehler = () => {
+        dateiFehler.classList.add('hidden');
+    };
+
+    const renderDateiliste = () => {
+        dateiListe.innerHTML = '';
+        ausgewaehlteDateien.forEach((datei, index) => {
+            const eintrag = document.createElement('li');
+            eintrag.className = 'flex items-center justify-between gap-2 text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2';
+
+            const bezeichnung = document.createElement('span');
+            bezeichnung.className = 'text-gray-600 font-medium truncate';
+            bezeichnung.textContent = `${datei.name} (${formatiereGroesse(datei.size)})`;
+
+            const entfernenBtn = document.createElement('button');
+            entfernenBtn.type = 'button';
+            entfernenBtn.className = 'text-gray-400 hover:text-red-600 font-bold shrink-0 px-1';
+            entfernenBtn.setAttribute('aria-label', `${datei.name} entfernen`);
+            entfernenBtn.textContent = '×';
+            entfernenBtn.addEventListener('click', () => {
+                ausgewaehlteDateien.splice(index, 1);
+                verbergeFehler();
+                renderDateiliste();
+            });
+
+            eintrag.append(bezeichnung, entfernenBtn);
+            dateiListe.appendChild(eintrag);
+        });
+    };
+
+    dateiInput.addEventListener('change', () => {
+        const neueDateien = Array.from(dateiInput.files);
+        dateiInput.value = ''; // Auswahl zurücksetzen, damit dieselbe Datei erneut wählbar bleibt
+
+        for (const datei of neueDateien) {
+            if (ausgewaehlteDateien.length >= MAX_DATEIEN) {
+                zeigeFehler(`Maximal ${MAX_DATEIEN} Dateien möglich.`);
+                break;
+            }
+            if (datei.size > MAX_DATEIGROESSE) {
+                zeigeFehler(`"${datei.name}" ist zu groß (max. ${formatiereGroesse(MAX_DATEIGROESSE)} pro Datei).`);
+                continue;
+            }
+            const gesamtgroesse = ausgewaehlteDateien.reduce((summe, d) => summe + d.size, 0) + datei.size;
+            if (gesamtgroesse > MAX_GESAMTGROESSE) {
+                zeigeFehler(`Gesamtgröße aller Dateien überschreitet ${formatiereGroesse(MAX_GESAMTGROESSE)}.`);
+                continue;
+            }
+            ausgewaehlteDateien.push(datei);
+            verbergeFehler();
+        }
+        renderDateiliste();
+    });
+
+    submitFormAjax(
+        form,
+        () => "/danke/?bewerbung",
+        (data) => {
+            ausgewaehlteDateien.forEach((datei, index) => {
+                data.append(`lebenslauf_${index + 1}`, datei);
+            });
+        }
+    );
 };
 
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach

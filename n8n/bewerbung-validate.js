@@ -8,8 +8,8 @@
 // nicht hart verworfen - das hält den Workflow bewusst simpel (eine Kette, keine Verzweigung).
 //
 // Erwartet als Input: die Felder aus karriere/index.html (name, telefon, position,
-// anstellungsart, privacy, firma_website als Honeypot) sowie optional die Datei unter
-// dem Binary-Property "lebenslauf".
+// anstellungsart, privacy, firma_website als Honeypot) sowie optional bis zu 5 Dateien
+// unter den Binary-Properties "lebenslauf_1" bis "lebenslauf_5".
 
 const ALLOWED_POSITIONS = [
     'Reinigungskraft / Gebäudereinigung (w/m/d)',
@@ -24,7 +24,9 @@ const ALLOWED_FILE_MIMETYPES = [
     'image/jpeg',
     'image/png',
 ];
-const MAX_FILE_BYTES = 8 * 1024 * 1024; // 8 MB
+const MAX_FILE_BYTES = 8 * 1024 * 1024; // 8 MB pro Datei
+const MAX_TOTAL_BYTES = 20 * 1024 * 1024; // 20 MB insgesamt
+const MAX_DATEIEN = 5;
 
 const item = $input.first();
 // n8n legt Multipart-Textfelder je nach Version/Konfiguration entweder direkt unter $json
@@ -51,15 +53,23 @@ if (field('privacy') !== 'on') errors.push('Datenschutz-Zustimmung fehlt.');
 // Honeypot: unsichtbares Feld, das nur Bots ausfüllen. Kein harter Abbruch, nur Markierung.
 const isSpamSuspect = field('firma_website') !== '';
 
-const file = item.binary && item.binary.lebenslauf;
-if (file) {
-    if (!ALLOWED_FILE_MIMETYPES.includes(file.mimeType)) {
-        errors.push(`Dateityp nicht erlaubt: ${file.mimeType}`);
+const binary = item.binary || {};
+const dateiFelder = Array.from({ length: MAX_DATEIEN }, (_, i) => `lebenslauf_${i + 1}`);
+const dateien = dateiFelder.map((feld) => binary[feld]).filter(Boolean);
+
+let gesamtgroesse = 0;
+for (const datei of dateien) {
+    if (!ALLOWED_FILE_MIMETYPES.includes(datei.mimeType)) {
+        errors.push(`Dateityp nicht erlaubt: ${datei.fileName || '?'} (${datei.mimeType})`);
     }
-    const fileSize = file.fileSize ? Number(file.fileSize) : (file.data ? Buffer.byteLength(file.data, 'base64') : 0);
-    if (fileSize > MAX_FILE_BYTES) {
-        errors.push(`Datei zu groß (${Math.round(fileSize / 1024 / 1024)}MB, Limit 8MB).`);
+    const dateigroesse = datei.fileSize ? Number(datei.fileSize) : (datei.data ? Buffer.byteLength(datei.data, 'base64') : 0);
+    if (dateigroesse > MAX_FILE_BYTES) {
+        errors.push(`Datei zu groß: ${datei.fileName || '?'} (${Math.round(dateigroesse / 1024 / 1024)}MB, Limit 8MB).`);
     }
+    gesamtgroesse += dateigroesse;
+}
+if (gesamtgroesse > MAX_TOTAL_BYTES) {
+    errors.push(`Gesamtgröße aller Anhänge zu groß (${Math.round(gesamtgroesse / 1024 / 1024)}MB, Limit 20MB).`);
 }
 
 const ok = errors.length === 0;
@@ -77,7 +87,9 @@ const emailText = [
     `Telefon: ${telefon}`,
     `Position: ${position}`,
     `Anstellungsart: ${anstellungsart}`,
-    file ? `Anhang: ${file.fileName || 'lebenslauf'} (${file.mimeType})` : `Kein Anhang hochgeladen.`,
+    dateien.length
+        ? `Anhänge (${dateien.length}): ` + dateien.map((d) => d.fileName || '?').join(', ')
+        : `Keine Anhänge hochgeladen.`,
     ``,
     !ok ? `HINWEIS: Serverseitige Validierung fehlgeschlagen: ${errors.join(' ')}` : '',
     isSpamSuspect ? `HINWEIS: Honeypot-Feld war befüllt, vermutlich Bot-Spam.` : '',
@@ -90,9 +102,16 @@ const emailText = [
 // gültige JSON-String gebaut, der Respond-Node muss ihn nur noch einsetzen.
 const responseBodyJson = JSON.stringify({ ok, errors });
 
+// Send Email wirft "The item has no binary field 'lebenslauf_X'", wenn im
+// Attachments-Feld ein Property-Name steht, der für diese Bewerbung gar nicht
+// existiert (z.B. nur 2 von 5 möglichen Dateien hochgeladen). Deshalb hier die
+// tatsächlich vorhandenen Felder als kommagetrennte Liste vorbereiten - Send
+// Email referenziert dann nur noch diese Liste statt einer festen Aufzählung.
+const anhangProperties = dateiFelder.filter((feld) => binary[feld]).join(',');
+
 return [
     {
-        json: { ok, errors, emailSubject, emailText, responseBodyJson, type: 'bewerbung' },
+        json: { ok, errors, emailSubject, emailText, responseBodyJson, anhangProperties, type: 'bewerbung' },
         binary: item.binary,
     },
 ];

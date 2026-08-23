@@ -36,6 +36,23 @@ Zweig B unten für die identische Vorgehensweise) - falls hier noch Reste vom
 Node-Teilungs-Versuch existieren (z.B. eine Verbindung von diesem Send-Email-Node zum
 Kontakt-Zweig), diese Verbindung entfernen, sodass der Zweig wieder komplett eigenständig ist.
 
+**Update nötig, mehrere Anhänge:** Das Formular erlaubt jetzt bis zu 5 Dateien statt einer. Der
+Code-Node (`bewerbung-validate.js`, aktualisierte Version erneut hineinkopieren) erwartet die
+Dateien unter den Binary-Properties `lebenslauf_1` bis `lebenslauf_5` statt nur `lebenslauf`.
+
+**Wichtig, live gefunden:** Eine feste, kommagetrennte Liste (`lebenslauf_1,lebenslauf_2,...,
+lebenslauf_5`) im Send-Email-Node funktioniert **nicht** zuverlässig - anders als beim früheren
+einzelnen `lebenslauf`-Feld wirft Send Email hier `The item has no binary field 'lebenslauf_X'`,
+sobald weniger als 5 Dateien hochgeladen wurden (der Normalfall). Der Code-Node berechnet deshalb
+selbst, welche der 5 Felder tatsächlich vorhanden sind, unter `anhangProperties`. Im
+Send-Email-Node unter **Attachments (Inline)** stattdessen einen Ausdruck eintragen (auf das
+"fx"-Symbol klicken):
+```
+{{ $('Bewerbung validieren und Email vorbereiten').item.json.anhangProperties }}
+```
+(exakten Node-Namen des Code-Nodes verwenden, falls er bei euch anders heißt - wie beim
+Response-Body-Feld zuvor, kein führendes `=` davor.)
+
 ## Zweig B: Kontakt (neu einrichten)
 
 ### 1. Node: Webhook
