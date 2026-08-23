@@ -38,13 +38,20 @@ Kontakt-Zweig), diese Verbindung entfernen, sodass der Zweig wieder komplett eig
 
 **Update nötig, mehrere Anhänge:** Das Formular erlaubt jetzt bis zu 5 Dateien statt einer. Der
 Code-Node (`bewerbung-validate.js`, aktualisierte Version erneut hineinkopieren) erwartet die
-Dateien unter den Binary-Properties `lebenslauf_1` bis `lebenslauf_5` statt nur `lebenslauf`. Im
-Send-Email-Node unter **Attachments → Binary Property** entsprechend anpassen auf:
+Dateien unter den Binary-Properties `lebenslauf_1` bis `lebenslauf_5` statt nur `lebenslauf`.
+
+**Wichtig, live gefunden:** Eine feste, kommagetrennte Liste (`lebenslauf_1,lebenslauf_2,...,
+lebenslauf_5`) im Send-Email-Node funktioniert **nicht** zuverlässig - anders als beim früheren
+einzelnen `lebenslauf`-Feld wirft Send Email hier `The item has no binary field 'lebenslauf_X'`,
+sobald weniger als 5 Dateien hochgeladen wurden (der Normalfall). Der Code-Node berechnet deshalb
+selbst, welche der 5 Felder tatsächlich vorhanden sind, unter `anhangProperties`. Im
+Send-Email-Node unter **Attachments (Inline)** stattdessen einen Ausdruck eintragen (auf das
+"fx"-Symbol klicken):
 ```
-lebenslauf_1,lebenslauf_2,lebenslauf_3,lebenslauf_4,lebenslauf_5
+{{ $('Bewerbung validieren und Email vorbereiten').item.json.anhangProperties }}
 ```
-(kommagetrennte Liste - fehlende Anhänge werden einfach übersprungen, genau wie beim einzelnen
-`lebenslauf` vorher schon der Fall war, wenn keine Datei mitkam.)
+(exakten Node-Namen des Code-Nodes verwenden, falls er bei euch anders heißt - wie beim
+Response-Body-Feld zuvor, kein führendes `=` davor.)
 
 ## Zweig B: Kontakt (neu einrichten)
 
