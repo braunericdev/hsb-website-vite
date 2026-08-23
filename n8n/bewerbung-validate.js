@@ -102,9 +102,16 @@ const emailText = [
 // gültige JSON-String gebaut, der Respond-Node muss ihn nur noch einsetzen.
 const responseBodyJson = JSON.stringify({ ok, errors });
 
+// Send Email wirft "The item has no binary field 'lebenslauf_X'", wenn im
+// Attachments-Feld ein Property-Name steht, der für diese Bewerbung gar nicht
+// existiert (z.B. nur 2 von 5 möglichen Dateien hochgeladen). Deshalb hier die
+// tatsächlich vorhandenen Felder als kommagetrennte Liste vorbereiten - Send
+// Email referenziert dann nur noch diese Liste statt einer festen Aufzählung.
+const anhangProperties = dateiFelder.filter((feld) => binary[feld]).join(',');
+
 return [
     {
-        json: { ok, errors, emailSubject, emailText, responseBodyJson, type: 'bewerbung' },
+        json: { ok, errors, emailSubject, emailText, responseBodyJson, anhangProperties, type: 'bewerbung' },
         binary: item.binary,
     },
 ];
