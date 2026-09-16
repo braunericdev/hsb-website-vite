@@ -2,6 +2,15 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './src/style.css';
 import { normalizePath, normalizeHref, getDienstleistungFromPath } from './src/lib/nav.js';
 
+// Google-Ads-Conversion-Labels pro Dienstleistung (Konto: Braun Hausmeisterservice, AW-17931737581).
+// Feuert beim Klick auf "Absenden", unabhängig vom n8n-Webhook/Redirect - siehe submitFormAjax().
+const CONVERSION_LABELS = {
+    heckenschnitt: 'AW-17931737581/F2sECJHo5vkcEO2zwuZC',
+    gebaeudereinigung: 'AW-17931737581/M9GPCNjm4fkcEO2zwuZC',
+    hausmeisterservice: 'AW-17931737581/6tevCOTT4vkcEO2zwuZC',
+};
+const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
+
 // 1. Mobile Menü (Vollständig)
 const setupMobileMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -111,9 +120,16 @@ const setupNavigationIntelligence = () => {
 
 // 4. Gemeinsame AJAX-Submit-Logik für Formulare gegen die n8n-Webhooks
 // (einheitliches Antwortformat {ok, errors}, siehe n8n/README-formulare-webhook.md)
-const submitFormAjax = (form, buildRedirectUrl, beforeSend) => {
+const submitFormAjax = (form, buildRedirectUrl, beforeSend, getConversionLabel) => {
     form.addEventListener("submit", function(event) {
         event.preventDefault();
+
+        // Conversion feuert sofort beim Absenden-Klick, nicht erst beim Laden der Danke-Seite -
+        // sonst geht sie verloren, wenn Redirect/Webhook aus irgendeinem Grund nicht durchkommen.
+        const conversionLabel = getConversionLabel ? getConversionLabel() : undefined;
+        if (conversionLabel) {
+            gtag('event', 'conversion', { send_to: conversionLabel });
+        }
 
         const statusBtn = document.getElementById("submit-btn");
         const btnText = document.getElementById("btn-text");
@@ -198,7 +214,7 @@ const setupKontaktForm = () => {
             zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value);
         }
         return zielUrl;
-    });
+    }, undefined, () => CONVERSION_LABELS[selectFeld.value]);
 };
 
 // 6. Bewerbungsformular Setup
@@ -285,7 +301,8 @@ const setupBewerbungForm = () => {
             ausgewaehlteDateien.forEach((datei, index) => {
                 data.append(`lebenslauf_${index + 1}`, datei);
             });
-        }
+        },
+        () => BEWERBUNG_CONVERSION_LABEL
     );
 };
 
