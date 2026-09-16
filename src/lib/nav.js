@@ -5,13 +5,11 @@ export const DIENSTLEISTUNG_MAPPING = {
     heckenschnitt: 'heckenschnitt',
     rasenmaehen: 'rasenmaehen',
     gebaeudereinigung: 'gebaeudereinigung',
-    bodenverlegen: 'bodenverlegen',
     entruempelung: 'entruempelung',
     winterdienst: 'winterdienst',
     reinigung: 'reinigung',
     gartengrundstueckspflege: 'gartengrundstueckspflege',
     gestaltung: 'gestaltung',
-    montageservice: 'montageservice',
     hausmeisterservice: 'hausmeisterservice',
 };
 
