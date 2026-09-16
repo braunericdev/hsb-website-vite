@@ -23,8 +23,6 @@ const THEMA_LABELS = {
     gestaltung: 'Gestaltung (Außen)',
     winterdienst: 'Winterdienst',
     gebaeudereinigung: 'Gebäudereinigung',
-    bodenverlegen: 'Bodenverlegen',
-    montageservice: 'Montageservice',
     entruempelung: 'Entrümpelung',
 };
 
