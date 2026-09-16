@@ -29,8 +29,6 @@ export default defineConfig({
 
         // Innenbereich
         gebaeudereinigung: resolve(__dirname, 'gebaeudereinigung/index.html'),
-        bodenverlegen: resolve(__dirname, 'bodenverlegen/index.html'),
-        montage: resolve(__dirname, 'montageservice/index.html'), 
         entruempelung: resolve(__dirname, 'entruempelung/index.html'),
 
         // Rechtliches & Sonstiges
