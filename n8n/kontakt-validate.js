@@ -22,6 +22,7 @@ const THEMA_LABELS = {
     reinigung: 'Reinigung (Außen)',
     winterdienst: 'Winterdienst',
     gebaeudereinigung: 'Gebäudereinigung',
+    rauchmelder: 'Rauchwarnmelder-Service',
     entruempelung: 'Entrümpelung',
 };
 

@@ -37,6 +37,10 @@
     <priority>0.80</priority>
   </url>
   <url>
+    <loc>https://www.hausmeisterservice-braun.de/rauchmelder/</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
     <loc>https://www.hausmeisterservice-braun.de/entruempelung/</loc>
     <priority>0.80</priority>
   </url>

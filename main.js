@@ -131,8 +131,8 @@ const submitFormAjax = (form, buildRedirectUrl, beforeSend, getConversionLabel) 
             gtag('event', 'conversion', { send_to: conversionLabel });
         }
 
-        const statusBtn = document.getElementById("submit-btn");
-        const btnText = document.getElementById("btn-text");
+        const statusBtn = form.querySelector('[data-submit-btn]');
+        const btnText = form.querySelector('[data-btn-text]');
         const originalText = btnText.innerHTML;
 
         btnText.innerHTML = "Wird gesendet...";
@@ -162,59 +162,61 @@ const submitFormAjax = (form, buildRedirectUrl, beforeSend, getConversionLabel) 
 };
 
 // 5. Kontaktformular Setup
+// Mehrere Kontaktformulare pro Seite möglich (z.B. Rauchmelder-Seite: Formular im
+// Hero + am Seitenende) - daher über data-kontakt-form statt einer eindeutigen ID
+// ansprechen, alle Feld-Lookups jeweils auf das einzelne Formular scoped.
 const setupKontaktForm = () => {
-    const form = document.getElementById("kontaktForm");
-    if (!form) return; // Nur auf Kontaktseite ausführen
+    document.querySelectorAll('[data-kontakt-form]').forEach((form) => {
+        const selectFeld = form.querySelector('[data-dienstleistung]');
 
-    const selectFeld = document.getElementById('dienstleistung');
-
-    // 1. URL Parameter auslesen (Auto-Fill Dienstleistung)
-    const params = new URLSearchParams(window.location.search);
-    const urlDienstleistung = params.get('dienstleistung');
-    if (urlDienstleistung) {
-        // Sucht den passenden Value im Select
-        for (let option of selectFeld.options) {
-            if (option.value === urlDienstleistung) {
-                selectFeld.value = urlDienstleistung;
-                break;
+        // 1. URL Parameter auslesen (Auto-Fill Dienstleistung)
+        const params = new URLSearchParams(window.location.search);
+        const urlDienstleistung = params.get('dienstleistung');
+        if (urlDienstleistung && selectFeld) {
+            // Sucht den passenden Value im Select
+            for (let option of selectFeld.options) {
+                if (option.value === urlDienstleistung) {
+                    selectFeld.value = urlDienstleistung;
+                    break;
+                }
             }
         }
-    }
 
-    // 2. PLZ & Ort Auto-Fill
-    const plzInput = document.getElementById('plz-input');
-    const ortInput = document.getElementById('ort-input');
-    const spinner = document.getElementById('ort-spinner');
+        // 2. PLZ & Ort Auto-Fill
+        const plzInput = form.querySelector('[data-plz-input]');
+        const ortInput = form.querySelector('[data-ort-input]');
+        const spinner = form.querySelector('[data-ort-spinner]');
 
-    if (plzInput) {
-        plzInput.addEventListener('input', function(e) {
-            const plz = e.target.value;
-            if (plz.length === 5 && /^\d+$/.test(plz)) {
-                spinner.classList.remove('hidden');
-                fetch(`https://api.zippopotam.us/de/${plz}`)
-                    .then(r => r.ok ? r.json() : null)
-                    .then(d => {
-                        if(d) ortInput.value = d.places[0]['place name'];
-                    })
-                    .catch(e => console.error("PLZ-Fehler:", e))
-                    .finally(() => {
-                        spinner.classList.add('hidden');
-                    });
-            }
-        });
-    }
-
-    // 3. AJAX Submit
-    submitFormAjax(form, () => {
-        // Bestehende Google-Ads-Conversion-Aktionen prüfen die Danke-URL auf
-        // "enthält .../danke/?dienstleistung=<wert>" als Teilstring - Format bewusst
-        // unverändert zur bisherigen URL lassen, kein zusätzlicher Parameter.
-        let zielUrl = "/danke/";
-        if (selectFeld.value) {
-            zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value);
+        if (plzInput) {
+            plzInput.addEventListener('input', function(e) {
+                const plz = e.target.value;
+                if (plz.length === 5 && /^\d+$/.test(plz)) {
+                    spinner.classList.remove('hidden');
+                    fetch(`https://api.zippopotam.us/de/${plz}`)
+                        .then(r => r.ok ? r.json() : null)
+                        .then(d => {
+                            if(d) ortInput.value = d.places[0]['place name'];
+                        })
+                        .catch(e => console.error("PLZ-Fehler:", e))
+                        .finally(() => {
+                            spinner.classList.add('hidden');
+                        });
+                }
+            });
         }
-        return zielUrl;
-    }, undefined, () => CONVERSION_LABELS[selectFeld.value]);
+
+        // 3. AJAX Submit
+        submitFormAjax(form, () => {
+            // Bestehende Google-Ads-Conversion-Aktionen prüfen die Danke-URL auf
+            // "enthält .../danke/?dienstleistung=<wert>" als Teilstring - Format bewusst
+            // unverändert zur bisherigen URL lassen, kein zusätzlicher Parameter.
+            let zielUrl = "/danke/";
+            if (selectFeld && selectFeld.value) {
+                zielUrl += "?dienstleistung=" + encodeURIComponent(selectFeld.value);
+            }
+            return zielUrl;
+        }, undefined, () => selectFeld ? CONVERSION_LABELS[selectFeld.value] : undefined);
+    });
 };
 
 // 6. Bewerbungsformular Setup
