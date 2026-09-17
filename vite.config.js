@@ -24,7 +24,6 @@ export default defineConfig({
         heckenschnitt: resolve(__dirname, 'heckenschnitt/index.html'),
         rasenmaehen: resolve(__dirname, 'rasenmaehen/index.html'),
         reinigung: resolve(__dirname, 'reinigung/index.html'),
-        gestaltung: resolve(__dirname, 'gestaltung/index.html'),
         winterdienst: resolve(__dirname, 'winterdienst/index.html'),
 
         // Innenbereich
