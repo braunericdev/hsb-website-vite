@@ -20,7 +20,6 @@ const THEMA_LABELS = {
     heckenschnitt: 'Heckenschnitt',
     rasenmaehen: 'Rasenmähen',
     reinigung: 'Reinigung (Außen)',
-    gestaltung: 'Gestaltung (Außen)',
     winterdienst: 'Winterdienst',
     gebaeudereinigung: 'Gebäudereinigung',
     entruempelung: 'Entrümpelung',

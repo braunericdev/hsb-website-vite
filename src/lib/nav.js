@@ -9,7 +9,6 @@ export const DIENSTLEISTUNG_MAPPING = {
     winterdienst: 'winterdienst',
     reinigung: 'reinigung',
     gartengrundstueckspflege: 'gartengrundstueckspflege',
-    gestaltung: 'gestaltung',
     hausmeisterservice: 'hausmeisterservice',
 };
 
