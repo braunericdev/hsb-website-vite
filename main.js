@@ -306,6 +306,22 @@ const setupBewerbungForm = () => {
     );
 };
 
+// 7. FAQ-Akkordeon (site-weit): <details> nutzt native Toggle-Semantik,
+// aber ohne dieses Skript bleiben mehrere Einträge gleichzeitig offen statt
+// sich gegenseitig zu schließen. <details> wird site-weit ausschließlich für
+// FAQ-Sektionen verwendet, daher ist der globale Selektor kollisionsfrei.
+const setupFaqAccordion = () => {
+    document.querySelectorAll('details').forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+            if (detail.open) {
+                document.querySelectorAll('details').forEach((otherDetail) => {
+                    if (otherDetail !== detail) otherDetail.removeAttribute('open');
+                });
+            }
+        });
+    });
+};
+
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach
 // vollständigem DOM-Parsing – ein Warten auf "load" (alle Bilder etc.) ist
 // für diese Interaktionen nicht nötig und verzögert sie unnötig.
@@ -314,3 +330,4 @@ setupHeroSlider();
 setupNavigationIntelligence();
 setupKontaktForm();
 setupBewerbungForm();
+setupFaqAccordion();
