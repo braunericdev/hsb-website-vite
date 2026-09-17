@@ -50,21 +50,24 @@
     <load src="src/components/navbar.html" />
 
     <main>
-    <section id="kontakt-formular" class="py-12 md:py-20 bg-gray-50">
+    <section class="py-12 md:py-20 bg-gray-50">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
-                    Rauchwarnmelder-Service <br class="hidden md:block">
-                    <span class="text-[#8B4513]">für Vermieter & Hausverwaltungen</span>
-                </h1>
-                <h2 class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-medium">
-                    Einbau, Wartung und jährliche Prüfung Ihrer Rauchmelder – nach DIN 14676, rechtssicher dokumentiert. Für Bendorf, Koblenz und Neuwied.
-                </h2>
-            </div>
-
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
 
                 <div class="space-y-8 lg:col-span-3">
+                    <div class="text-left">
+                        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
+                            Rauchwarnmelder-Service <br class="hidden md:block">
+                            <span class="text-[#8B4513]">für Vermieter & Hausverwaltungen</span>
+                        </h1>
+                        <a href="#kontakt-formular" class="lg:hidden inline-flex items-center gap-2 bg-[#8B4513] text-white px-5 py-2.5 rounded-full font-bold text-sm uppercase tracking-wide mb-6 active:scale-95 transition">
+                            <i class="fas fa-arrow-down"></i> Direkt zum Kontaktformular
+                        </a>
+                        <h2 class="text-lg md:text-xl text-gray-600 max-w-2xl font-medium">
+                            Einbau, Wartung und jährliche Prüfung Ihrer Rauchmelder – nach DIN 14676, rechtssicher dokumentiert. Für Bendorf, Koblenz und Neuwied.
+                        </h2>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
                             <i class="fas fa-certificate mr-3 text-[#8B4513] text-xl"></i>
@@ -109,7 +112,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-2">
+                <div id="kontakt-formular" class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-2">
                     <h3 class="text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
                         <i class="fas fa-bell mr-2 text-xl"></i> Rauchmelder-Service anfragen
                     </h3>
