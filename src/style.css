@@ -37,7 +37,7 @@
 
   /* Pulsierender Ring für auffällige CTA-Buttons (z.B. mobiler Sprung-Button) */
   .pulse-cta {
-    animation: pulse-cta 2s infinite;
+    animation: pulse-cta 1.2s infinite;
   }
   @media (prefers-reduced-motion: reduce) {
     .pulse-cta {
