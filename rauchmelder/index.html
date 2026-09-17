@@ -50,7 +50,7 @@
     <load src="src/components/navbar.html" />
 
     <main>
-    <section class="py-12 md:py-20 bg-gray-50">
+    <section id="kontakt-formular" class="py-12 md:py-20 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
@@ -110,38 +110,70 @@
                 </div>
 
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-2">
-                    <h3 class="text-xl font-bold mb-4 text-[#8B4513] flex items-center uppercase tracking-tight">
+                    <h3 class="text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
                         <i class="fas fa-bell mr-2 text-xl"></i> Rauchmelder-Service anfragen
                     </h3>
-                    <p class="text-gray-600 mb-6 font-medium text-sm">Ihre Vorteile im Überblick:</p>
+                    <p class="text-gray-600 mb-6 font-medium text-sm">Kurze Anfrage senden, wir melden uns innerhalb von 24 Stunden.</p>
 
-                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Einbau neuer Rauchwarnmelder</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Jährliche Wartung & Funktionsprüfung</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Rechtssichere Dokumentation</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Für Wohnungen & Wohnhäuser</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Kombinierbar mit laufender Objektbetreuung</span>
-                        </li>
-                    </ul>
+                    <form id="kontaktForm" action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-4">
+                        <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+                        <select id="dienstleistung" name="dienstleistung" class="hidden" required>
+                            <option value="rauchmelder" selected>Rauchwarnmelder-Service</option>
+                        </select>
 
-                    <a href="#kontakt-formular" class="block w-full bg-[#8B4513] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-opacity-90 transition shadow-lg uppercase tracking-wide active:scale-95">
-                        Jetzt anfragen
-                    </a>
-                    <p class="text-center text-xs text-gray-400 mt-3 uppercase tracking-widest font-bold">Antwort innerhalb von 24h</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Name</label>
+                                <input type="text" name="name" placeholder="Max Mustermann" class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">E-Mail (optional)</label>
+                                <input type="email" name="email" placeholder="beispiel@mail.de" class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
+                                <input type="tel" name="telefon" placeholder="+49 ..." class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                            </div>
+                            <div class="space-y-1 relative">
+                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">PLZ</label>
+                                <input type="text" name="plz" id="plz-input" placeholder="56170" maxlength="5" pattern="[0-9]{5}" class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1 relative">
+                            <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ort</label>
+                            <input type="text" name="ort" id="ort-input" placeholder="Bendorf" class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                            <div id="ort-spinner" class="absolute right-4 bottom-3.5 hidden">
+                                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#8B4513]"></div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ihre Nachricht</label>
+                            <textarea name="nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen (z.B. Anzahl der Wohnungen)..." rows="3" class="w-full p-3.5 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium" required></textarea>
+                        </div>
+
+                        <div class="flex items-start py-1">
+                            <div class="flex items-center h-5">
+                                <input id="privacy" name="privacy" type="checkbox" required class="w-5 h-5 border border-gray-300 rounded text-[#8B4513] focus:ring-[#8B4513]/20 cursor-pointer accent-[#8B4513]">
+                            </div>
+                            <div class="ml-3 text-sm leading-tight">
+                                <label for="privacy" class="text-gray-600 font-medium cursor-pointer select-none">
+                                    Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.* <br>
+                                    <span class="text-xs text-gray-400 font-normal">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
+                            <span id="btn-text">Anfrage absenden</span>
+                            <i class="fas fa-paper-plane ml-2 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                        <p class="text-center text-xs text-gray-400 uppercase tracking-widest font-bold">Antwort innerhalb von 24h</p>
+                    </form>
                 </div>
             </div>
         </div>
@@ -411,127 +443,13 @@
          Real-Google-Reviews-Widget (separates, noch offenes Vorhaben). Keine neuen
          Fake-Testimonials für diese Seite erzeugen. -->
 
-    <section id="kontakt-formular" class="py-16 md:py-24 bg-[#8B4513]/5 border-t border-gray-100">
-        <div class="container mx-auto md:px-4">
-            <div class="text-center mb-10 px-4">
-                <h3 class="text-3xl md:text-4xl font-bold uppercase tracking-tighter text-gray-900 mb-4">Jetzt Rauchmelder-Service anfragen</h3>
-                <p class="text-gray-600 max-w-2xl mx-auto font-medium">Kurze Anfrage senden, wir melden uns innerhalb von 24 Stunden.</p>
-            </div>
-            <div class="max-w-5xl mx-auto bg-white sm:rounded-2xl shadow-xl border border-gray-100 overflow-hidden md:flex">
-
-                <div class="bg-[#8B4513] text-white p-10 md:w-2/5 flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-2xl font-bold mb-6 uppercase tracking-tight">Braun Hausmeisterservice</h4>
-                        <p class="mb-8 opacity-90 text-sm leading-relaxed font-medium">
-                            Ihr zuverlässiger Partner in Bendorf und Umgebung. Zögern Sie nicht, uns bei Fragen direkt zu kontaktieren.
-                        </p>
-
-                        <div class="space-y-6 font-medium">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 mr-4">
-                                    <i class="fas fa-phone text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-white/60 uppercase tracking-wider mb-1">Telefon</p>
-                                    <span class="text-sm block">+49 163 2925153</span>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 mr-4">
-                                    <i class="fas fa-envelope text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-white/60 uppercase tracking-wider mb-1">E-Mail</p>
-                                    <span class="text-sm break-all">kontakt@hausmeisterservice-braun.de</span>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 mr-4">
-                                    <i class="fas fa-map-marker-alt text-sm"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-white/60 uppercase tracking-wider mb-1">Einzugsgebiet</p>
-                                    <span class="text-sm">Koblenz, Neuwied, Bendorf</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-12 pt-8 border-t border-white/20">
-                        <p class="text-xs opacity-70">
-                            <i class="fas fa-clock mr-2"></i> Erreichbar: Mo-Fr 08:00 - 20:00 Uhr
-                        </p>
-                    </div>
-                </div>
-
-                <div class="p-6 md:p-10 md:w-3/5 bg-gray-50">
-                    <h4 class="text-2xl font-bold mb-6 text-gray-800 uppercase tracking-tight">Nachricht senden</h4>
-
-                    <form id="kontaktForm" action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-5">
-                        <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
-                        <select id="dienstleistung" name="dienstleistung" class="hidden" required>
-                            <option value="rauchmelder" selected>Rauchwarnmelder-Service</option>
-                        </select>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Name</label>
-                                <input type="text" name="name" placeholder="Max Mustermann" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
-                            </div>
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">E-Mail (optional)</label>
-                                <input type="email" name="email" placeholder="beispiel@mail.de" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div class="space-y-1">
-                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
-                                <input type="tel" name="telefon" placeholder="+49 ..." class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
-                            </div>
-                            <div class="space-y-1 relative">
-                                <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">PLZ</label>
-                                <input type="text" name="plz" id="plz-input" placeholder="56170" maxlength="5" pattern="[0-9]{5}" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1 relative">
-                            <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ort</label>
-                            <input type="text" name="ort" id="ort-input" placeholder="Bendorf" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
-                            <div id="ort-spinner" class="absolute right-4 bottom-4 hidden">
-                                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#8B4513]"></div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-1">
-                            <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ihre Nachricht</label>
-                            <textarea name="nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen (z.B. Anzahl der Wohnungen)..." rows="4" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium" required></textarea>
-                        </div>
-
-                        <div class="flex items-start py-2">
-                            <div class="flex items-center h-5">
-                                <input id="privacy" name="privacy" type="checkbox" required class="w-5 h-5 border border-gray-300 rounded text-[#8B4513] focus:ring-[#8B4513]/20 cursor-pointer accent-[#8B4513]">
-                            </div>
-                            <div class="ml-3 text-sm leading-tight">
-                                <label for="privacy" class="text-gray-600 font-medium cursor-pointer select-none">
-                                    Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.* <br>
-                                    <span class="text-xs text-gray-400 font-normal">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="pt-4">
-                            <button type="submit" id="submit-btn" class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
-                                <span id="btn-text">Anfrage absenden</span>
-                                <i class="fas fa-paper-plane ml-2 group-hover:translate-x-1 transition-transform"></i>
-                            </button>
-                            <p class="text-center text-xs text-gray-400 mt-3 font-bold uppercase tracking-widest">Antwort innerhalb von 24h</p>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <section class="py-16 md:py-20 bg-[#8B4513] text-white">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h3 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tighter">Jetzt Rauchmelder-Service anfragen</h3>
+            <p class="text-lg opacity-90 mb-8 font-medium">Kurze Anfrage senden, wir melden uns innerhalb von 24 Stunden.</p>
+            <a href="#kontakt-formular" class="inline-block bg-white text-[#8B4513] px-12 py-5 rounded-xl font-extrabold text-xl hover:bg-gray-100 transition shadow-2xl uppercase tracking-widest hover:scale-105 active:scale-95 duration-200">
+                JETZT ANFRAGEN
+            </a>
         </div>
     </section>
     </main>
