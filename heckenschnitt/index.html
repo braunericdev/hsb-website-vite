@@ -493,20 +493,6 @@
 
     <load src="src/components/footer.html" />
 
-    <script>
-        // FAQ Accordion Logik (wechselseitiges Schließen)
-        document.querySelectorAll('details').forEach((detail) => {
-            detail.addEventListener('toggle', (e) => {
-                if (detail.open) {
-                    document.querySelectorAll('details').forEach((otherDetail) => {
-                        if (otherDetail !== detail) {
-                            otherDetail.removeAttribute('open');
-                        }
-                    });
-                }
-            });
-        });
-    </script>
     <script type="module" src="/main.js"></script>
 </body>
 
