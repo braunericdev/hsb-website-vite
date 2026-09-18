@@ -100,7 +100,7 @@
                     </div>
                 </div>
 
-                <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl border border-gray-100 lg:col-span-4 overflow-hidden">
+                <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl lg:col-span-4 overflow-hidden">
                     <div class="flex-1 flex flex-col justify-center p-4 md:p-8">
                     <h3 class="text-lg md:text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
                         <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
@@ -168,21 +168,21 @@
                     </form>
                     </div>
 
-                    <div class="hidden lg:grid grid-cols-[3fr_2fr] gap-x-4 gap-y-2.5 bg-[#8B4513] text-white p-5 text-xs">
+                    <div class="hidden lg:grid grid-cols-[3fr_2fr] gap-x-4 gap-y-2.5 bg-gray-300 text-gray-800 p-5 text-xs">
                         <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-phone w-4 shrink-0"></i>
+                            <i class="fas fa-phone w-4 shrink-0 text-[#8B4513]"></i>
                             <span class="font-bold">+49 163 2925153</span>
                         </div>
                         <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-map-marker-alt w-4 shrink-0"></i>
+                            <i class="fas fa-map-marker-alt w-4 shrink-0 text-[#8B4513]"></i>
                             <span class="font-bold">56170 Bendorf, DE</span>
                         </div>
                         <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-envelope w-4 shrink-0"></i>
+                            <i class="fas fa-envelope w-4 shrink-0 text-[#8B4513]"></i>
                             <a href="mailto:kontakt@hausmeisterservice-braun.de" class="font-bold hover:underline">kontakt@hausmeisterservice-braun.de</a>
                         </div>
                         <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-clock w-4 shrink-0"></i>
+                            <i class="fas fa-clock w-4 shrink-0 text-[#8B4513]"></i>
                             <span class="font-bold">Mo-Fr 8-20 Uhr</span>
                         </div>
                     </div>
@@ -724,17 +724,36 @@
         </div>
     </section>
 
-    <section id="kontakt" class="scroll-mt-20 py-16 md:py-20 bg-[#8B4513] text-white">
-        <div class="container mx-auto px-4 max-w-2xl">
-            <div class="text-center mb-8">
-                <h3 class="text-3xl md:text-5xl font-bold mb-4 tracking-tighter text-white">Zeit für Frische & Sauberkeit!</h3>
-                <p class="text-lg md:text-xl opacity-90 leading-relaxed font-medium mb-2">Kostenlos und unverbindlich.</p>
-                <p class="text-lg md:text-xl opacity-90 leading-relaxed font-medium">
+    <section id="kontakt" class="scroll-mt-20 py-16 md:py-20 bg-gray-300">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center mb-8 max-w-2xl mx-auto">
+                <h3 class="text-3xl md:text-5xl font-bold mb-4 tracking-tighter text-gray-900">Zeit für Frische & Sauberkeit!</h3>
+                <p class="text-lg md:text-xl text-gray-700 leading-relaxed font-medium mb-2">Kostenlos und unverbindlich.</p>
+                <p class="text-lg md:text-xl text-gray-700 leading-relaxed font-medium">
                     Sichere Dir jetzt ein individuelles Angebot für Deine Gebäudereinigung und profitiere von glänzenden Ergebnissen.
                 </p>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-2xl p-4 md:p-8">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden md:flex">
+                <div class="hidden md:flex md:w-2/5 bg-[#8B4513] text-white flex-col justify-center gap-5 p-8 text-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-phone text-xs"></i></div>
+                        <span class="font-bold">+49 163 2925153</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-envelope text-xs"></i></div>
+                        <a href="mailto:kontakt@hausmeisterservice-braun.de" class="font-bold hover:underline">kontakt@hausmeisterservice-braun.de</a>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-map-marker-alt text-xs"></i></div>
+                        <span class="font-bold">56170 Bendorf, DE</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-clock text-xs"></i></div>
+                        <span class="font-bold">Mo-Fr 8-20 Uhr</span>
+                    </div>
+                </div>
+                <div class="p-4 md:p-8 md:w-3/5">
                 <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
                     <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
                     <select data-dienstleistung name="dienstleistung" class="hidden" required>
@@ -794,6 +813,7 @@
                     </button>
                     <p class="text-center text-xs text-gray-400 uppercase tracking-widest font-bold">Antwort innerhalb von 24h</p>
                 </form>
+                </div>
             </div>
         </div>
     </section>
