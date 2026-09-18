@@ -77,11 +77,13 @@
                         </h2>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 bg-white/85 backdrop-blur-sm rounded-2xl px-5 py-3.5 text-sm font-bold text-gray-700 w-fit shadow-xl">
+                    <div class="flex flex-col items-start lg:flex-row lg:items-center gap-x-5 gap-y-2 bg-white/85 backdrop-blur-sm rounded-2xl px-5 py-3.5 text-sm font-bold text-gray-700 w-fit shadow-xl">
+                        <span class="flex items-center gap-1.5"><i class="fas fa-file-invoice text-[#8B4513]"></i> Digitale Leistungsberichte</span>
+                        <span class="hidden lg:inline text-gray-300">|</span>
                         <span class="flex items-center gap-1.5"><i class="fas fa-broom text-[#8B4513]"></i> Gründliche Reinigung</span>
-                        <span class="hidden sm:inline text-gray-300">|</span>
+                        <span class="hidden lg:inline text-gray-300">|</span>
                         <span class="flex items-center gap-1.5"><i class="fas fa-user-shield text-[#8B4513]"></i> Diskret & Sicher</span>
-                        <span class="hidden sm:inline text-gray-300">|</span>
+                        <span class="hidden lg:inline text-gray-300">|</span>
                         <span class="flex items-center gap-1.5"><i class="fas fa-calendar-check text-[#8B4513]"></i> Feste Intervalle</span>
                     </div>
 
@@ -152,6 +154,7 @@
                             <div class="ml-3 text-sm leading-tight">
                                 <label for="privacy-hero" class="text-gray-600 font-medium cursor-pointer select-none">
                                     Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.*
+                                    <span class="hidden md:block text-xs text-gray-400 font-normal mt-0.5">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
                                 </label>
                             </div>
                         </div>
@@ -164,6 +167,19 @@
                     </form>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="py-14 bg-[#8B4513]/5 border-t border-b border-gray-100">
+        <div class="container mx-auto px-4 max-w-3xl text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-[#8B4513] text-white flex items-center justify-center text-2xl shadow-lg">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <h3 class="text-2xl md:text-3xl font-bold mb-3 text-[#8B4513] uppercase tracking-tight">Digitale Leistungsberichte</h3>
+            <p class="text-lg font-bold text-gray-800 mb-2">Immer im Bild, was wir wann erledigt haben.</p>
+            <p class="text-base text-gray-600 leading-relaxed font-medium">
+                In festen Intervallen – standardmäßig einmal im Monat – erhalten Sie einen digitalen Leistungsbericht: wann wir da waren und was genau erledigt wurde. Keine Blackbox, sondern lückenlose Transparenz auf einen Blick.
+            </p>
         </div>
     </section>
 
@@ -360,6 +376,18 @@
                             <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
                                 <ul class="list-disc list-inside space-y-2">
                                     <li><span class="text-[#8B4513] font-bold">Regelmäßige Kontrollgänge</span> – wir haben alles im Blick</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr class="bg-white">
+                            <td class="p-4 md:p-6 text-gray-600 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>Keine Nachweise über erledigte Arbeiten</li>
+                                </ul>
+                            </td>
+                            <td class="p-4 md:p-6 text-gray-800 bg-[#8B4513]/5 align-top">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><span class="text-[#8B4513] font-bold">Digitaler Leistungsbericht</span> im monatlichen Rhythmus</li>
                                 </ul>
                             </td>
                         </tr>
@@ -734,6 +762,7 @@
                         <div class="ml-3 text-sm leading-tight">
                             <label for="privacy-bottom" class="text-gray-600 font-medium cursor-pointer select-none">
                                 Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.*
+                                <span class="hidden md:block text-xs text-gray-400 font-normal mt-0.5">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
                             </label>
                         </div>
                     </div>
