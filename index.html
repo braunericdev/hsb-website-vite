@@ -26,13 +26,20 @@
     <load src="src/components/navbar.html" />
 
     <main>
-    <section id="start" class="relative overflow-hidden bg-white md:bg-gray-200 md:min-h-screen md:flex md:items-end md:pb-16 md:px-4">
-        <div class="relative h-96 sm:h-[28rem] md:absolute md:inset-0 md:h-full overflow-hidden">
-            <picture>
-                <source media="(min-width: 768px)" srcset="/hero.JPG">
-                <img src="/ueber_uns.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[center_20%] md:object-[80%_20%] scale-125 md:scale-100" />
-            </picture>
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-75% to-white md:from-50% md:to-white md:to-[70%]"></div>
+    <section id="start" class="relative bg-white md:bg-gray-200 md:min-h-screen md:flex md:items-end md:pb-16 md:px-4">
+        <!-- Flow-Platzhalter auf Mobil: reserviert die Höhe, die das (nun bis unter die Navbar hochgezogene) Bild einnimmt -->
+        <div class="h-96 sm:h-[28rem] md:hidden" aria-hidden="true"></div>
+
+        <!-- Mobil: Bild reicht bis unter die halbtransparente Navbar hoch -->
+        <div class="md:hidden absolute -top-20 inset-x-0 h-[calc(24rem+5rem)] sm:h-[calc(28rem+5rem)] overflow-hidden">
+            <img src="/ueber_uns.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[center_20%] scale-125" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[79%] to-white"></div>
+        </div>
+
+        <!-- Desktop: Bild füllt die Section flächendeckend, ebenfalls bis unter die Navbar -->
+        <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 overflow-hidden">
+            <img src="/hero.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[80%_20%]" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[46%] to-white to-[64%]"></div>
         </div>
 
         <a href="/karriere/" class="absolute top-8 left-2 md:top-28 md:left-60 z-20 inline-flex items-center gap-2 sm:gap-3 bg-white border-4 border-[#8B4513] text-[#8B4513] shadow-xl rounded-full px-6 py-3 sm:px-8 sm:py-4 -rotate-6 hover:rotate-0 transition-transform duration-300">
