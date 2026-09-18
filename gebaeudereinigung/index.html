@@ -100,7 +100,8 @@
                     </div>
                 </div>
 
-                <div id="kontakt-formular" class="scroll-mt-20 flex flex-col justify-center bg-white p-4 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-4">
+                <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl border border-gray-100 lg:col-span-4 overflow-hidden">
+                    <div class="flex-1 flex flex-col justify-center p-4 md:p-8">
                     <h3 class="text-lg md:text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
                         <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
                     </h3>
@@ -165,30 +166,24 @@
                         </button>
                         <p class="text-center text-xs text-gray-400 uppercase tracking-widest font-bold">Antwort innerhalb von 24h</p>
                     </form>
+                    </div>
 
-                    <div class="hidden lg:block mt-5 -mx-8 -mb-8 bg-[#8B4513] text-white rounded-b-2xl p-5">
-                        <div class="grid grid-cols-3 gap-3 text-xs">
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-phone text-xs"></i></div>
-                                <div>
-                                    <p class="text-[9px] text-white/60 uppercase tracking-wider">Telefon</p>
-                                    <span class="font-bold">+49 163 2925153</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-envelope text-xs"></i></div>
-                                <div>
-                                    <p class="text-[9px] text-white/60 uppercase tracking-wider">E-Mail</p>
-                                    <a href="mailto:kontakt@hausmeisterservice-braun.de" class="font-bold hover:underline">kontakt@hausmeisterservice-braun.de</a>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-clock text-xs"></i></div>
-                                <div>
-                                    <p class="text-[9px] text-white/60 uppercase tracking-wider">Erreichbar</p>
-                                    <span class="font-bold">Mo-Fr 8-20 Uhr</span>
-                                </div>
-                            </div>
+                    <div class="hidden lg:grid grid-cols-[3fr_2fr] gap-x-4 gap-y-2.5 bg-[#8B4513] text-white p-5 text-xs">
+                        <div class="flex items-center gap-2 whitespace-nowrap">
+                            <i class="fas fa-phone w-4 shrink-0"></i>
+                            <span class="font-bold">+49 163 2925153</span>
+                        </div>
+                        <div class="flex items-center gap-2 whitespace-nowrap">
+                            <i class="fas fa-map-marker-alt w-4 shrink-0"></i>
+                            <span class="font-bold">56170 Bendorf, DE</span>
+                        </div>
+                        <div class="flex items-center gap-2 whitespace-nowrap">
+                            <i class="fas fa-envelope w-4 shrink-0"></i>
+                            <a href="mailto:kontakt@hausmeisterservice-braun.de" class="font-bold hover:underline">kontakt@hausmeisterservice-braun.de</a>
+                        </div>
+                        <div class="flex items-center gap-2 whitespace-nowrap">
+                            <i class="fas fa-clock w-4 shrink-0"></i>
+                            <span class="font-bold">Mo-Fr 8-20 Uhr</span>
                         </div>
                     </div>
                 </div>
