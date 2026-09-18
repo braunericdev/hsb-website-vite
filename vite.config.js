@@ -29,6 +29,7 @@ export default defineConfig({
         // Innenbereich
         gebaeudereinigung: resolve(__dirname, 'gebaeudereinigung/index.html'),
         rauchmelder: resolve(__dirname, 'rauchmelder/index.html'),
+        leerstandsbetreuung: resolve(__dirname, 'leerstandsbetreuung/index.html'),
         entruempelung: resolve(__dirname, 'entruempelung/index.html'),
 
         // Rechtliches & Sonstiges

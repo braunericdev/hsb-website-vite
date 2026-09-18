@@ -6,6 +6,7 @@ export const DIENSTLEISTUNG_MAPPING = {
     rasenmaehen: 'rasenmaehen',
     gebaeudereinigung: 'gebaeudereinigung',
     rauchmelder: 'rauchmelder',
+    leerstandsbetreuung: 'leerstandsbetreuung',
     entruempelung: 'entruempelung',
     winterdienst: 'winterdienst',
     reinigung: 'reinigung',
