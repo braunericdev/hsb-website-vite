@@ -8,6 +8,7 @@ const CONVERSION_LABELS = {
     heckenschnitt: 'AW-17931737581/F2sECJHo5vkcEO2zwuZC',
     gebaeudereinigung: 'AW-17931737581/M9GPCNjm4fkcEO2zwuZC',
     hausmeisterservice: 'AW-17931737581/6tevCOTT4vkcEO2zwuZC',
+    leerstandsbetreuung: 'AW-17931737581/aMIXCK3F9_scEO2zwuZC',
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
 
