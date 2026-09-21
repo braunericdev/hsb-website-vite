@@ -69,19 +69,7 @@
                         <h1 class="text-4xl md:text-6xl font-extrabold mb-5 lg:mb-6 text-gray-900 leading-tight tracking-tighter">
                             Professionelle Gebäudereinigung – für einen glänzenden ersten Eindruck. <span class="text-[#8B4513]">Zuverlässig, diskret, gründlich.</span>
                         </h1>
-                        <!-- Nur Mobil: Bewertung mittig, knapp über dem CTA. Zahl/Sterne setzt main.js aus src/data/google-reviews.json -->
-                        <div data-avg-badge class="invisible lg:hidden flex justify-center mb-3">
-                            <div class="flex items-center gap-4 bg-gray-50 px-4 md:px-6 py-3 rounded-full border border-gray-200 shadow-sm">
-                            <div class="text-2xl"><i class="fab fa-google text-blue-500"></i></div>
-                            <div>
-                                <span class="relative inline-block text-sm mb-0.5 leading-none">
-                                    <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                    <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                </span>
-                                <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 Google-Bewertungen</p>
-                            </div>
-                        </div>
-                        </div>
+                        <load src="src/components/hero-rating-mobile.html" />
                         <a href="#kontakt-formular" class="pulse-cta lg:hidden flex items-center justify-center gap-2 w-full bg-[#1F6F4A] text-white py-4 rounded-xl font-bold text-base uppercase tracking-wide shadow-lg hover:bg-[#164F35] active:scale-95 transition mb-6">
                             <i class="fas fa-circle-exclamation"></i> Jetzt Angebot anfordern
                         </a>
@@ -103,113 +91,7 @@
                     </div>
                 </div>
 
-                <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl lg:col-span-4 overflow-hidden">
-                    <div class="flex-1 flex flex-col justify-center p-4 md:p-8">
-                    <div class="flex items-center justify-between gap-3 mb-1">
-                        <h3 class="text-lg md:text-xl font-bold text-[#8B4513] flex items-center uppercase tracking-tight">
-                            <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
-                        </h3>
-                        <!-- Zahl und Sternfüllung setzt main.js aus src/data/google-reviews.json; bis dahin unsichtbar, damit nie ein veralteter Wert steht -->
-                        <div data-avg-rating class="invisible shrink-0">
-                            <div class="hidden xl:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-                                <div class="text-xl"><i class="fab fa-google text-blue-500"></i></div>
-                                <div>
-                                    <span class="relative inline-block text-xs mb-0.5 leading-none">
-                                        <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                        <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                    </span>
-                                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 Kundenbewertung</p>
-                                </div>
-                            </div>
-                            <div class="xl:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
-                                <i class="fab fa-google text-blue-500 text-sm"></i>
-                                <i class="fas fa-star text-yellow-400 text-[11px]"></i>
-                                <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-gray-600 mb-3 md:mb-4 font-medium text-sm">Kostenlos und unverbindlich.</p>
-
-                    <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
-                        <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
-                        <select data-dienstleistung name="dienstleistung" class="hidden" required>
-                            <option value="gebaeudereinigung" selected>Gebäudereinigung</option>
-                        </select>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-                            <div class="space-y-0.5 md:space-y-1">
-                                <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Name</label>
-                                <input type="text" name="name" placeholder="Name" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium text-sm md:text-base" required>
-                            </div>
-                            <div class="space-y-0.5 md:space-y-1">
-                                <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">E-Mail (optional)</label>
-                                <input type="email" name="email" placeholder="E-Mail (optional)" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium text-sm md:text-base">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
-                            <div class="space-y-0.5 md:space-y-1">
-                                <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
-                                <input type="tel" name="telefon" placeholder="Telefon" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium text-sm md:text-base" required>
-                            </div>
-                            <div class="space-y-0.5 md:space-y-1 relative">
-                                <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">PLZ</label>
-                                <input type="text" name="plz" data-plz-input placeholder="PLZ" maxlength="5" pattern="[0-9]{5}" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium text-sm md:text-base" required>
-                            </div>
-                        </div>
-
-                        <div class="space-y-0.5 md:space-y-1 relative">
-                            <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ort</label>
-                            <input type="text" name="ort" data-ort-input placeholder="Ort" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium text-sm md:text-base" required>
-                            <div data-ort-spinner class="absolute right-4 bottom-2.5 md:bottom-3.5 hidden">
-                                <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#8B4513]"></div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-0.5 md:space-y-1">
-                            <label class="sr-only text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ihre Nachricht</label>
-                            <textarea name="nachricht" placeholder="Ihre Nachricht" rows="2" class="w-full p-2.5 md:p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium text-sm md:text-base" required></textarea>
-                        </div>
-
-                        <div class="flex items-start py-0.5 md:py-1">
-                            <div class="flex items-center h-5">
-                                <input id="privacy-hero" name="privacy" type="checkbox" required class="w-5 h-5 border border-gray-300 rounded text-[#8B4513] focus:ring-[#8B4513]/20 cursor-pointer accent-[#8B4513]">
-                            </div>
-                            <div class="ml-3 text-sm leading-tight">
-                                <label for="privacy-hero" class="text-gray-600 font-medium cursor-pointer select-none">
-                                    Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.*
-                                    <span class="hidden md:block text-xs text-gray-400 font-normal mt-0.5">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <button type="submit" data-submit-btn class="pulse-cta w-full bg-[#1F6F4A] text-white py-3 md:py-4 rounded-xl font-bold hover:bg-[#164F35] transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
-                            <span data-btn-text>Anfrage absenden</span>
-                            <i class="fas fa-paper-plane ml-2 group-hover:translate-x-1 transition-transform"></i>
-                        </button>
-                        <p class="text-center text-xs text-gray-400 uppercase tracking-widest font-bold">Antwort innerhalb von 24h</p>
-                    </form>
-                    </div>
-
-                    <div class="hidden lg:grid grid-cols-[3fr_2fr] gap-x-4 gap-y-2.5 bg-gray-300 text-gray-800 p-5 text-xs">
-                        <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-phone w-4 shrink-0 text-[#8B4513]"></i>
-                            <span class="font-bold">+49 163 2925153</span>
-                        </div>
-                        <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-map-marker-alt w-4 shrink-0 text-[#8B4513]"></i>
-                            <span class="font-bold">56170 Bendorf, DE</span>
-                        </div>
-                        <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-envelope w-4 shrink-0 text-[#8B4513]"></i>
-                            <a href="mailto:kontakt@hausmeisterservice-braun.de" class="font-bold hover:underline">kontakt@hausmeisterservice-braun.de</a>
-                        </div>
-                        <div class="flex items-center gap-2 whitespace-nowrap">
-                            <i class="fas fa-clock w-4 shrink-0 text-[#8B4513]"></i>
-                            <span class="font-bold">Mo-Fr 8-20 Uhr</span>
-                        </div>
-                    </div>
-                </div>
+                <load src="src/components/hero-form.html" service="gebaeudereinigung" service_label="Gebäudereinigung" heading="Termin anfragen!" icon="fa-calendar-alt" />
             </div>
         </div>
     </section>
@@ -579,56 +461,7 @@
         </div>
     </section>
 
-    <!-- Google-Bewertungen: Karten und Durchschnitt kommen aus src/data/google-reviews.json (per scripts/update-reviews.mjs gepflegt). Eine Anzahl wird bewusst nirgends genannt. -->
-    <section data-reviews-section class="hidden py-20 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-4 max-w-6xl">
-
-            <div class="flex flex-col lg:flex-row justify-between items-center mb-10 gap-6">
-                <div class="text-center lg:text-left">
-                    <h3 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 tracking-tighter">Was unsere Kunden sagen</h3>
-                    <div class="w-24 h-1 bg-[#8B4513] mx-auto lg:mx-0 rounded-full"></div>
-                </div>
-                <div class="flex flex-col sm:flex-row items-center gap-5 md:gap-8">
-                    <div class="flex items-center gap-3">
-                        <div data-count-up="50" data-count-suffix="+" class="text-4xl md:text-5xl font-extrabold text-blue-500 tracking-tighter tabular-nums">50+</div>
-                        <p class="text-sm md:text-base font-bold text-gray-900 leading-tight uppercase tracking-tight text-left">Zufriedene<br>Kunden</p>
-                    </div>
-                    <div class="flex items-center gap-4 bg-gray-50 px-6 py-3 rounded-full border border-gray-200 shadow-sm">
-                        <div class="text-2xl"><i class="fab fa-google text-blue-500"></i></div>
-                        <div>
-                            <span class="relative inline-block text-sm mb-0.5 leading-none">
-                                <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                                <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                            </span>
-                            <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 Google-Bewertungen</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div data-reviews-track class="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"></div>
-        </div>
-
-        <template data-review-template>
-            <article class="shrink-0 w-[300px] md:w-[360px] bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-col">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div data-field="initial" class="w-10 h-10 shrink-0 bg-[#8B4513]/10 text-[#8B4513] rounded-full flex items-center justify-center font-bold text-lg"></div>
-                        <div class="min-w-0">
-                            <h4 data-field="name" class="font-bold text-gray-900 text-sm truncate"></h4>
-                            <p data-field="time" class="text-xs text-gray-500"></p>
-                        </div>
-                    </div>
-                    <i class="fab fa-google text-gray-300 text-xl"></i>
-                </div>
-                <span class="relative inline-block text-xs mb-3 leading-none self-start">
-                    <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                    <span data-field="stars" class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
-                </span>
-                <p data-field="text" class="text-gray-600 text-sm leading-relaxed line-clamp-6"></p>
-            </article>
-        </template>
-    </section>
+    <load src="src/components/reviews.html" />
 
     <section id="kontakt" class="scroll-mt-20 py-16 md:py-20 bg-white border-t border-gray-100">
         <div class="container mx-auto px-4 max-w-4xl">
