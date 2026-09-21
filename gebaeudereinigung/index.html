@@ -102,9 +102,19 @@
 
                 <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl lg:col-span-4 overflow-hidden">
                     <div class="flex-1 flex flex-col justify-center p-4 md:p-8">
-                    <h3 class="text-lg md:text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
-                        <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
-                    </h3>
+                    <div class="flex items-start justify-between gap-3 mb-1">
+                        <h3 class="text-lg md:text-xl font-bold text-[#8B4513] flex items-center uppercase tracking-tight">
+                            <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
+                        </h3>
+                        <!-- TODO(data): Wert später aus den Live-Google-Bewertungen berechnen statt fest eintragen -->
+                        <div data-avg-rating class="shrink-0 flex flex-col items-end leading-none" title="Durchschnittliche Kundenbewertung bei Google">
+                            <div class="flex items-center gap-1.5">
+                                <span class="flex text-yellow-400 text-xs"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                <span class="text-sm font-extrabold text-gray-900">5,0</span>
+                            </div>
+                            <span class="mt-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1"><i class="fab fa-google"></i> Kundenbewertung</span>
+                        </div>
+                    </div>
                     <p class="text-gray-600 mb-3 md:mb-4 font-medium text-sm">Kostenlos und unverbindlich.</p>
 
                     <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
