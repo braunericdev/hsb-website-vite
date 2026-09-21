@@ -78,7 +78,7 @@
                                     <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                     <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                 </span>
-                                <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">aus <span data-review-count></span> Google-Bewertungen</span></p>
+                                <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 Google-Bewertungen</p>
                             </div>
                         </div>
                         </div>
@@ -109,7 +109,7 @@
                         <h3 class="text-lg md:text-xl font-bold text-[#8B4513] flex items-center uppercase tracking-tight">
                             <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
                         </h3>
-                        <!-- Zahl, Sternfüllung und Anzahl setzt main.js aus src/data/google-reviews.json; bis dahin unsichtbar, damit nie ein veralteter Wert steht -->
+                        <!-- Zahl und Sternfüllung setzt main.js aus src/data/google-reviews.json; bis dahin unsichtbar, damit nie ein veralteter Wert steht -->
                         <div data-avg-rating class="invisible shrink-0">
                             <div class="hidden xl:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
                                 <div class="text-xl"><i class="fab fa-google text-blue-500"></i></div>
@@ -118,7 +118,7 @@
                                         <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                         <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                     </span>
-                                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">· <span data-review-count></span> Bewertungen</span></p>
+                                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 Kundenbewertung</p>
                                 </div>
                             </div>
                             <div class="xl:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
@@ -579,8 +579,7 @@
         </div>
     </section>
 
-    <!-- Live-Google-Bewertungen: Daten liefert der n8n-Endpoint (siehe n8n/google-reviews.md).
-         Bleibt der Abruf aus, bleibt der Bereich verborgen - bewusst keine Ersatz-Zitate. -->
+    <!-- Google-Bewertungen: Karten und Durchschnitt kommen aus src/data/google-reviews.json (per scripts/update-reviews.mjs gepflegt). Eine Anzahl wird bewusst nirgends genannt. -->
     <section data-reviews-section class="hidden py-20 bg-white border-t border-gray-100">
         <div class="container mx-auto px-4 max-w-6xl">
 
@@ -601,7 +600,7 @@
                                 <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                 <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                             </span>
-                            <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">aus <span data-review-count></span> Google-Bewertungen</span></p>
+                            <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 Google-Bewertungen</p>
                         </div>
                     </div>
                 </div>
@@ -700,7 +699,7 @@
                                     <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                     <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                 </span>
-                                <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">· <span data-review-count></span> Bewertungen</span></p>
+                                <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 Kundenbewertung</p>
                             </div>
                         </div>
                         <div class="lg:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">

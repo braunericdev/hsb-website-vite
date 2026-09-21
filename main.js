@@ -354,17 +354,12 @@ const setupGoogleReviews = async () => {
     const reviews = (Array.isArray(data.reviews) ? data.reviews : [])
         .filter((r) => r && r.text && Number(r.rating) > 0);
     const rating = Number(data.rating) || 0;
-    const total = Number(data.total) || reviews.length;
 
     if (rating > 0) {
         const pct = Math.min(100, (rating / 5) * 100) + '%';
         numberEls.forEach((el) => { el.textContent = rating.toFixed(1).replace('.', ','); });
         document.querySelectorAll('[data-avg-fill]').forEach((el) => { el.style.width = pct; });
         document.querySelectorAll('[data-avg-rating], [data-avg-badge]').forEach((el) => el.classList.remove('invisible'));
-    }
-    if (total > 0) {
-        document.querySelectorAll('[data-review-count]').forEach((el) => { el.textContent = total; });
-        document.querySelectorAll('[data-review-count-wrap]').forEach((el) => el.classList.remove('hidden'));
     }
 
     const track = section && section.querySelector('[data-reviews-track]');
