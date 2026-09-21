@@ -369,43 +369,57 @@ const setupGoogleReviews = async () => {
     const template = section && section.querySelector('template[data-review-template]');
     if (!track || !template || !reviews.length) return;
 
-    reviews.forEach((r) => {
-        const card = template.content.cloneNode(true);
-        const set = (field, value) => { card.querySelector(`[data-field="${field}"]`).textContent = value; };
-        const name = String(r.author || 'Google-Nutzer').trim();
-        set('name', name);
-        set('initial', name.charAt(0).toUpperCase());
-        set('time', r.date ? relativeTime(r.date) : '');
-        set('text', String(r.text).trim());
-        card.querySelector('[data-field="stars"]').style.width = Math.min(100, (Number(r.rating) / 5) * 100) + '%';
-        track.appendChild(card);
-    });
+    const buildSet = () => {
+        const set = document.createElement('div');
+        set.className = 'flex shrink-0 gap-6 pr-6';
+        reviews.forEach((r) => {
+            const card = template.content.cloneNode(true);
+            const setField = (field, value) => { card.querySelector(`[data-field="${field}"]`).textContent = value; };
+            const name = String(r.author || 'Google-Nutzer').trim();
+            setField('name', name);
+            setField('initial', name.charAt(0).toUpperCase());
+            setField('time', r.date ? relativeTime(r.date) : '');
+            setField('text', String(r.text).trim());
+            card.querySelector('[data-field="stars"]').style.width = Math.min(100, (Number(r.rating) / 5) * 100) + '%';
+            set.appendChild(card);
+        });
+        return set;
+    };
     section.classList.remove('hidden');
 
-    const prev = section.querySelector('[data-reviews-prev]');
-    const next = section.querySelector('[data-reviews-next]');
-    const step = () => {
-        const first = track.firstElementChild;
-        return first ? first.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 0;
-    };
-    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
-    const go = (dir) => {
-        if (dir > 0 && atEnd()) track.scrollTo({ left: 0 });
-        else track.scrollBy({ left: dir * step() });
-    };
-    if (prev) prev.addEventListener('click', () => go(-1));
-    if (next) next.addEventListener('click', () => go(1));
+    // Bei reduzierter Bewegung: keine Animation, stattdessen von Hand scrollbar
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        track.classList.add('overflow-x-auto');
+        track.appendChild(buildSet());
+        return;
+    }
 
-    const overflows = () => track.scrollWidth > track.clientWidth + 4;
-    const toggleArrows = () => [prev, next].forEach((b) => b && b.classList.toggle('md:hidden', !overflows()));
-    toggleArrows();
-    window.addEventListener('resize', toggleArrows);
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let paused = false;
-    ['mouseenter', 'focusin', 'touchstart'].forEach((ev) => track.addEventListener(ev, () => { paused = true; }, { passive: true }));
-    ['mouseleave', 'focusout'].forEach((ev) => track.addEventListener(ev, () => { paused = false; }));
-    setInterval(() => { if (!paused && !document.hidden && overflows()) go(1); }, 6000);
+    // Endlos-Lauf: Karten-Satz mehrfach nebeneinander, CSS schiebt genau um die Breite eines Satzes
+    // (dann sieht der Anfang des nächsten Satzes wie der Anfang des ersten aus -> nahtlose Schleife).
+    const PX_PER_SECOND = 45;
+    const inner = document.createElement('div');
+    inner.className = 'reviews-marquee flex w-max';
+    track.appendChild(inner);
+    const layout = () => {
+        inner.replaceChildren(buildSet());
+        const setWidth = inner.firstElementChild.getBoundingClientRect().width;
+        if (!setWidth) return;
+        const copies = Math.ceil(track.clientWidth / setWidth) + 1;
+        for (let n = 0; n < copies; n++) {
+            const copy = buildSet();
+            copy.setAttribute('aria-hidden', 'true');
+            inner.appendChild(copy);
+        }
+        inner.firstElementChild.removeAttribute('aria-hidden');
+        inner.style.setProperty('--marquee-shift', `-${setWidth}px`);
+        inner.style.setProperty('--marquee-duration', `${setWidth / PX_PER_SECOND}s`);
+    };
+    layout();
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(layout, 200);
+    });
 };
 
 // 9. Hochzählende Zahl: startet, sobald das Element sichtbar wird, und endet bei data-count-up
