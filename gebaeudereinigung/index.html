@@ -752,6 +752,28 @@
                     </div>
                 </div>
                 <div class="p-4 md:p-8 md:w-3/5">
+                <div class="flex items-center justify-between gap-3 mb-4">
+                    <h3 class="text-lg md:text-xl font-bold text-[#8B4513] flex items-center uppercase tracking-tight">
+                        <i class="fas fa-paper-plane mr-2 text-xl"></i> Anfrage senden
+                    </h3>
+                    <div data-avg-rating class="invisible shrink-0">
+                        <div class="hidden lg:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                            <div class="text-xl"><i class="fab fa-google text-blue-500"></i></div>
+                            <div>
+                                <span class="relative inline-block text-xs mb-0.5 leading-none">
+                                    <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                    <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                </span>
+                                <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">· <span data-review-count></span> Bewertungen</span></p>
+                            </div>
+                        </div>
+                        <div class="lg:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
+                            <i class="fab fa-google text-blue-500 text-sm"></i>
+                            <i class="fas fa-star text-yellow-400 text-[11px]"></i>
+                            <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
+                        </div>
+                    </div>
+                </div>
                 <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
                     <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
                     <select data-dienstleistung name="dienstleistung" class="hidden" required>
