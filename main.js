@@ -359,6 +359,7 @@ const setupGoogleReviews = async () => {
         const pct = Math.min(100, (rating / 5) * 100) + '%';
         numberEls.forEach((el) => { el.textContent = rating.toFixed(1).replace('.', ','); });
         document.querySelectorAll('[data-avg-fill]').forEach((el) => { el.style.width = pct; });
+        document.querySelectorAll('[data-avg-rating]').forEach((el) => el.classList.remove('invisible'));
     }
     if (total > 0) {
         document.querySelectorAll('[data-review-count]').forEach((el) => { el.textContent = total; });

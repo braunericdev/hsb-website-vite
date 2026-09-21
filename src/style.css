@@ -67,8 +67,3 @@
 .reviews-marquee {
   animation: reviews-marquee var(--marquee-duration, 60s) linear infinite;
 }
-
-.reviews-marquee:hover,
-.reviews-marquee:active {
-  animation-play-state: paused;
-}
