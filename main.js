@@ -11,6 +11,8 @@ const CONVERSION_LABELS = {
     leerstandsbetreuung: 'AW-17931737581/aMIXCK3F9_scEO2zwuZC',
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
+// GET-Endpoint des n8n-Workflows, siehe n8n/google-reviews.md
+const REVIEWS_ENDPOINT = 'https://niewiedertelefonieren.de/webhook/google-reviews';
 
 // 1. Mobile Menü (Vollständig)
 const setupMobileMenu = () => {
@@ -325,6 +327,114 @@ const setupFaqAccordion = () => {
     });
 };
 
+// 8. Google-Bewertungen (live): füllt Durchschnittsanzeige und Karussell aus dem n8n-Endpoint.
+// Schlägt der Abruf fehl, bleiben die statischen Fallback-Werte stehen und der
+// Karussell-Bereich verborgen - es werden bewusst keine Ersatz-Bewertungen angezeigt.
+const setupGoogleReviews = async () => {
+    const section = document.querySelector('[data-reviews-section]');
+    const numberEls = document.querySelectorAll('[data-avg-number]');
+    if (!section && !numberEls.length) return;
+
+    let data;
+    try {
+        const res = await fetch(REVIEWS_ENDPOINT, { headers: { Accept: 'application/json' } });
+        if (!res.ok) return;
+        data = await res.json();
+    } catch {
+        return;
+    }
+
+    const reviews = (Array.isArray(data.reviews) ? data.reviews : [])
+        .filter((r) => r && r.text && Number(r.rating) > 0);
+    const computedAvg = reviews.length ? reviews.reduce((sum, r) => sum + Number(r.rating), 0) / reviews.length : 0;
+    // Gesamtdurchschnitt von Google hat Vorrang (die API liefert nur die neuesten Bewertungen)
+    const rating = Number(data.rating) > 0 ? Number(data.rating) : computedAvg;
+    const total = Number(data.total) > 0 ? Number(data.total) : reviews.length;
+
+    if (rating > 0) {
+        const pct = Math.min(100, (rating / 5) * 100) + '%';
+        numberEls.forEach((el) => { el.textContent = rating.toFixed(1).replace('.', ','); });
+        document.querySelectorAll('[data-avg-fill]').forEach((el) => { el.style.width = pct; });
+    }
+    if (total > 0) {
+        document.querySelectorAll('[data-review-count]').forEach((el) => { el.textContent = total; });
+        document.querySelectorAll('[data-review-count-wrap]').forEach((el) => el.classList.remove('hidden'));
+    }
+
+    const track = section && section.querySelector('[data-reviews-track]');
+    const template = section && section.querySelector('template[data-review-template]');
+    if (!track || !template || !reviews.length) return;
+
+    reviews.forEach((r) => {
+        const card = template.content.cloneNode(true);
+        const set = (field, value) => { card.querySelector(`[data-field="${field}"]`).textContent = value; };
+        const name = String(r.author || 'Google-Nutzer').trim();
+        set('name', name);
+        set('initial', name.charAt(0).toUpperCase());
+        set('time', r.time || '');
+        set('text', String(r.text).trim());
+        card.querySelector('[data-field="stars"]').style.width = Math.min(100, (Number(r.rating) / 5) * 100) + '%';
+        track.appendChild(card);
+    });
+    section.classList.remove('hidden');
+
+    const prev = section.querySelector('[data-reviews-prev]');
+    const next = section.querySelector('[data-reviews-next]');
+    const step = () => {
+        const first = track.firstElementChild;
+        return first ? first.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : 0;
+    };
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    const go = (dir) => {
+        if (dir > 0 && atEnd()) track.scrollTo({ left: 0 });
+        else track.scrollBy({ left: dir * step() });
+    };
+    if (prev) prev.addEventListener('click', () => go(-1));
+    if (next) next.addEventListener('click', () => go(1));
+
+    const overflows = () => track.scrollWidth > track.clientWidth + 4;
+    const toggleArrows = () => [prev, next].forEach((b) => b && b.classList.toggle('md:hidden', !overflows()));
+    toggleArrows();
+    window.addEventListener('resize', toggleArrows);
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let paused = false;
+    ['mouseenter', 'focusin', 'touchstart'].forEach((ev) => track.addEventListener(ev, () => { paused = true; }, { passive: true }));
+    ['mouseleave', 'focusout'].forEach((ev) => track.addEventListener(ev, () => { paused = false; }));
+    setInterval(() => { if (!paused && !document.hidden && overflows()) go(1); }, 6000);
+};
+
+// 9. Hochzählende Zahl: startet, sobald das Element sichtbar wird, und endet bei data-count-up
+const setupCountUp = () => {
+    const els = document.querySelectorAll('[data-count-up]');
+    if (!els.length) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const run = (el) => {
+        const target = Number(el.dataset.countUp);
+        const suffix = el.dataset.countSuffix || '';
+        if (reduced || !('requestAnimationFrame' in window)) { el.textContent = target + suffix; return; }
+        const duration = 1800;
+        const start = performance.now();
+        const tick = (now) => {
+            const t = Math.min(1, (now - start) / duration);
+            const eased = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.round(target * eased) + (t === 1 ? suffix : '');
+            if (t < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+    };
+    if (!reduced) els.forEach((el) => { el.textContent = '0'; });
+    if (!('IntersectionObserver' in window)) { els.forEach(run); return; }
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+            run(entry.target);
+        });
+    }, { threshold: 0.6 });
+    els.forEach((el) => io.observe(el));
+};
+
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach
 // vollständigem DOM-Parsing – ein Warten auf "load" (alle Bilder etc.) ist
 // für diese Interaktionen nicht nötig und verzögert sie unnötig.
@@ -334,3 +444,5 @@ setupNavigationIntelligence();
 setupKontaktForm();
 setupBewerbungForm();
 setupFaqAccordion();
+setupGoogleReviews();
+setupCountUp();
