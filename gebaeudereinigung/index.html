@@ -90,16 +90,6 @@
                         </h2>
                     </div>
 
-                    <div class="flex flex-col items-start lg:flex-row lg:items-center gap-x-5 gap-y-2 bg-white/85 backdrop-blur-sm rounded-2xl px-5 py-3.5 text-sm font-bold text-gray-700 w-fit shadow-xl">
-                        <span class="flex items-center gap-1.5"><i class="fas fa-file-invoice text-[#8B4513]"></i> Digitale Leistungsberichte</span>
-                        <span class="hidden lg:inline text-gray-300">|</span>
-                        <span class="flex items-center gap-1.5"><i class="fas fa-broom text-[#8B4513]"></i> Gründliche Reinigung</span>
-                        <span class="hidden lg:inline text-gray-300">|</span>
-                        <span class="flex items-center gap-1.5"><i class="fas fa-user-shield text-[#8B4513]"></i> Diskret & Sicher</span>
-                        <span class="hidden lg:inline text-gray-300">|</span>
-                        <span class="flex items-center gap-1.5"><i class="fas fa-calendar-check text-[#8B4513]"></i> Feste Intervalle</span>
-                    </div>
-
                     <div class="p-6 md:p-8 rounded-2xl bg-white/90 border border-[#8B4513]/10 shadow-xl">
                         <h3 class="text-xl font-bold mb-3 text-[#8B4513] uppercase tracking-tight flex items-center">
                             <i class="fas fa-house-chimney mr-2"></i> Alles aus einer Hand
@@ -115,29 +105,29 @@
 
                 <div id="kontakt-formular" class="scroll-mt-20 flex flex-col bg-white rounded-2xl shadow-xl lg:col-span-4 overflow-hidden">
                     <div class="flex-1 flex flex-col justify-center p-4 md:p-8">
-                    <!-- Zahl, Sternfüllung und Anzahl setzt main.js aus src/data/google-reviews.json; bis dahin unsichtbar, damit nie ein veralteter Wert steht -->
-                    <div data-avg-rating class="invisible flex justify-end mb-5">
-                        <div class="hidden lg:block">
-                            <div class="flex items-center gap-4 bg-gray-50 px-4 md:px-6 py-3 rounded-full border border-gray-200 shadow-sm">
-                                <div class="text-2xl"><i class="fab fa-google text-blue-500"></i></div>
+                    <div class="flex items-center justify-between gap-3 mb-1">
+                        <h3 class="text-lg md:text-xl font-bold text-[#8B4513] flex items-center uppercase tracking-tight">
+                            <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
+                        </h3>
+                        <!-- Zahl, Sternfüllung und Anzahl setzt main.js aus src/data/google-reviews.json; bis dahin unsichtbar, damit nie ein veralteter Wert steht -->
+                        <div data-avg-rating class="invisible shrink-0">
+                            <div class="hidden xl:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                                <div class="text-xl"><i class="fab fa-google text-blue-500"></i></div>
                                 <div>
-                                    <span class="relative inline-block text-sm mb-0.5 leading-none">
+                                    <span class="relative inline-block text-xs mb-0.5 leading-none">
                                         <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                         <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
                                     </span>
-                                    <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">aus <span data-review-count></span> Google-Bewertungen</span></p>
+                                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">· <span data-review-count></span> Bewertungen</span></p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="lg:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
-                            <i class="fab fa-google text-blue-500 text-sm"></i>
-                            <i class="fas fa-star text-yellow-400 text-[11px]"></i>
-                            <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
+                            <div class="xl:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
+                                <i class="fab fa-google text-blue-500 text-sm"></i>
+                                <i class="fas fa-star text-yellow-400 text-[11px]"></i>
+                                <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
+                            </div>
                         </div>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold mb-1 text-[#8B4513] flex items-center uppercase tracking-tight">
-                        <i class="fas fa-calendar-alt mr-2 text-xl"></i> Termin anfragen!
-                    </h3>
                     <p class="text-gray-600 mb-3 md:mb-4 font-medium text-sm">Kostenlos und unverbindlich.</p>
 
                     <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
