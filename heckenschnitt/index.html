@@ -32,7 +32,7 @@
 
                 <div class="flex flex-col gap-8 lg:col-span-5">
                     <div class="text-left">
-                        <h1 class="text-4xl md:text-6xl font-extrabold mb-5 lg:mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
+                        <h1 class="text-4xl md:text-6xl lg:text-5xl xl:text-6xl font-extrabold mb-5 lg:mb-6 text-gray-900 leading-tight uppercase tracking-tighter">
                             Rückschnitt-Saison ist eröffnet: <br class="hidden md:block">
                             <span class="text-[#8B4513]">Jetzt Rückschnitt vom Profi sichern!</span>
                         </h1>
@@ -45,7 +45,7 @@
                         </h2>
                     </div>
 
-                    <div id="hero-slider" class="relative aspect-video lg:aspect-auto lg:flex-1 lg:min-h-[360px] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-200 group">
+                    <div id="hero-slider" class="relative aspect-video lg:aspect-auto lg:flex-1 lg:min-h-[260px] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-gray-200 group">
                         <button id="slider-prev" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/80 transition text-gray-800">
                             <i class="fas fa-chevron-left"></i>
                         </button>
@@ -73,19 +73,23 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-4 flex flex-col gap-4">
+                <div class="lg:col-span-4 lg:self-start">
                     <load src="src/components/hero-form.html" service="heckenschnitt" service_label="Heckenschnitt" heading="Termin sichern!" icon="fa-cut" />
-
-                    <div class="flex flex-wrap justify-between gap-x-4 gap-y-2 bg-[#8B4513]/5 border border-[#8B4513]/10 rounded-2xl shadow-sm px-5 py-3.5 text-sm font-bold text-[#8B4513]">
-                        <span class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> Maximale Zeitersparnis</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> Inkl. Abtransport</span>
-                        <span class="flex items-center gap-2"><i class="fas fa-check-circle text-green-500"></i> Top-Equipment</span>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+
+    <section class="py-6 bg-white border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 text-sm font-bold text-[#8B4513]">
+                <span class="flex items-center gap-2 bg-[#8B4513]/5 border border-[#8B4513]/10 rounded-xl px-4 py-2.5 shadow-sm"><i class="fas fa-check-circle text-green-500"></i> Maximale Zeitersparnis</span>
+                <span class="flex items-center gap-2 bg-[#8B4513]/5 border border-[#8B4513]/10 rounded-xl px-4 py-2.5 shadow-sm"><i class="fas fa-check-circle text-green-500"></i> Inkl. Abtransport</span>
+                <span class="flex items-center gap-2 bg-[#8B4513]/5 border border-[#8B4513]/10 rounded-xl px-4 py-2.5 shadow-sm"><i class="fas fa-check-circle text-green-500"></i> Top-Equipment</span>
+            </div>
+        </div>
+    </section>
 
     <section class="py-12 bg-[#8B4513]/5 border-t border-b border-gray-100">
         <div class="container mx-auto px-4 max-w-4xl text-center">
