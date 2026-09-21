@@ -171,6 +171,6 @@ test('Durchschnittsbewertung im Hero-Formular entspricht src/data/google-reviews
     await page.goto('/gebaeudereinigung/');
     const badge = page.locator('[data-avg-rating]');
     await expect(badge).toBeVisible();
-    await expect(badge.locator('[data-avg-number]')).toHaveText(data.rating.toFixed(1).replace('.', ','));
+    await expect(badge.locator('[data-avg-number]:visible')).toHaveText(data.rating.toFixed(1).replace('.', ','));
     await expect(page.locator('[data-reviews-track] article').first()).toBeAttached();
 });
