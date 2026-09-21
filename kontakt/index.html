@@ -26,26 +26,29 @@
     <load src="src/components/navbar.html" />
 
     <main class="flex-grow">
-    <section class="relative py-12 bg-gray-50">
-        <!-- TODO(assets): Platzhalterfoto von der Leerstandsbetreuung-Seite - durch ein eigenes Foto ersetzen -->
+    <div class="relative">
+    <!-- TODO(assets): Platzhalterfoto von der Leerstandsbetreuung-Seite - durch ein eigenes Foto ersetzen -->
+    <!-- Desktop: Foto läuft hinter Hero UND Formular durch, der Weiß-Verlauf sitzt erst in der unteren Formularhälfte -->
+    <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-[url('/leerstandsbetreuung-hero.jpg')] bg-cover bg-center"></div>
+    <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-white/25"></div>
+    <section class="relative py-12 bg-gray-50 md:bg-transparent">
         <div class="md:hidden absolute -top-20 inset-x-0 h-72">
             <div class="w-full h-full bg-[url('/leerstandsbetreuung-hero.jpg')] bg-cover bg-center"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-white/0 via-white/20 via-65% to-white"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-white/70 via-45% to-white"></div>
         </div>
-        <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-[url('/leerstandsbetreuung-hero.jpg')] bg-cover bg-center"></div>
-        <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-gradient-to-b from-white/0 via-white/10 via-70% to-white"></div>
         <div class="container relative z-10 mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter mb-4">
                 Kontakt & Anfrage
             </h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium leading-relaxed">
+            <p class="text-lg md:text-xl text-gray-900 max-w-2xl mx-auto font-semibold leading-relaxed">
                 Erzählen Sie uns von Ihrem Projekt. Wir erstellen Ihnen gerne ein unverbindliches und kostenloses Angebot.
             </p>
         </div>
     </section>
 
-    <div class="pt-8 pb-16 md:pt-10 md:pb-20 bg-white">
-        <div class="container mx-auto md:px-4">
+    <div class="relative pt-8 pb-16 md:pt-10 md:pb-20 bg-white md:bg-transparent">
+        <div class="hidden md:block absolute bottom-0 inset-x-0 h-[52.6%] bg-gradient-to-b from-transparent to-white"></div>
+        <div class="container relative mx-auto md:px-4">
             <div class="max-w-5xl mx-auto bg-white sm:rounded-2xl shadow-xl border border-gray-100 overflow-hidden md:flex">
                 
                 <div class="bg-[#8B4513] text-white p-10 md:w-2/5 flex flex-col justify-between">
@@ -185,6 +188,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </main>
 
