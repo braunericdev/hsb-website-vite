@@ -636,23 +636,12 @@
         </div>
     </section>
 
-    <section class="py-14 bg-[#8B4513]/5 border-t border-gray-100">
-        <div class="container mx-auto px-4 max-w-3xl text-center">
-            <div class="flex items-center justify-center gap-4 md:gap-6">
-                <div data-count-up="50" data-count-suffix="+" class="text-6xl md:text-7xl font-extrabold text-[#8B4513] tracking-tighter tabular-nums">50+</div>
-                <div class="text-left">
-                    <p class="text-xl md:text-2xl font-bold text-gray-900 leading-tight uppercase tracking-tight">Zufriedene<br>Kunden</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Live-Google-Bewertungen: Daten liefert der n8n-Endpoint (siehe n8n/google-reviews.md).
          Bleibt der Abruf aus, bleibt der Bereich verborgen - bewusst keine Ersatz-Zitate. -->
     <section data-reviews-section class="hidden py-20 bg-white border-t border-gray-100">
         <div class="container mx-auto px-4 max-w-6xl">
 
-            <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-6">
                 <div class="text-center md:text-left">
                     <h3 class="text-3xl md:text-4xl font-bold mb-4 text-gray-900 tracking-tighter">Was unsere Kunden sagen</h3>
                     <div class="w-24 h-1 bg-[#8B4513] mx-auto md:mx-0 rounded-full"></div>
@@ -667,6 +656,11 @@
                         <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider"><span data-avg-number>–</span> / 5,0 <span data-review-count-wrap class="hidden">aus <span data-review-count></span> Google-Bewertungen</span></p>
                     </div>
                 </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-4 md:gap-6 mb-10">
+                <div data-count-up="50" data-count-suffix="+" class="text-6xl md:text-7xl font-extrabold text-[#8B4513] tracking-tighter tabular-nums">50+</div>
+                <p class="text-xl md:text-2xl font-bold text-gray-900 leading-tight uppercase tracking-tight text-left">Zufriedene<br>Kunden</p>
             </div>
 
             <div data-reviews-track class="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)]"></div>
