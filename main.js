@@ -11,8 +11,6 @@ const CONVERSION_LABELS = {
     leerstandsbetreuung: 'AW-17931737581/aMIXCK3F9_scEO2zwuZC',
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
-// GET-Endpoint des n8n-Workflows, siehe n8n/google-reviews.md
-const REVIEWS_ENDPOINT = 'https://niewiedertelefonieren.de/webhook/google-reviews';
 
 // 1. Mobile Menü (Vollständig)
 const setupMobileMenu = () => {
@@ -327,9 +325,9 @@ const setupFaqAccordion = () => {
     });
 };
 
-// 8. Google-Bewertungen (live): füllt Durchschnittsanzeige und Karussell aus dem n8n-Endpoint.
-// Schlägt der Abruf fehl, bleiben die statischen Fallback-Werte stehen und der
-// Karussell-Bereich verborgen - es werden bewusst keine Ersatz-Bewertungen angezeigt.
+// 8. Google-Bewertungen: füllt Durchschnittsanzeige und Karussell aus src/data/google-reviews.json.
+// Die Datei wird per scripts/update-reviews.mjs aus einer kopierten Google-Bewertungsliste gepflegt.
+// Nur auf Seiten mit Bewertungs-Elementen wird sie (als eigener Chunk) nachgeladen.
 const setupGoogleReviews = async () => {
     const section = document.querySelector('[data-reviews-section]');
     const numberEls = document.querySelectorAll('[data-avg-number]');
@@ -337,19 +335,25 @@ const setupGoogleReviews = async () => {
 
     let data;
     try {
-        const res = await fetch(REVIEWS_ENDPOINT, { headers: { Accept: 'application/json' } });
-        if (!res.ok) return;
-        data = await res.json();
+        data = (await import('./src/data/google-reviews.json')).default;
     } catch {
         return;
     }
 
+    const relativeTime = (iso) => {
+        const days = Math.max(0, Math.round((Date.now() - new Date(iso + 'T12:00:00')) / 86400000));
+        const rtf = new Intl.RelativeTimeFormat('de', { numeric: 'always' });
+        if (days < 7) return rtf.format(-Math.max(days, 1), 'day');
+        if (days < 30) return rtf.format(-Math.floor(days / 7), 'week');
+        const months = Math.round(days / 30.44);
+        if (months < 12) return rtf.format(-months, 'month');
+        return rtf.format(-Math.max(1, Math.floor(days / 365)), 'year');
+    };
+
     const reviews = (Array.isArray(data.reviews) ? data.reviews : [])
         .filter((r) => r && r.text && Number(r.rating) > 0);
-    const computedAvg = reviews.length ? reviews.reduce((sum, r) => sum + Number(r.rating), 0) / reviews.length : 0;
-    // Gesamtdurchschnitt von Google hat Vorrang (die API liefert nur die neuesten Bewertungen)
-    const rating = Number(data.rating) > 0 ? Number(data.rating) : computedAvg;
-    const total = Number(data.total) > 0 ? Number(data.total) : reviews.length;
+    const rating = Number(data.rating) || 0;
+    const total = Number(data.total) || reviews.length;
 
     if (rating > 0) {
         const pct = Math.min(100, (rating / 5) * 100) + '%';
@@ -371,7 +375,7 @@ const setupGoogleReviews = async () => {
         const name = String(r.author || 'Google-Nutzer').trim();
         set('name', name);
         set('initial', name.charAt(0).toUpperCase());
-        set('time', r.time || '');
+        set('time', r.date ? relativeTime(r.date) : '');
         set('text', String(r.text).trim());
         card.querySelector('[data-field="stars"]').style.width = Math.min(100, (Number(r.rating) / 5) * 100) + '%';
         track.appendChild(card);
