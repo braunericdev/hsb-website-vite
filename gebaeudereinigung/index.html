@@ -66,9 +66,18 @@
 
                 <div class="space-y-8 lg:col-span-5">
                     <div class="text-left">
-                        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight tracking-tighter">
-                            Professionelle Gebäudereinigung – für einen glänzenden ersten Eindruck. <span class="text-[#8B4513]">Zuverlässig, diskret, gründlich.</span>
-                        </h1>
+                        <!-- Mobil: H1 läuft inline, das Badge folgt als rechter Float direkt dahinter. Passt es in die letzte Textzeile,
+                             steht es dort rechtsbündig, sonst automatisch in der Zeile darunter. Ab lg ist das Badge weg, die H1 wieder ein Block. -->
+                        <div class="flow-root mb-6">
+                            <h1 class="inline lg:block text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight tracking-tighter">
+                                Professionelle Gebäudereinigung – für einen glänzenden ersten Eindruck. <span class="text-[#8B4513]">Zuverlässig, diskret, gründlich.</span>
+                            </h1>
+                            <div data-avg-badge aria-hidden="true" class="invisible lg:hidden float-right ml-2 mt-2 flex items-center gap-1.5 bg-white/90 border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
+                                <i class="fab fa-google text-blue-500 text-sm"></i>
+                                <i class="fas fa-star text-yellow-400 text-[11px]"></i>
+                                <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
+                            </div>
+                        </div>
                         <a href="#kontakt-formular" class="pulse-cta lg:hidden flex items-center justify-center gap-2 w-full bg-[#1F6F4A] text-white py-4 rounded-xl font-bold text-base uppercase tracking-wide shadow-lg hover:bg-[#164F35] active:scale-95 transition mb-6">
                             <i class="fas fa-circle-exclamation"></i> Jetzt Angebot anfordern
                         </a>
