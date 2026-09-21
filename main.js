@@ -9,6 +9,7 @@ const CONVERSION_LABELS = {
     gebaeudereinigung: 'AW-17931737581/M9GPCNjm4fkcEO2zwuZC',
     hausmeisterservice: 'AW-17931737581/6tevCOTT4vkcEO2zwuZC',
     leerstandsbetreuung: 'AW-17931737581/aMIXCK3F9_scEO2zwuZC',
+    winterdienst: 'AW-17931737581/-gMlCMqr8vscEO2zwuZC',
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
 
