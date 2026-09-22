@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 
 // Deckt genau den Fall ab, den ein grüner Build allein nicht garantiert:
 // Seite lädt, zeigt Inhalt (kein Whitescreen) und wirft dabei keine eigenen JS-Fehler.
-const PAGES = ['/', '/kontakt/', '/karriere/', '/hausmeisterservice/', '/heckenschnitt/', '/gebaeudereinigung/', '/winterdienst/'];
+const PAGES = ['/', '/kontakt/', '/karriere/', '/hausmeisterservice/', '/heckenschnitt/', '/gebaeudereinigung/', '/winterdienst/', '/rauchmelder/', '/leerstandsbetreuung/'];
 
 // Drittanbieter (Cookiebot-Consent, Google Ads/Analytics) laden extern und können
 // abhängig von Domain-Freigaben/Netzwerk fehlschlagen, ohne dass unsere Seite kaputt ist.
