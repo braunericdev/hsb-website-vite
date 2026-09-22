@@ -26,13 +26,20 @@
     <load src="src/components/navbar.html" />
 
     <main>
-    <section id="start" class="relative overflow-hidden bg-white md:bg-gray-200 md:min-h-screen md:flex md:items-end md:pb-16 md:px-4">
-        <div class="relative h-96 sm:h-[28rem] md:absolute md:inset-0 md:h-full overflow-hidden">
-            <picture>
-                <source media="(min-width: 768px)" srcset="/hero.JPG">
-                <img src="/ueber_uns.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[center_20%] md:object-[80%_20%] scale-125 md:scale-100" />
-            </picture>
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-75% to-white md:from-50% md:to-white md:to-[70%]"></div>
+    <section id="start" class="relative bg-white md:bg-gray-200 md:min-h-screen md:flex md:items-end md:pb-16 md:px-4">
+        <!-- Flow-Platzhalter auf Mobil: reserviert die Höhe, die das (nun bis unter die Navbar hochgezogene) Bild einnimmt -->
+        <div class="h-96 sm:h-[28rem] md:hidden" aria-hidden="true"></div>
+
+        <!-- Mobil: Bild reicht bis unter die halbtransparente Navbar hoch -->
+        <div class="md:hidden absolute -top-20 inset-x-0 h-[calc(24rem+5rem)] sm:h-[calc(28rem+5rem)] overflow-hidden">
+            <img src="/ueber_uns.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[center_20%] scale-125" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[79%] to-white"></div>
+        </div>
+
+        <!-- Desktop: Bild füllt die Section flächendeckend, ebenfalls bis unter die Navbar -->
+        <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 overflow-hidden">
+            <img src="/hero.JPG" alt="Braun Hausmeisterservice Team" class="w-full h-full object-cover object-[80%_20%]" />
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent from-[46%] to-white to-[64%]"></div>
         </div>
 
         <a href="/karriere/" class="absolute top-8 left-2 md:top-28 md:left-60 z-20 inline-flex items-center gap-2 sm:gap-3 bg-white border-4 border-[#8B4513] text-[#8B4513] shadow-xl rounded-full px-6 py-3 sm:px-8 sm:py-4 -rotate-6 hover:rotate-0 transition-transform duration-300">
@@ -170,6 +177,32 @@
 
                 <div class="group p-6 border border-gray-100 rounded-xl bg-white flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(139,69,19,0.1)] transition-all duration-300">
                     <div>
+                        <i class="fas fa-bell text-3xl text-[#8B4513] mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3 text-[#8B4513] uppercase tracking-tight">Rauchmelder</h3>
+                        <ul class="text-base text-gray-600 space-y-1 mb-6 font-medium">
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Einbau & Wartung</li>
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Jährliche Prüfung nach DIN 14676</li>
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Für Vermieter & Hausverwaltungen</li>
+                        </ul>
+                    </div>
+                    <a href="/rauchmelder/" class="inline-flex items-center text-[#8B4513] font-bold hover:underline">Mehr erfahren <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                </div>
+
+                <div class="group p-6 border border-gray-100 rounded-xl bg-white flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(139,69,19,0.1)] transition-all duration-300">
+                    <div>
+                        <i class="fas fa-house-circle-check text-3xl text-[#8B4513] mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3 text-[#8B4513] uppercase tracking-tight">Leerstandsbetreuung</h3>
+                        <ul class="text-base text-gray-600 space-y-1 mb-6 font-medium">
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Sichtkontrolle innen & außen</li>
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Post leeren, Frostschutz</li>
+                            <li><i class="fas fa-check text-[#8B4513] mr-2"></i>Für Eigentümer & Hausverwaltungen</li>
+                        </ul>
+                    </div>
+                    <a href="/leerstandsbetreuung/" class="inline-flex items-center text-[#8B4513] font-bold hover:underline">Mehr erfahren <i class="fas fa-arrow-right ml-2 text-xs"></i></a>
+                </div>
+
+                <div class="group p-6 border border-gray-100 rounded-xl bg-white flex flex-col justify-between hover:-translate-y-1 hover:shadow-[0_10px_20px_rgba(139,69,19,0.1)] transition-all duration-300">
+                    <div>
                         <i class="fas fa-truck-loading text-3xl text-[#8B4513] mb-4"></i>
                         <h3 class="text-xl font-bold mb-3 text-[#8B4513] uppercase tracking-tight">Entrümpelung</h3>
                         <p class="text-base text-gray-600 leading-relaxed font-medium mb-6">Wir schaffen Platz. Schnelle und diskrete Entrümpelung von Kellern, Dachböden oder Wohnungen.</p>
@@ -180,92 +213,8 @@
         </div>
     </section>
 
-    <section class="py-20 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 uppercase tracking-tighter drop-shadow-sm">Was unsere Kunden sagen</h2>
-                <div class="w-24 h-1 bg-[#8B4513] mx-auto rounded-full"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                <div class="flex flex-col gap-6">
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Wir sind äußerst zufrieden mit der sehr professionellen und vielseitigen Arbeitsleistung der Firma Braun. Die Arbeiten wurden zuverlässig und mit großer Sorgfalt bis ins kleinste Detail ausgeführt. Die Kommunikation war durchweg angenehm, die Termine wurden eingehalten und die Baustelle stets sauber hinterlassen. Vielen Dank für den ausgezeichneten Service – uneingeschränkt weiterzuempfehlen!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
+    <load src="src/components/reviews.html" />
 
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Gute Leistung. Vielen Dank.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-6">
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow h-full">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Der Hausmeisterservice ist super zuverlässig und bei Fragen immer sofort erreichbar. Besonders toll finde ich die Flexibilität. Wenn mal kurzfristig was ansteht, wird sofort eine Lösung gefunden. Kann ich nur wärmstens weiterempfehlen!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
-
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Freundliche Beratung und super Arbeit. Besonders die kurzfristige Verfügbarkeit kann man hervorheben. Gerne wieder!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section id="kontakt" class="py-20 bg-white">
         <div class="container mx-auto px-4">

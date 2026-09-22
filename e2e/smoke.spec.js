@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 
 // Deckt genau den Fall ab, den ein grüner Build allein nicht garantiert:
 // Seite lädt, zeigt Inhalt (kein Whitescreen) und wirft dabei keine eigenen JS-Fehler.
-const PAGES = ['/', '/kontakt/', '/karriere/', '/hausmeisterservice/'];
+const PAGES = ['/', '/kontakt/', '/karriere/', '/hausmeisterservice/', '/heckenschnitt/', '/gebaeudereinigung/', '/winterdienst/', '/rauchmelder/', '/leerstandsbetreuung/'];
 
 // Drittanbieter (Cookiebot-Consent, Google Ads/Analytics) laden extern und können
 // abhängig von Domain-Freigaben/Netzwerk fehlschlagen, ohne dass unsere Seite kaputt ist.
@@ -154,4 +155,22 @@ test('Kontaktformular sendet an den n8n-Webhook und leitet weiter', async ({ pag
     await page.waitForURL('**/danke/**');
     expect(new URL(page.url()).searchParams.get('dienstleistung')).toBe('allgemein');
     expect(requestBody).toContain('Erika Musterfrau');
+});
+
+test('Durchschnittsbewertung im Hero-Formular entspricht src/data/google-reviews.json', async ({ page }) => {
+    // Schützt davor, dass die angezeigte Bewertung nach einem Update der Bewertungsdaten veraltet.
+    const data = JSON.parse(readFileSync(new URL('../src/data/google-reviews.json', import.meta.url), 'utf8'));
+
+    // Datei muss in sich stimmig sein: Ø aus den Bewertungen, sofern alle Bewertungen einen Text haben
+    if (data.total === data.reviews.length) {
+        const mean = data.reviews.reduce((sum, r) => sum + r.rating, 0) / data.reviews.length;
+        expect(Math.abs(data.rating - mean)).toBeLessThan(0.01);
+    }
+    expect(data.total).toBeGreaterThanOrEqual(data.reviews.length);
+
+    await page.goto('/gebaeudereinigung/');
+    const badge = page.locator('#kontakt-formular [data-avg-rating]');
+    await expect(badge).toBeVisible();
+    await expect(badge.locator('[data-avg-number]:visible')).toHaveText(data.rating.toFixed(1).replace('.', ','));
+    await expect(page.locator('[data-reviews-track] article').first()).toBeAttached();
 });

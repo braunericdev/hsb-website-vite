@@ -34,4 +34,36 @@
   .nav-parent-active {
     @apply !text-[#8B4513] !font-bold;
   }
+
+  /* Pulsierender Ring für auffällige CTA-Buttons (z.B. mobiler Sprung-Button) */
+  .pulse-cta {
+    animation: pulse-cta 1.2s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-cta {
+      animation: none;
+    }
+  }
+}
+
+@keyframes pulse-cta {
+  0% {
+    box-shadow: 0 0 0 0 rgba(31, 111, 74, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(31, 111, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(31, 111, 74, 0);
+  }
+}
+
+@keyframes reviews-marquee {
+  to {
+    transform: translateX(var(--marquee-shift));
+  }
+}
+
+.reviews-marquee {
+  animation: reviews-marquee var(--marquee-duration, 60s) linear infinite;
 }
