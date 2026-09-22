@@ -26,19 +26,29 @@
     <load src="src/components/navbar.html" />
 
     <main class="flex-grow">
-    <section class="py-12 bg-gray-50 border-b border-gray-100">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter mb-4 text-shadow-sm">
+    <div class="relative">
+    <!-- TODO(assets): Platzhalterfoto von der Leerstandsbetreuung-Seite - durch ein eigenes Foto ersetzen -->
+    <!-- Desktop: Foto läuft hinter Hero UND Formular durch, der Weiß-Verlauf sitzt erst in der unteren Formularhälfte -->
+    <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-[url('/leerstandsbetreuung-hero.jpg')] bg-cover bg-center"></div>
+    <div class="hidden md:block absolute -top-20 inset-x-0 bottom-0 bg-white/45"></div>
+    <section class="relative py-12 bg-gray-50 md:bg-transparent">
+        <div class="md:hidden absolute -top-20 inset-x-0 h-72">
+            <div class="w-full h-full bg-[url('/leerstandsbetreuung-hero.jpg')] bg-cover bg-center"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-white/10 via-white/70 via-45% to-white"></div>
+        </div>
+        <div class="container relative z-10 mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 uppercase tracking-tighter mb-4">
                 Kontakt & Anfrage
             </h1>
-            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium leading-relaxed">
+            <p class="text-lg md:text-xl text-gray-900 max-w-2xl mx-auto font-semibold leading-relaxed">
                 Erzählen Sie uns von Ihrem Projekt. Wir erstellen Ihnen gerne ein unverbindliches und kostenloses Angebot.
             </p>
         </div>
     </section>
 
-    <div class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto md:px-4">
+    <div class="relative pt-8 pb-16 md:pt-10 md:pb-20 bg-white md:bg-transparent">
+        <div class="hidden md:block absolute bottom-0 inset-x-0 h-[61%] bg-gradient-to-b from-transparent to-white to-[41%]"></div>
+        <div class="container relative mx-auto md:px-4">
             <div class="max-w-5xl mx-auto bg-white sm:rounded-2xl shadow-xl border border-gray-100 overflow-hidden md:flex">
                 
                 <div class="bg-[#8B4513] text-white p-10 md:w-2/5 flex flex-col justify-between">
@@ -89,32 +99,51 @@
                     </div>
                 </div>
                 
-                <div class="p-6 md:p-10 md:w-3/5 bg-gray-50">
-                    <h4 class="text-2xl font-bold mb-6 text-gray-800 uppercase tracking-tight">Nachricht senden</h4>
+                <div class="p-6 md:p-10 md:w-3/5 bg-white">
+                    <div class="flex items-center justify-between gap-3 mb-6">
+                        <h4 class="text-2xl font-bold text-gray-800 uppercase tracking-tight">Nachricht senden</h4>
+                        <div data-avg-rating class="invisible shrink-0">
+                            <div class="hidden lg:flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+                                <div class="text-xl"><i class="fab fa-google text-blue-500"></i></div>
+                                <div>
+                                    <span class="relative inline-block text-xs mb-0.5 leading-none">
+                                        <span class="text-gray-300 whitespace-nowrap"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                        <span data-avg-fill class="absolute inset-y-0 left-0 overflow-hidden whitespace-nowrap text-yellow-400" style="width:0%"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                                    </span>
+                                    <p class="text-[10px] font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"><span data-avg-number>–</span> / 5,0 Kundenbewertung</p>
+                                </div>
+                            </div>
+                            <div class="lg:hidden flex items-center gap-1.5 bg-white border border-gray-200 rounded-full pl-2.5 pr-3 py-1 text-xs font-extrabold text-gray-800 shadow-sm leading-none">
+                                <i class="fab fa-google text-blue-500 text-sm"></i>
+                                <i class="fas fa-star text-yellow-400 text-[11px]"></i>
+                                <span><span data-avg-number>–</span><span class="text-gray-400 font-bold">/5</span></span>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <form id="kontaktForm" action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-5">
+                    <form id="kontaktForm" data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-3">
                         <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Name</label>
-                                <input type="text" name="name" placeholder="Max Mustermann" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                                <input type="text" name="name" placeholder="Max Mustermann" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">E-Mail (optional)</label>
-                                <input type="email" name="email" placeholder="beispiel@mail.de" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium">
+                                <input type="email" name="email" placeholder="beispiel@mail.de" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium">
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Telefon</label>
-                                <input type="tel" name="telefon" placeholder="+49 ..." class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                                <input type="tel" name="telefon" placeholder="+49 ..." class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
                             </div>
                             <div class="space-y-1">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Dienstleistung</label>
                                 <div class="relative">
-                                    <select id="dienstleistung" name="dienstleistung" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white appearance-none cursor-pointer font-medium" required>
+                                    <select id="dienstleistung" data-dienstleistung name="dienstleistung" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white appearance-none cursor-pointer font-medium" required>
                                         <option value="" disabled selected>Bitte wählen...</option>
                                         <option value="allgemein">Allgemeine Anfrage</option>
                                         <option value="hausmeisterservice">Hausmeisterservice</option>
@@ -126,24 +155,26 @@
                                         <option value="winterdienst">Winterdienst</option>
                                         <option disabled>──────────</option>
                                         <option value="gebaeudereinigung">Gebäudereinigung</option>
+                                        <option value="rauchmelder">Rauchwarnmelder-Service</option>
+                                        <option value="leerstandsbetreuung">Leerstandsbetreuung</option>
                                         <option value="entruempelung">Entrümpelung</option>
                                     </select>
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-gray-500">
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-gray-500">
                                         <i class="fas fa-chevron-down text-xs"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div class="space-y-1 relative">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">PLZ</label>
-                                <input type="text" name="plz" id="plz-input" placeholder="56170" maxlength="5" pattern="[0-9]{5}" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                                <input type="text" name="plz" id="plz-input" data-plz-input placeholder="56170" maxlength="5" pattern="[0-9]{5}" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
                             </div>
                             <div class="space-y-1 relative">
                                 <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ort</label>
-                                <input type="text" name="ort" id="ort-input" placeholder="Bendorf" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
-                                <div id="ort-spinner" class="absolute right-4 bottom-4 hidden">
+                                <input type="text" name="ort" id="ort-input" data-ort-input placeholder="Bendorf" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                                <div id="ort-spinner" data-ort-spinner class="absolute right-3 bottom-3 hidden">
                                     <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#8B4513]"></div>
                                 </div>
                             </div>
@@ -151,7 +182,7 @@
 
                         <div class="space-y-1">
                             <label class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Ihre Nachricht</label>
-                            <textarea name="nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen..." rows="5" class="w-full p-4 border border-gray-200 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium" required></textarea>
+                            <textarea name="nachricht" placeholder="Beschreiben Sie kurz Ihr Anliegen..." rows="2" class="w-full p-3 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium" required></textarea>
                         </div>
 
                         <div class="flex items-start py-2">
@@ -167,8 +198,8 @@
                         </div>
 
                         <div class="pt-4">
-                            <button type="submit" id="submit-btn" class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
-                                <span id="btn-text">Anfrage absenden</span>
+                            <button type="submit" id="submit-btn" data-submit-btn class="w-full bg-[#8B4513] text-white py-3.5 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
+                                <span id="btn-text" data-btn-text>Anfrage absenden</span>
                                 <i class="fas fa-paper-plane ml-2 group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
@@ -176,6 +207,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     </main>
 

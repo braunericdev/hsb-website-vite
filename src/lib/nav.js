@@ -5,6 +5,8 @@ export const DIENSTLEISTUNG_MAPPING = {
     heckenschnitt: 'heckenschnitt',
     rasenmaehen: 'rasenmaehen',
     gebaeudereinigung: 'gebaeudereinigung',
+    rauchmelder: 'rauchmelder',
+    leerstandsbetreuung: 'leerstandsbetreuung',
     entruempelung: 'entruempelung',
     winterdienst: 'winterdienst',
     reinigung: 'reinigung',
