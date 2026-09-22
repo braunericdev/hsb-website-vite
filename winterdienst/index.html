@@ -32,14 +32,18 @@
                 <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-gray-900 uppercase tracking-tighter text-shadow-sm">
                     JETZT HANDELN, BEVOR DER ERSTE SCHNEE KOMMT – SICHERE DIR RECHTZEITIG DEINEN ZUVERLÄSSIGEN WINTERSERVICE.
                 </h1>
+                <load src="src/components/hero-rating-mobile.html" />
+                <a href="#kontakt" class="pulse-cta lg:hidden flex items-center justify-center gap-2 w-full bg-[#1F6F4A] text-white py-4 rounded-xl font-bold text-base uppercase tracking-wide shadow-lg hover:bg-[#164F35] active:scale-95 transition mb-6">
+                    <i class="fas fa-circle-exclamation"></i> Jetzt Angebot anfordern
+                </a>
                 <h2 class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
                     Keine Glätte, kein Risiko – mit unserem zuverlässigen Winterdienst bist du immer auf der sicheren Seite.
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-9 gap-12 items-start">
                 
-                <div class="space-y-8 lg:col-span-3">
+                <div class="space-y-8 lg:col-span-5">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="p-4 rounded-xl flex items-center bg-[#8B4513]/5 border border-[#8B4513]/10 shadow-sm transition hover:-translate-y-0.5 hover:bg-[#8B4513]/10">
                             <i class="fas fa-snowflake mr-3 text-[#8B4513] text-xl"></i>
@@ -99,39 +103,8 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 lg:col-span-2">
-                    <h3 class="text-xl font-bold mb-4 text-[#8B4513] flex items-center uppercase tracking-tight">
-                        <i class="fas fa-calendar-alt mr-2 text-xl"></i> Winterservice buchen!
-                    </h3>
-                    
-                    <ul class="space-y-3 mb-8 text-sm text-gray-600">
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Kostenloses, individuelles Angebot</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Rückmeldung innerhalb von 24h</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Streu- und Räumpflichten erfüllt</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Einsatz auch an Sonn- und Feiertagen</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check-circle text-green-500 mr-3 text-lg"></i>
-                            <span class="font-bold text-gray-700">Schnelle Reaktion</span>
-                        </li>
-                    </ul>
+                <load src="src/components/hero-form.html" service="winterdienst" service_label="Winterdienst" heading="Winterservice buchen!" icon="fa-calendar-alt" />
 
-                    <a href="/kontakt/?dienstleistung=winterdienst" class="block w-full bg-[#8B4513] text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-opacity-90 transition shadow-lg uppercase tracking-wide active:scale-95">
-                        Angebot anfordern
-                    </a>
-                    <p class="text-center text-xs text-gray-400 mt-3 uppercase tracking-widest font-bold">Plätze für die Saison 25/26 begrenzt</p>
-                </div>
             </div>
         </div>
     </section>
@@ -316,109 +289,15 @@
         </div>
     </section>
 
-    <section class="py-20 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800 uppercase tracking-tighter drop-shadow-sm">Was unsere Kunden sagen</h3>
-                <div class="w-24 h-1 bg-[#8B4513] mx-auto rounded-full"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                <div class="flex flex-col gap-6">
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Wir sind äußerst zufrieden mit der sehr professionellen und vielseitigen Arbeitsleistung der Firma Braun. Die Arbeiten wurden zuverlässig und mit großer Sorgfalt bis ins kleinste Detail ausgeführt. Die Kommunikation war durchweg angenehm, die Termine wurden eingehalten und die Baustelle stets sauber hinterlassen. Vielen Dank für den ausgezeichneten Service – uneingeschränkt weiterzuempfehlen!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
+    <load src="src/components/reviews.html" />
 
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Gute Leistung. Vielen Dank.
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="flex flex-col gap-6">
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow h-full">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Der Hausmeisterservice ist super zuverlässig und bei Fragen immer sofort erreichbar. Besonders toll finde ich die Flexibilität. Wenn mal kurzfristig was ansteht, wird sofort eine Lösung gefunden. Kann ich nur wärmstens weiterempfehlen!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
+    <load src="src/components/bottom-form.html" service="winterdienst" service_label="Winterdienst" heading="Zeit für Sicherheit im Winter!" text="Jetzt vorsorgen und entspannt durch den Winter kommen – mit einem professionellen Service, der für Sicherheit und Ordnung sorgt." />
 
-                    <div class="group bg-gray-50 p-8 rounded-2xl shadow-sm border border-gray-100 relative hover:shadow-md transition-shadow">
-                        <div class="text-[#8B4513]/10 absolute top-4 right-6 text-6xl font-serif">“</div>
-                        <div class="flex text-yellow-500 mb-6 text-sm">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4 italic">
-                                Freundliche Beratung und super Arbeit. Besonders die kurzfristige Verfügbarkeit kann man hervorheben. Gerne wieder!
-                            </p>
-                        </div>
-                        <div class="mt-4 pt-4 border-t border-gray-200 flex items-center">
-                            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 shadow-sm">
-                                <i class="fas fa-user text-sm"></i>
-                            </div>
-                            <span class="ml-3 text-xs font-bold text-gray-400 uppercase tracking-widest">Kundenrezension</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="kontakt" class="py-20 bg-[#8B4513] text-white">
-        <div class="container mx-auto px-4 text-center max-w-4xl">
-            <h3 class="text-3xl md:text-5xl font-bold mb-6 uppercase tracking-tighter text-shadow-sm text-white">Zeit für Sicherheit im Winter!</h3>
-            <div class="mb-10 space-y-4">
-                <p class="text-lg md:text-xl opacity-90 leading-relaxed font-medium italic">
-                    Jetzt vorsorgen und entspannt durch den Winter kommen – mit einem professionellen Service, der für Sicherheit und Ordnung sorgt.
-                </p>
-            </div>
-            <a href="/kontakt/?dienstleistung=winterdienst" class="inline-block bg-white text-[#8B4513] px-12 py-5 rounded-xl font-extrabold text-xl hover:bg-gray-100 transition shadow-2xl uppercase tracking-widest hover:scale-105 active:scale-95 duration-200">
-                Angebot anfordern
-            </a>
-        </div>
-    </section>
     </main>
 
     <load src="src/components/footer.html" />
+    <load src="src/components/sticky-call-bar.html" />
 
     <script type="module" src="/main.js"></script>
 </body>
