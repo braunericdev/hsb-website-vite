@@ -7,6 +7,10 @@ export default defineConfig({
     // Ein Worker in CI: geteilte Runner-Ressourcen führten mit 2 parallelen
     // Workern zu vereinzelten Timeouts bei Klick-Interaktionen.
     workers: process.env.CI ? 1 : undefined,
+    // Höheres Timeout nur in CI: externe Skripte (GTM, Cookiebot), die beim Laden der Seite
+    // mitladen, reagieren von GitHub-Actions-IPs aus spürbar langsamer als lokal - lokal bleibt
+    // der Default (30s) für schnelles Feedback bei echten Regressionen.
+    timeout: process.env.CI ? 60000 : undefined,
     use: {
         baseURL: 'http://localhost:4173',
     },
