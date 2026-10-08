@@ -119,6 +119,13 @@ if (field('privacy') !== 'on') errors.push('Datenschutz-Zustimmung fehlt.');
 // Honeypot: unsichtbares Feld, das nur Bots ausfüllen. Kein harter Abbruch, nur Markierung.
 const isSpamSuspect = field('firma_website') !== '';
 
+// Harte Spam-Sperre: lokales, deutschsprachiges Geschäft - eine echte Anfrage enthält praktisch
+// nie kyrillische Zeichen in Name oder Nachricht. Anders als der Honeypot oben wird dieser Fall
+// nicht nur markiert, sondern die interne Mail komplett unterdrückt (siehe IF-Node "Spam hart
+// blocken?" direkt hinter diesem Code-Node im Workflow, README-formulare-webhook.md).
+const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
+const istHartSpam = KYRILLISCH_REGEX.test(name) || KYRILLISCH_REGEX.test(nachricht);
+
 const ok = errors.length === 0;
 const hatEmail = email !== '';
 // Auto-Reply nur bei einer echten, sauber validierten Anfrage mit Email verschicken - nicht bei
@@ -211,7 +218,7 @@ return [
     {
         json: {
             ok, errors, emailSubject, emailText, emailHtml, responseBodyJson, type: 'kontakt',
-            hatEmail, autoReplySenden, kundenEmail: email,
+            hatEmail, autoReplySenden, kundenEmail: email, istHartSpam,
             autoReplySubject, autoReplyText, autoReplyHtml,
         },
     },
