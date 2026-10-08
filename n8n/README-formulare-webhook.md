@@ -134,3 +134,14 @@ Nachricht), nicht auf das Wort "Кредит" selbst - robuster gegen Wortvarian
 Browser (`responseBodyJson`, `ok`) bleibt davon unberührt, damit der Bot keinen Hinweis auf die
 Sperre bekommt und es nicht erneut versucht. Bewerbungsformular bewusst nicht angefasst, da dort
 aktuell kein nennenswerter Spam auftritt.
+
+**Prüfung ganz am Anfang des Code-Nodes (vor Validierung/HTML-Aufbau):** Der Mail-Block allein
+verhindert nur den Versand, nicht die n8n-Ausführung selbst - jede Anfrage, auch Spam, erreicht
+den Webhook und startet eine Execution, das lässt sich serverseitig nicht vermeiden (siehe
+Abschnitt "Kann man den Server nicht so schützen..." - CORS/Origin-Prüfung wird nur vom Browser
+durchgesetzt, ein Bot, der direkt POSTet, umgeht sie trivial). Die Kyrillisch-Prüfung läuft daher
+als Erstes im Code-Node und bricht bei Treffer sofort ab, bevor Validierung und die beiden
+HTML-Mail-Templates (deutlich der teuerste Teil) überhaupt laufen - spart n8n Rechenzeit pro
+Spam-Anfrage, auch wenn die Anzahl der Anfragen/Executions selbst dadurch nicht sinkt (dafür
+bräuchte es eine Sperre vor dem Server, z. B. Cloudflare - aktuell nicht vorhanden, eigene
+Entscheidung).

@@ -89,6 +89,22 @@ const item = $input.first();
 const body = item.json.body ?? item.json ?? {};
 const field = (name) => (typeof body[name] === 'string' ? body[name].trim() : '');
 
+// Harte Spam-Sperre zuerst und so billig wie möglich prüfen, noch vor der vollständigen
+// Validierung und dem HTML-Mail-Aufbau weiter unten - lokales, deutschsprachiges Geschäft, eine
+// echte Anfrage enthält praktisch nie kyrillische Zeichen in Name oder Nachricht. Early Return
+// spart n8n die komplette restliche Rechenarbeit (Validierung, zwei HTML-Mail-Templates) pro
+// Spam-Anfrage, nicht nur den Mail-Versand (siehe IF-Node "Spam hart blocken?" im Workflow,
+// README-formulare-webhook.md).
+const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
+const istHartSpam = KYRILLISCH_REGEX.test(field('name')) || KYRILLISCH_REGEX.test(field('nachricht'));
+
+if (istHartSpam) {
+    // Antwort bleibt wie ein normaler Erfolg - kein Hinweis für den Bot, dass erkannt/geblockt
+    // wurde, kein Retry-Anreiz.
+    const responseBodyJsonSpam = JSON.stringify({ ok: true, errors: [] });
+    return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'kontakt', istHartSpam: true } }];
+}
+
 const errors = [];
 
 const name = field('name');
@@ -118,13 +134,6 @@ if (field('privacy') !== 'on') errors.push('Datenschutz-Zustimmung fehlt.');
 
 // Honeypot: unsichtbares Feld, das nur Bots ausfüllen. Kein harter Abbruch, nur Markierung.
 const isSpamSuspect = field('firma_website') !== '';
-
-// Harte Spam-Sperre: lokales, deutschsprachiges Geschäft - eine echte Anfrage enthält praktisch
-// nie kyrillische Zeichen in Name oder Nachricht. Anders als der Honeypot oben wird dieser Fall
-// nicht nur markiert, sondern die interne Mail komplett unterdrückt (siehe IF-Node "Spam hart
-// blocken?" direkt hinter diesem Code-Node im Workflow, README-formulare-webhook.md).
-const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
-const istHartSpam = KYRILLISCH_REGEX.test(name) || KYRILLISCH_REGEX.test(nachricht);
 
 const ok = errors.length === 0;
 const hatEmail = email !== '';
