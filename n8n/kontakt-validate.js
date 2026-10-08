@@ -89,6 +89,22 @@ const item = $input.first();
 const body = item.json.body ?? item.json ?? {};
 const field = (name) => (typeof body[name] === 'string' ? body[name].trim() : '');
 
+// Harte Spam-Sperre zuerst und so billig wie möglich prüfen, noch vor der vollständigen
+// Validierung und dem HTML-Mail-Aufbau weiter unten - lokales, deutschsprachiges Geschäft, eine
+// echte Anfrage enthält praktisch nie kyrillische Zeichen in Name oder Nachricht. Early Return
+// spart n8n die komplette restliche Rechenarbeit (Validierung, zwei HTML-Mail-Templates) pro
+// Spam-Anfrage, nicht nur den Mail-Versand (siehe IF-Node "Spam hart blocken?" im Workflow,
+// README-formulare-webhook.md).
+const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
+const istHartSpam = KYRILLISCH_REGEX.test(field('name')) || KYRILLISCH_REGEX.test(field('nachricht'));
+
+if (istHartSpam) {
+    // Antwort bleibt wie ein normaler Erfolg - kein Hinweis für den Bot, dass erkannt/geblockt
+    // wurde, kein Retry-Anreiz.
+    const responseBodyJsonSpam = JSON.stringify({ ok: true, errors: [] });
+    return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'kontakt', istHartSpam: true } }];
+}
+
 const errors = [];
 
 const name = field('name');
@@ -211,7 +227,7 @@ return [
     {
         json: {
             ok, errors, emailSubject, emailText, emailHtml, responseBodyJson, type: 'kontakt',
-            hatEmail, autoReplySenden, kundenEmail: email,
+            hatEmail, autoReplySenden, kundenEmail: email, istHartSpam,
             autoReplySubject, autoReplyText, autoReplyHtml,
         },
     },
