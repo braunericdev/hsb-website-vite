@@ -138,7 +138,9 @@ if (TURNSTILE_SECRET_KEY) {
     }
 }
 
-const istLinkSpam = field('name').toLowerCase().includes('share.google');
+// Link-Spam: dieselben Muster wie bei kontakt-validate.js (dort ausführlich begründet).
+const SPAM_LINK_MUSTER = ['share.google', 'search.app'];
+const istLinkSpam = SPAM_LINK_MUSTER.some((muster) => field('name').toLowerCase().includes(muster));
 
 const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam || istLinkSpam;
 
