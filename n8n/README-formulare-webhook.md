@@ -118,6 +118,15 @@ curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
 Erwartet: `{"ok":true,"errors":[]}`, **keine** interne Mail (`_ts` = jetzt, Differenz ≈ 0ms, unter
 den 3000ms).
 
+Link-Spam testen:
+```
+curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
+  -F "name=Test Link" -F "telefon=0123456789" \
+  -F "dienstleistung=allgemein" -F "plz=56170" -F "ort=Bendorf" \
+  -F "nachricht=schau dir das an https://share.google/abc123" -F "privacy=on" -F "firma_website="
+```
+Erwartet: `{"ok":true,"errors":[]}`, **keine** interne Mail.
+
 ## Stolperfallen
 
 1. Kein rohes JS-Objekt (`{{ { ok: ..., errors: ... } }}`) im Response Body - wird per
@@ -164,7 +173,7 @@ und Mail-Provider eingehende Anhänge meist ohnehin scannen.
 **`istHartSpam` (nur Kontakt):** Ab Oktober 2026 eskalierender Formular-Spam (erst
 russischsprachig mit Stichwort "Кредит", nach dessen Blockierung englischsprachig weiter) füllte
 trotz Honeypot weiterhin das Postfach, weil der Honeypot-Fall die interne Mail nur markiert statt
-unterdrückt (s.o.). Die Antwort an den Browser (`responseBodyJson`, `ok`) bleibt bei allen drei
+unterdrückt (s.o.). Die Antwort an den Browser (`responseBodyJson`, `ok`) bleibt bei allen vier
 Signalen unten unberührt, damit der Bot keinen Hinweis auf die Sperre bekommt und es nicht erneut
 versucht. Bewerbungsformular bewusst nicht angefasst, da dort aktuell kein nennenswerter Spam
 auftritt.
@@ -188,13 +197,18 @@ auftritt.
   Anfragen geblockt werden) und standardmäßig **komplett inaktiv**, bis ein echter Secret Key
   hinterlegt ist (s. Setup-Abschnitt oben) - bewusst als Opt-in gebaut, nicht automatisch
   scharfgeschaltet.
+- **Link-Spam (`share.google`):** Einfacher, aber wirksamer Substring-Check - dieser
+  Kurzlink-Dienst taucht ausschließlich in Spam-Nachrichten auf, eine echte Anfrage hat keinen
+  Grund, sowas zu verlinken. Bewusst nicht generalisiert (z.B. "jeder Link blockt"), um Kunden
+  nicht zu riskieren, die z.B. einen Link zu einem Immobilien-Exposé oder Grundriss teilen wollen
+  - kann bei neuen bekannten Spam-Linkmustern um weitere Substrings erweitert werden.
 
 **Prüfung ganz am Anfang des Code-Nodes (vor Validierung/HTML-Aufbau):** Der Mail-Block allein
 verhindert nur den Versand, nicht die n8n-Ausführung selbst - jede Anfrage, auch Spam, erreicht
 den Webhook und startet eine Execution, das lässt sich serverseitig nicht vermeiden (siehe
 Abschnitt "Kann man den Server nicht so schützen..." - CORS/Origin-Prüfung wird nur vom Browser
-durchgesetzt, ein Bot, der direkt POSTet, umgeht sie trivial). Die Kyrillisch-Prüfung läuft daher
-als Erstes im Code-Node und bricht bei Treffer sofort ab, bevor Validierung und die beiden
+durchgesetzt, ein Bot, der direkt POSTet, umgeht sie trivial). Alle vier Prüfungen laufen daher
+als Erstes im Code-Node und brechen bei Treffer sofort ab, bevor Validierung und die beiden
 HTML-Mail-Templates (deutlich der teuerste Teil) überhaupt laufen - spart n8n Rechenzeit pro
 Spam-Anfrage, auch wenn die Anzahl der Anfragen/Executions selbst dadurch nicht sinkt (dafür
 bräuchte es eine Sperre vor dem Server, z. B. Cloudflare - aktuell nicht vorhanden, eigene

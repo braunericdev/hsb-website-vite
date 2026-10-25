@@ -93,7 +93,7 @@ const field = (name) => (typeof body[name] === 'string' ? body[name].trim() : ''
 // Validierung und dem HTML-Mail-Aufbau weiter unten - Early Return spart n8n die komplette
 // restliche Rechenarbeit (Validierung, zwei HTML-Mail-Templates) pro Spam-Anfrage, nicht nur den
 // Mail-Versand (siehe IF-Node "Spam hart blocken?" im Workflow, README-formulare-webhook.md).
-// Drei unabhängige Signale, jedes für sich schon mit vernachlässigbarem False-Positive-Risiko -
+// Vier unabhängige Signale, jedes für sich schon mit vernachlässigbarem False-Positive-Risiko -
 // istHartSpam ist true, sobald eines davon zutrifft:
 
 // 1. Kyrillisch: lokales, deutschsprachiges Geschäft, eine echte Anfrage enthält praktisch nie
@@ -136,7 +136,14 @@ if (TURNSTILE_SECRET_KEY) {
     }
 }
 
-const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam;
+// 4. Link-Spam: "share.google" (Google-Share-Kurzlinks) taucht ausschließlich in Spam-Nachrichten
+// auf - kein Grund, warum eine echte Anfrage sowas im Namen oder in der Nachricht verlinken
+// würde. Einfacher Substring-Check reicht, bewusst nicht als Regex für weitere Domains
+// generalisiert - kann bei Bedarf um weitere bekannte Spam-Linkmuster erweitert werden.
+const istLinkSpam = field('name').toLowerCase().includes('share.google')
+    || field('nachricht').toLowerCase().includes('share.google');
+
+const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam || istLinkSpam;
 
 if (istHartSpam) {
     // Grund festhalten (nur für Execution-Log/Debugging, s. README) - Antwort an den Browser
@@ -146,6 +153,7 @@ if (istHartSpam) {
     if (istKyrillischSpam) spamGruende.push('kyrillisch');
     if (istZuSchnellSpam) spamGruende.push('zu_schnell');
     if (istTurnstileSpam) spamGruende.push('turnstile');
+    if (istLinkSpam) spamGruende.push('link_spam');
 
     const responseBodyJsonSpam = JSON.stringify({ ok: true, errors: [] });
     return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'kontakt', istHartSpam: true, spamGruende } }];
