@@ -68,9 +68,13 @@ test('Bewerbungsformular sendet an den n8n-Webhook und leitet weiter', async ({ 
     await page.locator('#bewerber-name').fill('Max Mustermann');
     await page.locator('#bewerber-telefon').fill('01512345678');
     await page.locator('#position').selectOption('Hausmeister-Allrounder (w/m/d)');
-    // Radio ist per Tailwind sr-only versteckt (gestyltes Label übernimmt die Optik),
-    // daher force nötig - die normale Sichtbarkeitsprüfung würde sonst dauerhaft scheitern.
-    await page.locator('input[name="anstellungsart"][value="Teilzeit"]').check({ force: true });
+    // Radio ist per Tailwind sr-only versteckt (gestyltes Label übernimmt die Optik) - daher
+    // das umschließende, sichtbare <label> klicken statt check({force:true}) direkt auf das
+    // versteckte Input: force umgeht Playwrights Sichtbarkeits-/Aktionierbarkeits-Prüfung und
+    // dispatcht den Klick direkt aufs sr-only-Element, was unter CI-Last vereinzelt nicht zum
+    // tatsächlichen "checked" führte (flaky). Ein normaler Klick aufs Label nutzt stattdessen
+    // natives Browser-Verhalten (Label-Klick toggelt das zugehörige Input) und ist zuverlässig.
+    await page.locator('label').filter({ has: page.locator('input[name="anstellungsart"][value="Teilzeit"]') }).click();
     await page.locator('#privacy-karriere').check();
 
     await page.locator('#submit-btn').click();
@@ -120,7 +124,8 @@ test('Bewerbungsformular: mehrere Dateien hinzufügen und wieder entfernen', asy
     await page.locator('#bewerber-name').fill('Datei Test');
     await page.locator('#bewerber-telefon').fill('01512345678');
     await page.locator('#position').selectOption('Mitarbeiter in der Gartenpflege (w/m/d)');
-    await page.locator('input[name="anstellungsart"][value="Minijob (Aushilfe)"]').check({ force: true });
+    // Siehe Begründung beim ersten Vorkommen oben (Label statt forciertem Input-Klick).
+    await page.locator('label').filter({ has: page.locator('input[name="anstellungsart"][value="Minijob (Aushilfe)"]') }).click();
     await page.locator('#privacy-karriere').check();
     await page.locator('#submit-btn').click();
 
