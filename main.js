@@ -13,6 +13,12 @@ const CONVERSION_LABELS = {
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
 
+// Cloudflare Turnstile (Spam-Schutz Kontakt- + Bewerbungsformular, siehe n8n/README-formulare-webhook.md).
+// Platzhalter bis ein echter Sitekey von Cloudflare vorliegt - solange TURNSTILE_SITE_KEY leer
+// ist, bleibt setupTurnstile() komplett wirkungslos (kein Script-Load, kein Widget), ändert also
+// nichts am bestehenden Verhalten.
+const TURNSTILE_SITE_KEY = ''; // TODO: echten Sitekey eintragen, sobald Cloudflare-Konto existiert
+
 // 1. Mobile Menü (Vollständig)
 const setupMobileMenu = () => {
     const menu = document.getElementById('mobile-menu');
@@ -126,6 +132,15 @@ const submitFormAjax = (form, buildRedirectUrl, beforeSend, getConversionLabel) 
     form.addEventListener("submit", function(event) {
         event.preventDefault();
 
+        // Cloudflare Turnstile (falls aktiv, siehe setupTurnstile) muss vor dem Absenden gelöst
+        // sein. Bei inaktivem/unkonfiguriertem Turnstile existiert dieses Feld gar nicht - der
+        // Check greift dann einfach nicht, kein Verhaltensunterschied zu vorher.
+        const turnstileResponse = form.querySelector('[name="cf-turnstile-response"]');
+        if (turnstileResponse && !turnstileResponse.value) {
+            alert("Sicherheitsprüfung läuft noch, bitte kurz warten und erneut senden.");
+            return;
+        }
+
         // Conversion feuert sofort beim Absenden-Klick, nicht erst beim Laden der Danke-Seite -
         // sonst geht sie verloren, wenn Redirect/Webhook aus irgendeinem Grund nicht durchkommen.
         const conversionLabel = getConversionLabel ? getConversionLabel() : undefined;
@@ -170,6 +185,12 @@ const submitFormAjax = (form, buildRedirectUrl, beforeSend, getConversionLabel) 
 const setupKontaktForm = () => {
     document.querySelectorAll('[data-kontakt-form]').forEach((form) => {
         const selectFeld = form.querySelector('[data-dienstleistung]');
+
+        // 0. Zeitstempel bei Initialisierung setzen (nicht erst beim Absenden!) - n8n vergleicht
+        // das serverseitig gegen die Eingangszeit, um Bots zu erkennen, die das Formular in
+        // Sekundenbruchteilen ausfüllen (siehe n8n/README-formulare-webhook.md).
+        const tsFeld = form.querySelector('[data-form-ts]');
+        if (tsFeld) tsFeld.value = Date.now();
 
         // 1. URL Parameter auslesen (Auto-Fill Dienstleistung)
         const params = new URLSearchParams(window.location.search);
@@ -225,6 +246,11 @@ const setupKontaktForm = () => {
 const setupBewerbungForm = () => {
     const form = document.getElementById("bewerbungForm");
     if (!form) return; // Nur auf Karriereseite ausführen
+
+    // Zeitstempel bei Initialisierung setzen (nicht erst beim Absenden!) - gleiche Spam-Falle
+    // wie beim Kontaktformular, siehe setupKontaktForm() und n8n/README-formulare-webhook.md.
+    const tsFeld = form.querySelector('[data-form-ts]');
+    if (tsFeld) tsFeld.value = Date.now();
 
     // Datei-Upload: native Inputs erlauben kein nachträgliches Entfernen einzelner
     // Dateien, daher eigene Verwaltung als Array + Neuaufbau der Auswahl im Input
@@ -419,7 +445,29 @@ const setupGoogleReviews = async () => {
     });
 };
 
-// 9. Hochzählende Zahl: startet, sobald das Element sichtbar wird, und endet bei data-count-up
+// 9. Cloudflare Turnstile: rendert das Widget in jeden [data-turnstile-container] und lädt das
+// Cloudflare-Script nur dann nach, wenn tatsächlich ein Sitekey hinterlegt ist (s. Konstante
+// oben) - ohne Sitekey bleiben die Container leer, keine Netzwerk-Last, keine Layout-Änderung.
+const setupTurnstile = () => {
+    if (!TURNSTILE_SITE_KEY) return;
+    const containers = document.querySelectorAll('[data-turnstile-container]');
+    if (!containers.length) return;
+
+    containers.forEach((el) => {
+        el.classList.add('cf-turnstile');
+        el.dataset.sitekey = TURNSTILE_SITE_KEY;
+    });
+
+    if (document.querySelector('script[data-turnstile-script]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    script.dataset.turnstileScript = '';
+    document.head.appendChild(script);
+};
+
+// 10. Hochzählende Zahl: startet, sobald das Element sichtbar wird, und endet bei data-count-up
 const setupCountUp = () => {
     const els = document.querySelectorAll('[data-count-up]');
     if (!els.length) return;
@@ -460,4 +508,5 @@ setupKontaktForm();
 setupBewerbungForm();
 setupFaqAccordion();
 setupGoogleReviews();
+setupTurnstile();
 setupCountUp();

@@ -30,6 +30,7 @@
 
                     <form data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-2 md:space-y-3">
                         <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+                        <input type="hidden" name="_ts" data-form-ts>
                         <select data-dienstleistung name="dienstleistung" class="hidden" required>
                             <option value="{=$service}" selected>{=$service_label}</option>
                         </select>
@@ -80,6 +81,8 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div data-turnstile-container class="flex justify-center"></div>
 
                         <button type="submit" data-submit-btn class="pulse-cta w-full bg-[#1F6F4A] text-white py-3 md:py-4 rounded-xl font-bold hover:bg-[#164F35] transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
                             <span data-btn-text>Anfrage absenden</span>
