@@ -136,12 +136,12 @@ if (TURNSTILE_SECRET_KEY) {
     }
 }
 
-// 4. Link-Spam: "share.google" (Google-Share-Kurzlinks) taucht ausschließlich in Spam-Nachrichten
-// auf - kein Grund, warum eine echte Anfrage sowas im Namen oder in der Nachricht verlinken
-// würde. Einfacher Substring-Check reicht, bewusst nicht als Regex für weitere Domains
-// generalisiert - kann bei Bedarf um weitere bekannte Spam-Linkmuster erweitert werden.
-const istLinkSpam = field('name').toLowerCase().includes('share.google')
-    || field('nachricht').toLowerCase().includes('share.google');
+// 4. Link-Spam: Diese Kurzlink-Dienste tauchen ausschließlich in Spam-Nachrichten auf - kein
+// Grund, warum eine echte Anfrage sowas im Namen oder in der Nachricht verlinken würde. Liste
+// statt Regex, damit sich weitere bekannte Spam-Linkmuster einfach ergänzen lassen.
+const SPAM_LINK_MUSTER = ['share.google', 'search.app'];
+const enthaeltSpamLink = (text) => SPAM_LINK_MUSTER.some((muster) => text.toLowerCase().includes(muster));
+const istLinkSpam = enthaeltSpamLink(field('name')) || enthaeltSpamLink(field('nachricht'));
 
 const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam || istLinkSpam;
 
