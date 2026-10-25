@@ -349,6 +349,7 @@
             <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10">
                 <form id="bewerbungForm" action="https://niewiedertelefonieren.de/webhook/bewerbung" method="POST" enctype="multipart/form-data" class="space-y-5">
                     <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+                    <input type="hidden" name="_ts" data-form-ts>
 
                     <div class="space-y-1">
                         <label for="bewerber-name" class="text-xs font-bold text-gray-500 uppercase tracking-wider ml-1">Name</label>
@@ -413,6 +414,8 @@
                             </label>
                         </div>
                     </div>
+
+                    <div data-turnstile-container class="flex justify-center"></div>
 
                     <div class="pt-2">
                         <button type="submit" id="submit-btn" data-submit-btn class="w-full bg-[#8B4513] text-white py-4 rounded-xl font-bold hover:brightness-110 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
