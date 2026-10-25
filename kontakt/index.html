@@ -123,6 +123,7 @@
                     
                     <form id="kontaktForm" data-kontakt-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-3">
                         <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+                        <input type="hidden" name="_ts" data-form-ts>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div class="space-y-1">
@@ -196,6 +197,8 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div data-turnstile-container class="flex justify-center"></div>
 
                         <div class="pt-4">
                             <button type="submit" id="submit-btn" data-submit-btn class="w-full bg-[#8B4513] text-white py-3.5 rounded-xl font-bold hover:bg-opacity-90 transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">

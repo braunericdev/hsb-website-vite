@@ -90,19 +90,65 @@ const body = item.json.body ?? item.json ?? {};
 const field = (name) => (typeof body[name] === 'string' ? body[name].trim() : '');
 
 // Harte Spam-Sperre zuerst und so billig wie möglich prüfen, noch vor der vollständigen
-// Validierung und dem HTML-Mail-Aufbau weiter unten - lokales, deutschsprachiges Geschäft, eine
-// echte Anfrage enthält praktisch nie kyrillische Zeichen in Name oder Nachricht. Early Return
-// spart n8n die komplette restliche Rechenarbeit (Validierung, zwei HTML-Mail-Templates) pro
-// Spam-Anfrage, nicht nur den Mail-Versand (siehe IF-Node "Spam hart blocken?" im Workflow,
-// README-formulare-webhook.md).
+// Validierung und dem HTML-Mail-Aufbau weiter unten - Early Return spart n8n die komplette
+// restliche Rechenarbeit (Validierung, zwei HTML-Mail-Templates) pro Spam-Anfrage, nicht nur den
+// Mail-Versand (siehe IF-Node "Spam hart blocken?" im Workflow, README-formulare-webhook.md).
+// Drei unabhängige Signale, jedes für sich schon mit vernachlässigbarem False-Positive-Risiko -
+// istHartSpam ist true, sobald eines davon zutrifft:
+
+// 1. Kyrillisch: lokales, deutschsprachiges Geschäft, eine echte Anfrage enthält praktisch nie
+// kyrillische Zeichen in Name oder Nachricht.
 const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
-const istHartSpam = KYRILLISCH_REGEX.test(field('name')) || KYRILLISCH_REGEX.test(field('nachricht'));
+const istKyrillischSpam = KYRILLISCH_REGEX.test(field('name')) || KYRILLISCH_REGEX.test(field('nachricht'));
+
+// 2. Zeit-Falle: Bots füllen Formulare oft in Sekundenbruchteilen aus, ein Mensch braucht für
+// Name/Telefon/PLZ/Ort/Nachricht/Checkbox realistisch mehrere Sekunden. _ts wird von main.js
+// beim Initialisieren des Formulars gesetzt (nicht erst beim Absenden). Fehlt es (alter
+// gecachter Seitenstand, Bot ohne JS) oder ist die Differenz negativ (Client-Uhr abweichend),
+// wird NICHT geblockt - lieber einen Spam-Fall durchlassen als eine echte Anfrage riskieren.
+const MIN_AUSFUELLZEIT_MS = 3000;
+const formGeladenUm = Number(field('_ts'));
+const ausfuellzeitMs = formGeladenUm ? Date.now() - formGeladenUm : null;
+const istZuSchnellSpam = ausfuellzeitMs !== null && ausfuellzeitMs >= 0 && ausfuellzeitMs < MIN_AUSFUELLZEIT_MS;
+
+// 3. Cloudflare Turnstile: verifiziert serverseitig bei Cloudflare, ob eine echte
+// Browser-Interaktion stattfand. Komplett inaktiv (istTurnstileSpam bleibt false), solange
+// TURNSTILE_SECRET_KEY leer ist - siehe README für die Cloudflare-Einrichtung. Fail-open bei
+// Cloudflare-Fehler/Timeout, aus demselben Grund wie bei der Zeit-Falle.
+const TURNSTILE_SECRET_KEY = ''; // TODO: echten Secret-Key von Cloudflare eintragen
+let istTurnstileSpam = false;
+if (TURNSTILE_SECRET_KEY) {
+    const turnstileToken = field('cf-turnstile-response');
+    if (!turnstileToken) {
+        istTurnstileSpam = true;
+    } else {
+        try {
+            const verify = await this.helpers.httpRequest({
+                method: 'POST',
+                url: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+                body: { secret: TURNSTILE_SECRET_KEY, response: turnstileToken },
+                json: true,
+            });
+            istTurnstileSpam = verify.success !== true;
+        } catch (fehler) {
+            istTurnstileSpam = false;
+        }
+    }
+}
+
+const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam;
 
 if (istHartSpam) {
-    // Antwort bleibt wie ein normaler Erfolg - kein Hinweis für den Bot, dass erkannt/geblockt
-    // wurde, kein Retry-Anreiz.
+    // Grund festhalten (nur für Execution-Log/Debugging, s. README) - Antwort an den Browser
+    // bleibt wie ein normaler Erfolg, kein Hinweis für den Bot, dass erkannt/geblockt wurde,
+    // kein Retry-Anreiz.
+    const spamGruende = [];
+    if (istKyrillischSpam) spamGruende.push('kyrillisch');
+    if (istZuSchnellSpam) spamGruende.push('zu_schnell');
+    if (istTurnstileSpam) spamGruende.push('turnstile');
+
     const responseBodyJsonSpam = JSON.stringify({ ok: true, errors: [] });
-    return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'kontakt', istHartSpam: true } }];
+    return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'kontakt', istHartSpam: true, spamGruende } }];
 }
 
 const errors = [];

@@ -54,6 +54,32 @@ Send Kontakt):
   übersprungen - keine interne Mail).
 - **false-Ausgang**: wie bisher auf Send Kontakt verbinden, Rest der Kette unverändert.
 
+### Zeit-Falle (`_ts`) - keine Workflow-Änderung nötig
+
+Läuft komplett innerhalb des bestehenden Code-Nodes (Vergleich `_ts`-Feldwert gegen aktuelle
+Serverzeit) und fließt direkt in `istHartSpam` mit ein - der IF-Node oben deckt das automatisch
+mit ab, keine zusätzlichen Nodes nötig.
+
+### Cloudflare Turnstile - Einrichtung, sobald ein Konto existiert
+
+Code ist vorbereitet, aber inaktiv (siehe `TURNSTILE_SITE_KEY` in `main.js` und
+`TURNSTILE_SECRET_KEY` in `kontakt-validate.js`, beide aktuell leer). Zum Aktivieren:
+
+1. Kostenloses Cloudflare-Konto anlegen → **Turnstile** → neue Site registrieren
+   (Domain: `hausmeisterservice-braun.de`, Widget-Modus: **Managed** - das ist die Variante ohne
+   Bilder-Rätsel, meist unsichtbar oder höchstens eine kurze Checkbox).
+2. Liefert zwei Werte: **Site Key** (öffentlich) und **Secret Key** (geheim).
+3. Site Key in `main.js` bei `TURNSTILE_SITE_KEY` eintragen, committen, deployen.
+4. Secret Key **nicht** ins Repo - direkt im n8n-Code-Node einfügen (`TURNSTILE_SECRET_KEY` in
+   `kontakt-validate.js`, dort beim Einfügen in n8n überschreiben) oder besser als n8n-Credential/
+   Environment-Variable hinterlegen, falls eure n8n-Instanz das unterstützt.
+5. Keine neuen Nodes nötig - die Verifizierung läuft per `this.helpers.httpRequest(...)` direkt im
+   Code-Node (muss beim ersten Einfügen in n8n kurz getestet werden, falls diese n8n-Version das
+   anders handhabt als angenommen).
+
+**Rollback, falls unterwegs doch zu streng:** `TURNSTILE_SECRET_KEY` im Code-Node wieder auf `''`
+setzen - Prüfung ist dann sofort wieder komplett inaktiv, ohne Node-Umbau.
+
 ## Testen
 
 ```
@@ -80,6 +106,17 @@ curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
 ```
 Erwartet: weiterhin `{"ok":true,"errors":[]}`, aber **keine** interne Mail (Send Kontakt wird
 übersprungen).
+
+Zeit-Falle testen (ohne `_ts` → kein Block, s. Fail-safe; mit zu aktuellem `_ts` → Block):
+```
+curl -X POST https://niewiedertelefonieren.de/webhook/kontakt \
+  -F "name=Test Zu Schnell" -F "telefon=0123456789" \
+  -F "dienstleistung=allgemein" -F "plz=56170" -F "ort=Bendorf" \
+  -F "nachricht=Testnachricht" -F "privacy=on" -F "firma_website=" \
+  -F "_ts=$(($(date +%s%N)/1000000))"
+```
+Erwartet: `{"ok":true,"errors":[]}`, **keine** interne Mail (`_ts` = jetzt, Differenz ≈ 0ms, unter
+den 3000ms).
 
 ## Stolperfallen
 
@@ -124,16 +161,33 @@ Successful Executions** auf `None` oder kurze Frist stellen; instanzweit ggf.
 unterdrückt. Kein Virenscan der Bewerbungs-Anhänge - vertretbar, da nicht dauerhaft gespeichert
 und Mail-Provider eingehende Anhänge meist ohnehin scannen.
 
-**`istHartSpam` (Kyrillisch-Sperre, nur Kontakt):** Ab Oktober 2026 eskalierender russischsprachiger
-Formular-Spam (Stichwort "Кредит") füllte trotz Honeypot weiterhin das Postfach, weil der
-Honeypot-Fall die interne Mail nur markiert statt unterdrückt (s.o.). Da das Geschäft rein lokal
-und deutschsprachig ist, enthält eine echte Anfrage praktisch nie kyrillische Zeichen - anders als
-beim Honeypot ist das Risiko eines False Positives hier vernachlässigbar, daher harter Abbruch
-statt nur Markierung. Erkennung bewusst auf das Schriftsystem (`/[Ѐ-ӿ]/` auf Name und
-Nachricht), nicht auf das Wort "Кредит" selbst - robuster gegen Wortvarianten. Die Antwort an den
-Browser (`responseBodyJson`, `ok`) bleibt davon unberührt, damit der Bot keinen Hinweis auf die
-Sperre bekommt und es nicht erneut versucht. Bewerbungsformular bewusst nicht angefasst, da dort
-aktuell kein nennenswerter Spam auftritt.
+**`istHartSpam` (nur Kontakt):** Ab Oktober 2026 eskalierender Formular-Spam (erst
+russischsprachig mit Stichwort "Кредит", nach dessen Blockierung englischsprachig weiter) füllte
+trotz Honeypot weiterhin das Postfach, weil der Honeypot-Fall die interne Mail nur markiert statt
+unterdrückt (s.o.). Die Antwort an den Browser (`responseBodyJson`, `ok`) bleibt bei allen drei
+Signalen unten unberührt, damit der Bot keinen Hinweis auf die Sperre bekommt und es nicht erneut
+versucht. Bewerbungsformular bewusst nicht angefasst, da dort aktuell kein nennenswerter Spam
+auftritt.
+
+- **Kyrillisch:** Da das Geschäft rein lokal und deutschsprachig ist, enthält eine echte Anfrage
+  praktisch nie kyrillische Zeichen - anders als beim Honeypot ist das Risiko eines False
+  Positives hier vernachlässigbar, daher harter Abbruch statt nur Markierung. Erkennung bewusst
+  auf das Schriftsystem (`/[Ѐ-ӿ]/` auf Name und Nachricht), nicht auf das Wort "Кредит" selbst -
+  robuster gegen Wortvarianten.
+- **Zeit-Falle (`_ts`, seit dem englischsprachigen Spam ergänzt):** Deckt Bots ab, die zwar JS
+  ausführen (Honeypot und Kyrillisch-Filter allein reichen nicht gegen alle), das Formular aber in
+  Sekundenbruchteilen statt in mehreren Sekunden ausfüllen. 3000ms-Schwelle bewusst konservativ
+  gewählt (auch mit Browser-Autofill muss die Pflicht-Checkbox noch manuell angeklickt werden,
+  das kostet selbst im schnellsten Fall spürbar Zeit) - lieber ein paar schnelle Spam-Mails
+  durchlassen als eine hastig, aber echt ausgefüllte Anfrage blocken. Fehlt `_ts` (altes Caching,
+  Bot ohne JS) oder ist die Differenz negativ (Client-Uhr falsch eingestellt), wird nicht
+  geblockt - Fail-safe zugunsten echter Anfragen.
+- **Cloudflare Turnstile:** Generischste der drei Prüfungen, deckt auch Spam-Muster ab, die weder
+  kyrillisch noch ungewöhnlich schnell ausgefüllt sind. Bewusst **fail-open** bei
+  Cloudflare-Fehler/Timeout (Netzwerkproblem bei Cloudflare darf nicht dazu führen, dass legitime
+  Anfragen geblockt werden) und standardmäßig **komplett inaktiv**, bis ein echter Secret Key
+  hinterlegt ist (s. Setup-Abschnitt oben) - bewusst als Opt-in gebaut, nicht automatisch
+  scharfgeschaltet.
 
 **Prüfung ganz am Anfang des Code-Nodes (vor Validierung/HTML-Aufbau):** Der Mail-Block allein
 verhindert nur den Versand, nicht die n8n-Ausführung selbst - jede Anfrage, auch Spam, erreicht
