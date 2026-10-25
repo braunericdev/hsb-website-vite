@@ -13,7 +13,7 @@ const CONVERSION_LABELS = {
 };
 const BEWERBUNG_CONVERSION_LABEL = 'AW-17931737581/Okr3CJPo4vkcEO2zwuZC';
 
-// Cloudflare Turnstile (Spam-Schutz Kontaktformular, siehe n8n/README-formulare-webhook.md).
+// Cloudflare Turnstile (Spam-Schutz Kontakt- + Bewerbungsformular, siehe n8n/README-formulare-webhook.md).
 // Platzhalter bis ein echter Sitekey von Cloudflare vorliegt - solange TURNSTILE_SITE_KEY leer
 // ist, bleibt setupTurnstile() komplett wirkungslos (kein Script-Load, kein Widget), ändert also
 // nichts am bestehenden Verhalten.
@@ -246,6 +246,11 @@ const setupKontaktForm = () => {
 const setupBewerbungForm = () => {
     const form = document.getElementById("bewerbungForm");
     if (!form) return; // Nur auf Karriereseite ausführen
+
+    // Zeitstempel bei Initialisierung setzen (nicht erst beim Absenden!) - gleiche Spam-Falle
+    // wie beim Kontaktformular, siehe setupKontaktForm() und n8n/README-formulare-webhook.md.
+    const tsFeld = form.querySelector('[data-form-ts]');
+    if (tsFeld) tsFeld.value = Date.now();
 
     // Datei-Upload: native Inputs erlauben kein nachträgliches Entfernen einzelner
     // Dateien, daher eigene Verwaltung als Array + Neuaufbau der Auswahl im Input

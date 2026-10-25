@@ -102,6 +102,57 @@ const item = $input.first();
 const body = item.json.body ?? item.json ?? {};
 const field = (name) => (typeof body[name] === 'string' ? body[name].trim() : '');
 
+// Harte Spam-Sperre zuerst und so billig wie möglich prüfen, noch vor der vollständigen
+// Validierung und dem HTML-Mail-Aufbau weiter unten - analog zum Kontaktformular (ursprünglich
+// nur dort eskaliert, aber baugleich übernommen statt eine zweite, abweichende Logik zu pflegen),
+// siehe n8n/kontakt-validate.js und README-formulare-webhook.md für die ausführliche Begründung.
+// Kein "nachricht"-Feld auf diesem Formular, daher laufen Kyrillisch- und Link-Spam-Check nur
+// gegen "name" (Position/Anstellungsart sind ohnehin auf feste erlaubte Werte beschränkt, s.u.).
+
+const KYRILLISCH_REGEX = /[Ѐ-ӿ]/;
+const istKyrillischSpam = KYRILLISCH_REGEX.test(field('name'));
+
+const MIN_AUSFUELLZEIT_MS = 3000;
+const formGeladenUm = Number(field('_ts'));
+const ausfuellzeitMs = formGeladenUm ? Date.now() - formGeladenUm : null;
+const istZuSchnellSpam = ausfuellzeitMs !== null && ausfuellzeitMs >= 0 && ausfuellzeitMs < MIN_AUSFUELLZEIT_MS;
+
+const TURNSTILE_SECRET_KEY = ''; // TODO: echten Secret-Key von Cloudflare eintragen
+let istTurnstileSpam = false;
+if (TURNSTILE_SECRET_KEY) {
+    const turnstileToken = field('cf-turnstile-response');
+    if (!turnstileToken) {
+        istTurnstileSpam = true;
+    } else {
+        try {
+            const verify = await this.helpers.httpRequest({
+                method: 'POST',
+                url: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+                body: { secret: TURNSTILE_SECRET_KEY, response: turnstileToken },
+                json: true,
+            });
+            istTurnstileSpam = verify.success !== true;
+        } catch (fehler) {
+            istTurnstileSpam = false;
+        }
+    }
+}
+
+const istLinkSpam = field('name').toLowerCase().includes('share.google');
+
+const istHartSpam = istKyrillischSpam || istZuSchnellSpam || istTurnstileSpam || istLinkSpam;
+
+if (istHartSpam) {
+    const spamGruende = [];
+    if (istKyrillischSpam) spamGruende.push('kyrillisch');
+    if (istZuSchnellSpam) spamGruende.push('zu_schnell');
+    if (istTurnstileSpam) spamGruende.push('turnstile');
+    if (istLinkSpam) spamGruende.push('link_spam');
+
+    const responseBodyJsonSpam = JSON.stringify({ ok: true, errors: [] });
+    return [{ json: { ok: true, errors: [], responseBodyJson: responseBodyJsonSpam, type: 'bewerbung', istHartSpam: true, spamGruende } }];
+}
+
 const errors = [];
 
 const name = field('name');
@@ -254,7 +305,7 @@ return [
     {
         json: {
             ok, errors, emailSubject, emailText, emailHtml, responseBodyJson, anhangProperties, type: 'bewerbung',
-            hatEmail, autoReplySenden, bewerberEmail: email,
+            hatEmail, autoReplySenden, bewerberEmail: email, istHartSpam,
             autoReplySubject, autoReplyText, autoReplyHtml,
         },
         binary: item.binary,
