@@ -9,7 +9,7 @@
     <load src="src/components/lp/head.html" img="allgemein" img_w="1200" />
 </head>
 
-<body>
+<body data-zielgruppe="allgemein">
     <load src="src/components/lp/header.html" />
 
     <main>
@@ -82,7 +82,10 @@
     <load src="src/components/lp/preis.html" />
     <load src="src/components/lp/ablauf.html" />
     <load src="src/components/reviews.html" />
-    <load src="src/components/lp/formular.html" zielgruppe="allgemein" heading="Kostenloses Angebot für Ihre Gebäudereinigung" />
+    <!-- Sprungziel der CTAs (Hero, Sticky-Leiste) - das Formular selbst ist das bestehende der übrigen Seiten -->
+    <div id="angebot">
+        <load src="src/components/bottom-form.html" service="gebaeudereinigung" service_label="Gebäudereinigung" heading="Kostenloses Angebot für Ihre Gebäudereinigung" text="Festpreis nach kostenloser Besichtigung. Wir melden uns innerhalb von 24 Stunden." />
+    </div>
 
     <section class="py-16 bg-white border-t border-gray-100">
         <div class="container mx-auto px-4 max-w-3xl">

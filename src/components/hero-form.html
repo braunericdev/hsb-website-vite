@@ -34,6 +34,13 @@
                         <select data-dienstleistung name="dienstleistung" class="hidden" required>
                             <option value="{=$service}" selected>{=$service_label}</option>
                         </select>
+                    <!-- Herkunft fürs Anfrage-Mail: zielgruppe setzt main.js nur auf den Google-Ads-LPs (body data-zielgruppe), utm_*/gclid aus der URL bzw. Sitzung - auf allen anderen Seiten bleiben sie leer, n8n blendet leere Werte aus -->
+                    <input type="hidden" name="zielgruppe" data-lp-zielgruppe>
+                    <input type="hidden" name="utm_source" data-lp-track>
+                    <input type="hidden" name="utm_medium" data-lp-track>
+                    <input type="hidden" name="utm_campaign" data-lp-track>
+                    <input type="hidden" name="utm_term" data-lp-track>
+                    <input type="hidden" name="gclid" data-lp-track>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-3">
                             <div class="space-y-0.5 md:space-y-1">

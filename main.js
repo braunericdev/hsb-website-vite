@@ -504,6 +504,10 @@ const setupCountUp = () => {
 // Zielgruppen-LP wechselt, verliert sonst die URL-Parameter der Anzeige.
 const LP_TRACKING_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'gclid'];
 const setupLpTracking = () => {
+    // Zielgruppe nur auf den LPs (body data-zielgruppe), auf allen anderen Seiten bleibt das Feld leer
+    const zielgruppe = document.body.dataset.zielgruppe || '';
+    document.querySelectorAll('[data-lp-zielgruppe]').forEach((feld) => { feld.value = zielgruppe; });
+
     const felder = document.querySelectorAll('[data-lp-track]');
     if (!felder.length) return;
     const params = new URLSearchParams(window.location.search);
