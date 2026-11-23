@@ -86,7 +86,7 @@ function emailShell(title, bodyHtml) {
 <tr><td style="background-color:${BRAND_COLOR};padding:22px 28px;">${logoBlockHtml()}</td></tr>
 ${bodyHtml}
 <tr><td style="background-color:#f5f5f4;padding:18px 28px;font-family:${FONT_STACK};font-size:11.5px;color:#6b7280;border-top:1px solid #e5e7eb;line-height:1.6;">
-Hausmeisterservice Braun GbR &middot; Bernhard-Henrich Str. 15 &middot; 56170 Bendorf<br>
+Hausmeisterservice Braun GbR &middot; Rheinstraße 117 &middot; 56179 Vallendar<br>
 <a href="https://www.hausmeisterservice-braun.de" style="color:${BRAND_COLOR};text-decoration:none;">hausmeisterservice-braun.de</a>
 </td></tr>
 </table>
@@ -278,7 +278,7 @@ const autoReplyText = [
     `Bis dahin wünschen wir Ihnen eine schöne Zeit!`,
     ``,
     `Hausmeisterservice Braun GbR`,
-    `Bernhard-Henrich Str. 15, 56170 Bendorf`,
+    `Rheinstraße 117, 56179 Vallendar`,
 ].join('\n');
 
 const autoReplyBodyHtml = `<tr><td style="padding:32px 28px;">
