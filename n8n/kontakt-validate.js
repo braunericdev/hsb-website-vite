@@ -199,11 +199,32 @@ const autoReplySenden = hatEmail && ok && !isSpamSuspect;
 const themaLabel = THEMA_LABELS[dienstleistung] || dienstleistung || 'Anfrage';
 const datum = formatDatum();
 
+// Herkunft (nur Google-Ads-Landingpages unter /lp/ schicken diese Felder mit): über welche
+// Landingpage/Zielgruppe und welche Anzeige die Anfrage kam. Reine Info für uns, keine Pflicht.
+const ZIELGRUPPE_LABELS = {
+    allgemein: 'LP Allgemein',
+    buero: 'LP Büro',
+    praxis: 'LP Praxis',
+    'hv-weg': 'LP Hausverwaltung & WEG',
+    bau: 'LP Bauendreinigung',
+};
+const kurz = (v) => v.slice(0, 200);
+const zielgruppe = kurz(field('zielgruppe'));
+const zielgruppeLabel = ZIELGRUPPE_LABELS[zielgruppe] || zielgruppe;
+const herkunft = [
+    ['Landingpage', zielgruppeLabel],
+    ['utm_source', kurz(field('utm_source'))],
+    ['utm_medium', kurz(field('utm_medium'))],
+    ['utm_campaign', kurz(field('utm_campaign'))],
+    ['utm_term', kurz(field('utm_term'))],
+    ['gclid', kurz(field('gclid'))],
+].filter(([, wert]) => wert !== '');
+
 let subjectPrefix = '[KONTAKT]';
 if (isSpamSuspect) subjectPrefix = '[KONTAKT-VERDACHT-SPAM]';
 else if (!ok) subjectPrefix = '[KONTAKT-FEHLERHAFT]';
 
-const emailSubject = `${subjectPrefix} Anfrage: ${themaLabel}`;
+const emailSubject = `${subjectPrefix} Anfrage: ${themaLabel}${zielgruppeLabel ? ` (${zielgruppeLabel})` : ''}`;
 
 const emailText = [
     `Neue Kontaktanfrage über die Webseite.`,
@@ -217,6 +238,7 @@ const emailText = [
     ``,
     nachricht,
     ``,
+    herkunft.length ? `Herkunft:\n${herkunft.map(([k, v]) => `${k}: ${v}`).join('\n')}\n` : '',
     !ok ? `HINWEIS: Serverseitige Validierung fehlgeschlagen: ${errors.join(' ')}` : '',
     isSpamSuspect ? `HINWEIS: Honeypot-Feld war befüllt, vermutlich Bot-Spam.` : '',
 ].filter(Boolean).join('\n');
@@ -247,6 +269,12 @@ const internalBodyHtml = `<tr><td style="padding:28px;">
     </tr>
   </table>
   <p style="font-family:${FONT_STACK};font-size:14px;color:#374151;line-height:1.7;margin:0;">${nachrichtSafeHtml}</p>
+  ${herkunft.length ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border-top:1px solid #e5e7eb;">
+    <tr><td style="padding-top:14px;font-family:${FONT_STACK};font-size:12.5px;color:#6b7280;line-height:1.7;">
+      <span style="font-weight:bold;color:#374151;">Herkunft</span><br>
+      ${herkunft.map(([k, v]) => `${escapeHtml(k)}: ${escapeHtml(v)}`).join('<br>')}
+    </td></tr>
+  </table>` : ''}
   ${!ok ? `<p style="font-family:${FONT_STACK};font-size:12.5px;color:#b91c1c;margin:16px 0 0;">Hinweis: Serverseitige Validierung fehlgeschlagen: ${escapeHtml(errors.join(' '))}</p>` : ''}
   ${isSpamSuspect ? `<p style="font-family:${FONT_STACK};font-size:12.5px;color:#b91c1c;margin:8px 0 0;">Hinweis: Honeypot-Feld war befüllt, vermutlich Bot-Spam.</p>` : ''}
 </td></tr>`;

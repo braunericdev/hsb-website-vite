@@ -498,6 +498,60 @@ const setupCountUp = () => {
     els.forEach((el) => io.observe(el));
 };
 
+// 11. Google-Ads-Landingpages (/lp/): utm_* und gclid aus der URL in die versteckten Formularfelder
+// [data-lp-track] schreiben, damit in der Anfrage-Mail steht, über welche Anzeige sie kam. Die Werte
+// werden zusätzlich für die Sitzung gemerkt: Wer auf der allgemeinen LP über die Weiche zu einer
+// Zielgruppen-LP wechselt, verliert sonst die URL-Parameter der Anzeige.
+const LP_TRACKING_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'gclid'];
+const setupLpTracking = () => {
+    const felder = document.querySelectorAll('[data-lp-track]');
+    if (!felder.length) return;
+    const params = new URLSearchParams(window.location.search);
+    let gemerkt = {};
+    try { gemerkt = JSON.parse(sessionStorage.getItem('lp-tracking') || '{}') || {}; } catch { gemerkt = {}; }
+    const ausUrl = {};
+    LP_TRACKING_KEYS.forEach((key) => { const v = params.get(key); if (v) ausUrl[key] = v.slice(0, 200); });
+    // Neue Anzeigen-Parameter ersetzen die gemerkten komplett (sonst Mischung zweier Klicks)
+    const werte = Object.keys(ausUrl).length ? ausUrl : gemerkt;
+    if (Object.keys(ausUrl).length) {
+        try { sessionStorage.setItem('lp-tracking', JSON.stringify(ausUrl)); } catch { /* privat/blockiert: nur URL-Werte */ }
+    }
+    felder.forEach((feld) => { if (werte[feld.name]) feld.value = werte[feld.name]; });
+};
+
+// 12. Mobile Sticky-Leiste der LPs: sichtbar, sobald der Hero verlassen ist, aber nicht, solange das
+// Formular im Bild ist (sie würde sonst den Absenden-Button verdecken).
+const setupLpStickyBar = () => {
+    const bar = document.querySelector('[data-lp-sticky]');
+    const hero = document.querySelector('[data-lp-hero]');
+    if (!bar || !hero || !('IntersectionObserver' in window)) return;
+    const form = document.getElementById('angebot');
+    let heroSichtbar = true;
+    let formSichtbar = false;
+    const update = () => {
+        const zeigen = !heroSichtbar && !formSichtbar;
+        bar.classList.toggle('translate-y-full', !zeigen);
+        bar.setAttribute('aria-hidden', String(!zeigen));
+        bar.querySelectorAll('a').forEach((a) => { a.tabIndex = zeigen ? 0 : -1; });
+    };
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.target === hero) heroSichtbar = entry.isIntersecting;
+            else formSichtbar = entry.isIntersecting;
+        });
+        update();
+    });
+    io.observe(hero);
+    if (form) io.observe(form);
+};
+
+// 13. Vorher/Nachher-Abschnitt der LPs: bleibt ausgeblendet, bis echte Fotos eingetragen sind
+const setupLpVorherNachher = () => {
+    document.querySelectorAll('[data-lp-vorher-nachher]').forEach((section) => {
+        if (section.querySelector('img')) section.classList.remove('hidden');
+    });
+};
+
 // Skript ist ein deferred Modul (type="module") und läuft daher erst nach
 // vollständigem DOM-Parsing – ein Warten auf "load" (alle Bilder etc.) ist
 // für diese Interaktionen nicht nötig und verzögert sie unnötig.
@@ -510,3 +564,6 @@ setupFaqAccordion();
 setupGoogleReviews();
 setupTurnstile();
 setupCountUp();
+setupLpTracking();
+setupLpStickyBar();
+setupLpVorherNachher();

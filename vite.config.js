@@ -32,6 +32,13 @@ export default defineConfig({
         leerstandsbetreuung: resolve(__dirname, 'leerstandsbetreuung/index.html'),
         entruempelung: resolve(__dirname, 'entruempelung/index.html'),
 
+        // Google-Ads-Landingpages Gebäudereinigung (noindex, nicht in Sitemap/Navigation)
+        lpGebaeudereinigung: resolve(__dirname, 'lp/gebaeudereinigung/index.html'),
+        lpBueroreinigung: resolve(__dirname, 'lp/bueroreinigung/index.html'),
+        lpPraxisreinigung: resolve(__dirname, 'lp/praxisreinigung/index.html'),
+        lpTreppenhausreinigung: resolve(__dirname, 'lp/treppenhausreinigung/index.html'),
+        lpBauendreinigung: resolve(__dirname, 'lp/bauendreinigung/index.html'),
+
         // Rechtliches & Sonstiges
         impressum: resolve(__dirname, 'impressum/index.html'),
         datenschutz: resolve(__dirname, 'datenschutz/index.html'),

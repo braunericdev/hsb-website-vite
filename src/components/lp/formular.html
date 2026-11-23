@@ -1,0 +1,83 @@
+<!-- Angebotsformular der Landingpages (Anker #angebot). Parameter: zielgruppe (allgemein | buero |
+     praxis | hv-weg | bau), heading.
+     Gleiches Muster und gleiche Pflichtfelder wie das bestehende Kontaktformular (data-kontakt-form):
+     dienstleistung=gebaeudereinigung löst in main.js dieselbe Google-Ads-Conversion und dieselbe
+     Danke-URL aus wie das Formular auf /gebaeudereinigung/. utm_* und gclid füllt main.js aus der
+     URL (bzw. aus der Sitzung, falls über die Weiche der allgemeinen LP gewechselt wurde). -->
+<section id="angebot" class="scroll-mt-4 py-16 bg-[#8B4513]/5 border-t border-gray-100">
+    <div class="container mx-auto px-4 max-w-2xl">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tighter mb-2">{=$heading}</h2>
+            <p class="text-gray-600 font-medium mb-6">Kostenlos und unverbindlich. Festpreis nach Besichtigung.</p>
+
+            <form data-kontakt-form data-lp-form action="https://niewiedertelefonieren.de/webhook/kontakt" method="POST" class="space-y-3">
+                <input type="text" name="firma_website" autocomplete="off" tabindex="-1" class="hidden" aria-hidden="true">
+                <input type="hidden" name="_ts" data-form-ts>
+                <select data-dienstleistung name="dienstleistung" class="hidden" required>
+                    <option value="gebaeudereinigung" selected>Gebäudereinigung</option>
+                </select>
+                <input type="hidden" name="zielgruppe" value="{=$zielgruppe}">
+                <input type="hidden" name="utm_source" data-lp-track>
+                <input type="hidden" name="utm_medium" data-lp-track>
+                <input type="hidden" name="utm_campaign" data-lp-track>
+                <input type="hidden" name="utm_term" data-lp-track>
+                <input type="hidden" name="gclid" data-lp-track>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="lp-name" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">Name*</label>
+                        <input id="lp-name" type="text" name="name" autocomplete="name" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                    </div>
+                    <div>
+                        <label for="lp-telefon" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">Telefon*</label>
+                        <input id="lp-telefon" type="tel" name="telefon" autocomplete="tel" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-[2fr_3fr] gap-3">
+                    <div>
+                        <label for="lp-plz" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">PLZ*</label>
+                        <input id="lp-plz" type="text" name="plz" data-plz-input inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                    </div>
+                    <div class="relative">
+                        <label for="lp-ort" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">Ort*</label>
+                        <input id="lp-ort" type="text" name="ort" data-ort-input autocomplete="address-level2" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium" required>
+                        <div data-ort-spinner class="absolute right-4 bottom-3.5 hidden">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-[#8B4513]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lp-email" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">E-Mail (optional)</label>
+                    <input id="lp-email" type="email" name="email" autocomplete="email" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white font-medium">
+                </div>
+
+                <div>
+                    <label for="lp-nachricht" class="block text-xs font-bold text-gray-500 uppercase tracking-wider ml-1 mb-1">Ihre Nachricht*</label>
+                    <textarea id="lp-nachricht" name="nachricht" rows="3" placeholder="z. B. Objekt, Größe, gewünschter Turnus" class="w-full p-3.5 border border-gray-300 rounded-xl focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/20 outline-none transition bg-white resize-none font-medium" required></textarea>
+                </div>
+
+                <div class="flex items-start py-1">
+                    <div class="flex items-center h-5">
+                        <input id="privacy-lp" name="privacy" type="checkbox" required class="w-5 h-5 border border-gray-300 rounded text-[#8B4513] focus:ring-[#8B4513]/20 cursor-pointer accent-[#8B4513]">
+                    </div>
+                    <div class="ml-3 text-sm leading-tight">
+                        <label for="privacy-lp" class="text-gray-600 font-medium cursor-pointer select-none">
+                            Ich habe die <a href="/datenschutz/" target="_blank" class="text-[#8B4513] font-bold hover:underline">Datenschutzerklärung</a> zur Kenntnis genommen.*
+                            <span class="block text-xs text-gray-400 font-normal mt-0.5">Ich stimme zu, dass meine Angaben zur Kontaktaufnahme und für Rückfragen gespeichert werden.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div data-turnstile-container class="flex justify-center"></div>
+
+                <button type="submit" data-submit-btn class="w-full bg-[#1F6F4A] text-white py-4 rounded-xl font-bold hover:bg-[#164F35] transition shadow-lg uppercase tracking-widest text-sm flex items-center justify-center group active:scale-95">
+                    <span data-btn-text>Kostenloses Angebot anfordern</span>
+                    <i class="fas fa-paper-plane ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+                <p class="text-center text-xs text-gray-500 uppercase tracking-widest font-bold">Antwort innerhalb von 24&nbsp;h</p>
+            </form>
+        </div>
+    </div>
+</section>
