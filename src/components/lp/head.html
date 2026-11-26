@@ -1,0 +1,22 @@
+    <!-- Gemeinsamer Head-Teil der Google-Ads-Landingpages unter /lp/: bewusst noindex (die SEO-Seite
+         bleibt /gebaeudereinigung/), sonst identisch zu den übrigen Seiten (Cookiebot, gtag).
+         Parameter img: Hero-Bild (wie in hero.html), wird für einen schnelleren LCP vorgeladen. -->
+    <meta name="robots" content="noindex, follow">
+    <link rel="preload" as="image" type="image/webp" href="/lp-img/{=$img}.webp" imagesrcset="/lp-img/{=$img}-600.webp 600w, /lp-img/{=$img}.webp {=$img_w}w" imagesizes="(min-width: 1024px) 50vw, 100vw" fetchpriority="high">
+    <!-- Roboto kommt per @import aus src/style.css (Kette HTML > CSS > Font-CSS > Font); hier vorziehen -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="7dbf87a7-6616-415a-b6e6-615be56dfe12" data-blockingmode="auto" type="text/javascript"></script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17931737581"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-17931737581');
+        gtag('config', 'G-E9G1RR3GSR');
+    </script>
